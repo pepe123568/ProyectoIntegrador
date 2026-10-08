@@ -1,0 +1,134 @@
+<ion-content>
+
+  <!-- Barra superior -->
+  <ion-grid class="topbar">
+
+    <ion-button
+      class="icon-btn"
+      routerLink="/tienda"><ion-icon name="chevron-back-outline" aria-hidden="true"></ion-icon></ion-button>
+
+    <ion-text>Carrito</ion-text>
+
+    <ion-text></ion-text>
+
+  </ion-grid>
+
+  <ion-grid class="mobile-page">
+
+    <!-- Productos del carrito -->
+    <ion-grid
+      class="card cart-row"
+      *ngFor="let i of datos.carrito">
+
+      <ion-img [src]="i.producto.imagen"></ion-img>
+
+      <ion-grid>
+
+        <ion-text>{{ i.producto.nombre }}</ion-text>
+
+        <ion-grid class="price">
+          ${{ i.producto.precio }}.00
+        </ion-grid>
+
+        <!-- Control de cantidad -->
+        <ion-grid class="qty">
+
+          <ion-button
+            (click)="datos.cambiarCantidad(i.producto.id, -1)"><ion-icon name="remove-outline" aria-hidden="true"></ion-icon></ion-button>
+
+          <ion-text>
+            {{ i.cantidad }}
+          </ion-text>
+
+          <ion-button
+            (click)="datos.cambiarCantidad(i.producto.id, 1)">
+            +
+          </ion-button>
+
+        </ion-grid>
+
+      </ion-grid>
+
+      <!-- Eliminar producto -->
+      <ion-button
+        class="trash"
+        (click)="datos.eliminarCarrito(i.producto.id)"><ion-icon name="trash-outline" aria-hidden="true"></ion-icon></ion-button>
+
+    </ion-grid>
+
+
+    <!-- Carrito vacío -->
+    <ion-grid
+      class="card center"
+      *ngIf="!datos.carrito.length">
+
+      <ion-text>Tu carrito está vacío</ion-text>
+
+      <ion-note class="muted">
+        Agrega productos desde la tienda.
+      </ion-note>
+
+      <ion-button
+        class="primary"
+        routerLink="/tienda">
+        Ir a la tienda
+      </ion-button>
+
+    </ion-grid>
+
+
+    <!-- Resumen de compra -->
+    <ion-grid *ngIf="datos.carrito.length">
+
+      <ion-grid class="between">
+
+        <ion-text>Total</ion-text>
+
+        <ion-text class="total">
+          ${{ datos.total() }}.00
+        </ion-text>
+
+      </ion-grid>
+
+      <ion-button
+        class="primary"
+        routerLink="/pago">
+        Continuar al pago
+      </ion-button>
+
+    </ion-grid>
+
+  </ion-grid>
+
+
+  <!-- Barra de navegación inferior -->
+  <ion-grid class="bottom-nav">
+
+    <ion-button routerLink="/home">
+      <ion-icon name="home-outline" aria-hidden="true"></ion-icon>
+      Inicio
+    </ion-button>
+
+    <ion-button routerLink="/citas">
+      <ion-icon name="calendar-outline" aria-hidden="true"></ion-icon>
+      Citas
+    </ion-button>
+
+    <ion-button routerLink="/sucursales">
+      <ion-icon name="location-outline" aria-hidden="true"></ion-icon>
+      Sucursales
+    </ion-button>
+
+    <ion-button routerLink="/tienda">
+      <ion-icon name="storefront-outline" aria-hidden="true"></ion-icon>
+      Tienda
+    </ion-button>
+
+    <ion-button routerLink="/cuenta">
+      <ion-icon name="person-circle-outline" aria-hidden="true"></ion-icon>
+      Cuenta
+    </ion-button>
+
+  </ion-grid>
+
+</ion-content>

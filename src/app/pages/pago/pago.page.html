@@ -1,0 +1,32 @@
+<ion-content>
+  <!-- Barra superior -->
+  <ion-grid class="topbar">
+    <ion-button class="icon-btn" routerLink="/carrito"><ion-icon name="chevron-back-outline" aria-hidden="true"></ion-icon></ion-button>
+    <ion-text>Pago</ion-text>
+    <ion-text></ion-text>
+  </ion-grid>
+
+  <ion-grid class="mobile-page no-nav">
+    <!-- Total a pagar -->
+    <ion-grid class="card center">
+      <ion-note class="muted">Total a pagar</ion-note>
+      <ion-grid class="total">${{ datos.total() }}.00</ion-grid>
+    </ion-grid>
+
+    <!-- Métodos de pago -->
+    <ion-text class="section-title">Selecciona un método de pago</ion-text>
+
+    <ion-radio-group [(ngModel)]="metodo">
+      <ion-item class="radio-card"><ion-radio value="Tarjeta">▣ &nbsp; Tarjeta de crédito / débito</ion-radio></ion-item>
+      <ion-item class="radio-card"><ion-radio value="Transferencia">⇄ &nbsp; Transferencia bancaria</ion-radio></ion-item>
+      <ion-item class="radio-card"><ion-radio value="Efectivo">▤ &nbsp; Efectivo en sucursal</ion-radio></ion-item>
+    </ion-radio-group>
+
+    <!-- Mensaje de error -->
+    <ion-note class="error">{{ error }}</ion-note>
+
+    <!-- Botones -->
+    <ion-button class="primary" (click)="continuar()">Continuar</ion-button>
+    <ion-button class="secondary" routerLink="/carrito">Regresar</ion-button>
+  </ion-grid>
+</ion-content>

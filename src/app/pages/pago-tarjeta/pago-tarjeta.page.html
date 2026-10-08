@@ -1,0 +1,64 @@
+<ion-content>
+  <!-- Barra superior -->
+  <ion-grid class="topbar">
+    <ion-button class="icon-btn" routerLink="/pago"><ion-icon name="chevron-back-outline" aria-hidden="true"></ion-icon></ion-button>
+    <ion-text>Pago con tarjeta</ion-text>
+    <ion-text></ion-text>
+  </ion-grid>
+
+  <ion-grid class="mobile-page no-nav">
+    <ion-grid class="card">
+      <!-- Número de tarjeta -->
+      <ion-grid class="field-wrap">
+        <ion-label>Número de tarjeta</ion-label>
+        <ion-input
+          class="field"
+          inputmode="numeric"
+          [(ngModel)]="numero"
+          maxlength="16"
+          placeholder="XXXX - XXXX - XXXX - XXXX"></ion-input>
+      </ion-grid>
+
+      <!-- Fecha de expiración y CVV -->
+      <ion-grid class="two-col">
+        <ion-grid class="field-wrap">
+          <ion-label>MM/AA</ion-label>
+          <ion-input
+            class="field"
+            [(ngModel)]="exp"
+            (input)="formatearExp()"
+            inputmode="numeric"
+            maxlength="5"
+            placeholder="MM/AA"></ion-input>
+        </ion-grid>
+
+        <ion-grid class="field-wrap">
+          <ion-label>CVV</ion-label>
+          <ion-input
+            class="field"
+            type="password"
+            inputmode="numeric"
+            [(ngModel)]="cvv"
+            maxlength="3"
+            placeholder="123"></ion-input>
+        </ion-grid>
+      </ion-grid>
+
+      <!-- Nombre del titular -->
+      <ion-grid class="field-wrap">
+        <ion-label>Nombre del titular</ion-label>
+        <ion-input
+          class="field"
+          [(ngModel)]="titular"></ion-input>
+      </ion-grid>
+
+      <!-- Mensaje de error -->
+      <ion-note class="error">{{ error }}</ion-note>
+
+      <!-- Botones -->
+      <ion-button class="primary" (click)="pagar()">Pagar ${{ datos.total() }}.00</ion-button>
+      <ion-button class="secondary" routerLink="/pago">Cancelar</ion-button>
+      
+    </ion-grid>
+  </ion-grid>
+</ion-content>

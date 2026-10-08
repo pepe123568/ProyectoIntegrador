@@ -1,0 +1,28 @@
+<ion-content>
+  <!-- Confirmación de pago -->
+  <ion-grid class="mobile-page no-nav">
+    <ion-grid class="success-box">
+      <ion-grid class="check"><ion-icon name="checkmark-outline" aria-hidden="true"></ion-icon></ion-grid>
+      <ion-text>¡Pago registrado!</ion-text>
+      <ion-note class="muted">La compra se guardó temporalmente en el arreglo de compras.</ion-note>
+    </ion-grid>
+
+    <!-- Detalles de la compra -->
+    <ion-grid class="card" *ngIf="datos.compras[0] as c">
+      <ion-grid class="detail-grid">
+        <ion-text>Folio</ion-text>
+        <ion-text>#{{ c.id }}</ion-text>
+
+        <ion-text>Método</ion-text>
+        <ion-text>{{ c.metodoPago }}</ion-text>
+
+        <ion-text>Total</ion-text>
+        <ion-text>${{ c.total }}.00</ion-text>
+      </ion-grid>
+    </ion-grid>
+
+    <!-- Botones -->
+    <ion-button class="primary" routerLink="/home">Regresar al inicio</ion-button>
+    <ion-button class="secondary" routerLink="/tienda">Seguir comprando</ion-button>
+  </ion-grid>
+</ion-content>

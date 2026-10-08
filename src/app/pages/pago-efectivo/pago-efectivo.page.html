@@ -1,0 +1,52 @@
+<ion-content>
+  <!-- Barra superior -->
+  <ion-grid class="topbar">
+    <ion-button class="icon-btn" routerLink="/pago"><ion-icon name="chevron-back-outline" aria-hidden="true"></ion-icon></ion-button>
+    <ion-text>Pago en efectivo</ion-text>
+    <ion-text></ion-text>
+  </ion-grid>
+
+  <ion-grid class="mobile-page no-nav">
+    <!-- Información del pago -->
+    <ion-grid class="success-box">
+      <ion-grid class="list-icon" style="margin:auto"><ion-icon name="cash-outline" aria-hidden="true"></ion-icon></ion-grid>
+      <ion-text>Genera tu pago en sucursal</ion-text>
+      <ion-note class="muted">Presenta el QR en caja para completar el pago.</ion-note>
+    </ion-grid>
+
+    <!-- Código QR -->
+    <ion-img
+      class="qr"
+      src="assets/imagenes/qr-pago.png"
+      alt="QR de pago"></ion-img>
+
+    <!-- Total -->
+    <ion-grid class="card center">
+      <ion-text>Total: ${{ datos.total() }}.00</ion-text>
+    </ion-grid>
+
+    <!-- Generar pago -->
+    <ion-button
+      class="primary"
+      *ngIf="!generado"
+      (click)="generar()">
+      Generar pago
+    </ion-button>
+
+    <!-- Pago generado -->
+    <ion-grid *ngIf="generado">
+      <ion-note class="success-text center">
+        <ion-text>Pago generado con éxito.</ion-text>
+      </ion-note>
+      <ion-button class="primary" routerLink="/home">Regresar al inicio</ion-button>
+    </ion-grid>
+
+    <!-- Regresar -->
+    <ion-button
+      class="secondary"
+      *ngIf="!generado"
+      routerLink="/pago">
+      Regresar
+    </ion-button>
+  </ion-grid>
+</ion-content>

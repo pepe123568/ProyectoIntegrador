@@ -1,0 +1,88 @@
+<ion-content>
+  <!-- Barra superior -->
+  <ion-grid class="topbar">
+    <ion-button class="icon-btn" routerLink="/home"><ion-icon name="chevron-back-outline" aria-hidden="true"></ion-icon></ion-button>
+    <ion-text>Tienda</ion-text>
+    <ion-button class="icon-btn" routerLink="/carrito"><ion-icon name="cart-outline" aria-hidden="true"></ion-icon></ion-button>
+  </ion-grid>
+
+  <ion-grid class="mobile-page">
+    <!-- Buscar productos -->
+    <ion-input
+      class="search"
+      [(ngModel)]="busqueda"
+      placeholder="Buscar productos..."></ion-input>
+
+    <!-- Categorías -->
+    <ion-text class="section-title">Categorías</ion-text>
+
+    <ion-grid class="chips">
+      <ion-button
+        class="chip"
+        *ngFor="let c of categorias"
+        [class.active]="categoria === c"
+        (click)="categoria = c">
+        {{ c }}
+      </ion-button>
+    </ion-grid>
+
+    <!-- Productos -->
+    <ion-text class="section-title">Productos</ion-text>
+
+    <ion-grid class="product-grid">
+      <ion-card
+        class="product-card"
+        *ngFor="let p of lista"
+        (click)="abrir(p)">
+
+        <ion-img [src]="p.imagen" [alt]="p.nombre"></ion-img>
+
+        <ion-text class="badge" *ngIf="p.badge">
+          {{ p.badge }}
+        </ion-text>
+
+        <ion-text>{{ p.nombre }}</ion-text>
+        <ion-grid class="price">${{ p.precio }}.00</ion-grid>
+
+        <ion-button
+          class="primary"
+          (click)="add(p, $event)">
+          Agregar
+        </ion-button>
+      </ion-card>
+    </ion-grid>
+
+    <!-- Sin resultados -->
+    <ion-grid class="card center" *ngIf="!lista.length">
+      No hay productos con ese filtro.
+    </ion-grid>
+  </ion-grid>
+
+  <!-- Barra de navegación inferior -->
+  <ion-grid class="bottom-nav">
+    <ion-button routerLink="/home">
+      <ion-icon name="home-outline" aria-hidden="true"></ion-icon>
+      Inicio
+    </ion-button>
+
+    <ion-button routerLink="/citas">
+      <ion-icon name="calendar-outline" aria-hidden="true"></ion-icon>
+      Citas
+    </ion-button>
+
+    <ion-button routerLink="/sucursales">
+      <ion-icon name="location-outline" aria-hidden="true"></ion-icon>
+      Sucursales
+    </ion-button>
+
+    <ion-button routerLink="/tienda">
+      <ion-icon name="storefront-outline" aria-hidden="true"></ion-icon>
+      Tienda
+    </ion-button>
+
+    <ion-button routerLink="/cuenta">
+      <ion-icon name="person-circle-outline" aria-hidden="true"></ion-icon>
+      Cuenta
+    </ion-button>
+  </ion-grid>
+</ion-content>

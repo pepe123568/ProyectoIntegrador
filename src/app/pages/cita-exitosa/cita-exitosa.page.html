@@ -1,0 +1,65 @@
+<ion-content>
+
+  <ion-grid class="mobile-page no-nav">
+
+    <!-- Mensaje de confirmación -->
+    <ion-grid class="success-box">
+
+      <ion-grid class="check"><ion-icon name="checkmark-outline" aria-hidden="true"></ion-icon></ion-grid>
+
+      <ion-text>¡Cita agendada con éxito!</ion-text>
+
+      <ion-note class="muted">
+        Tu cita quedó registrada temporalmente en el arreglo de citas.
+      </ion-note>
+
+    </ion-grid>
+
+
+    <!-- Detalles de la cita -->
+    <ion-grid
+      class="card"
+      *ngIf="datos.ultimaCita as c">
+
+      <ion-text>Detalles de la cita</ion-text>
+
+      <ion-grid class="detail-grid">
+
+        <ion-text>Servicio</ion-text>
+        <ion-text>{{ c.servicio }}</ion-text>
+
+        <ion-text>Fecha</ion-text>
+        <ion-text>{{ c.fecha }}</ion-text>
+
+        <ion-text>Hora</ion-text>
+        <ion-text>{{ c.hora }}</ion-text>
+
+        <ion-text>Veterinario</ion-text>
+        <ion-text>{{ c.veterinario }}</ion-text>
+
+        <ion-text>Notas</ion-text>
+        <ion-text>{{ c.notas }}</ion-text>
+
+      </ion-grid>
+
+    </ion-grid>
+
+
+    <!-- Botón para ver las citas -->
+    <ion-button
+      class="primary"
+      routerLink="/citas">
+      Ver mis citas
+    </ion-button>
+
+
+    <!-- Botón para regresar al inicio -->
+    <ion-button
+      class="secondary"
+      routerLink="/home">
+      Regresar al inicio
+    </ion-button>
+
+  </ion-grid>
+
+</ion-content>

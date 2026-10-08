@@ -1,0 +1,87 @@
+<ion-content>
+
+  <!-- Barra superior -->
+  <ion-grid class="topbar">
+
+    <ion-button
+      class="icon-btn"
+      routerLink="/historial-medico"><ion-icon name="chevron-back-outline" aria-hidden="true"></ion-icon></ion-button>
+
+    <ion-text>Detalle médico</ion-text>
+
+    <ion-text></ion-text>
+
+  </ion-grid>
+
+  <!-- Información del historial médico seleccionado -->
+  <ion-grid
+    class="mobile-page no-nav"
+    *ngIf="datos.historialSeleccionado as h; else vacio">
+
+    <ion-grid class="card">
+
+      <!-- Fecha -->
+      <ion-text class="badge">
+        {{ h.fecha }}
+      </ion-text>
+
+      <!-- Tipo de consulta -->
+      <ion-text>
+        {{ h.tipo }}
+      </ion-text>
+
+      <ion-grid class="divider"></ion-grid>
+
+      <!-- Veterinario -->
+      <ion-text>Veterinario</ion-text>
+
+      <ion-note>
+        {{ h.veterinario }}
+      </ion-note>
+
+      <ion-grid class="divider"></ion-grid>
+
+      <!-- Diagnóstico -->
+      <ion-text>Diagnóstico</ion-text>
+
+      <ion-note>
+        {{ h.diagnostico }}
+      </ion-note>
+
+      <ion-grid class="divider"></ion-grid>
+
+      <!-- Tratamiento -->
+      <ion-text>Tratamiento</ion-text>
+
+      <ion-note>
+        {{ h.tratamiento }}
+      </ion-note>
+
+      <ion-grid class="divider"></ion-grid>
+
+      <!-- Observaciones -->
+      <ion-text>Observaciones</ion-text>
+
+      <ion-note>
+        {{ h.observaciones }}
+      </ion-note>
+
+    </ion-grid>
+
+  </ion-grid>
+
+  <!-- Se muestra cuando no hay un historial seleccionado -->
+  <ng-template #vacio>
+
+    <ion-grid class="mobile-page">
+
+      <ion-button
+        class="primary"
+        routerLink="/historial-medico">
+        Ver historial
+      </ion-button>
+
+    </ion-grid>
+
+  </ng-template>
+</ion-content>

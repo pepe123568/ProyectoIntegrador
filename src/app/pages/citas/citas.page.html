@@ -1,0 +1,110 @@
+<ion-content>
+
+  <!-- Barra superior -->
+  <ion-grid class="topbar">
+
+    <ion-button
+      class="icon-btn"
+      routerLink="/home"><ion-icon name="chevron-back-outline" aria-hidden="true"></ion-icon></ion-button>
+
+    <ion-text>Mis citas</ion-text>
+
+    <ion-button
+      class="icon-btn"
+      routerLink="/agendar-cita">
+      ＋
+    </ion-button>
+
+  </ion-grid>
+
+
+  <ion-grid class="mobile-page">
+
+    <!-- Pestañas de citas -->
+    <ion-grid class="tabs">
+
+      <ion-button
+        [class.active]="tab === 'proximas'"
+        (click)="tab = 'proximas'">
+        Próximas
+      </ion-button>
+
+      <ion-button
+        [class.active]="tab === 'historial'"
+        (click)="tab = 'historial'">
+        Historial
+      </ion-button>
+
+    </ion-grid>
+
+
+    <!-- Lista de citas -->
+    <ion-grid
+      class="list-row"
+      *ngFor="let c of lista"
+      (click)="abrir(c)">
+
+      <ion-grid class="list-icon"><ion-icon name="calendar-outline" aria-hidden="true"></ion-icon></ion-grid>
+
+      <ion-grid class="grow">
+
+        <ion-text>
+          {{ c.servicio }}
+        </ion-text>
+
+        <ion-note>
+          {{ c.fecha }} · {{ c.hora }} · {{ c.estado }}
+        </ion-note>
+
+      </ion-grid>
+
+      <ion-text class="chev"><ion-icon name="chevron-forward-outline" aria-hidden="true"></ion-icon></ion-text>
+
+    </ion-grid>
+
+
+    <!-- Mensaje cuando no hay citas -->
+    <ion-grid
+      class="card center"
+      *ngIf="!lista.length">
+
+      <ion-note class="muted">
+        No hay citas en esta sección.
+      </ion-note>
+
+    </ion-grid>
+
+  </ion-grid>
+
+
+  <!-- Barra de navegación inferior -->
+  <ion-grid class="bottom-nav">
+
+    <ion-button routerLink="/home">
+      <ion-icon name="home-outline" aria-hidden="true"></ion-icon>
+      Inicio
+    </ion-button>
+
+    <ion-button routerLink="/citas">
+      <ion-icon name="calendar-outline" aria-hidden="true"></ion-icon>
+      Citas
+    </ion-button>
+
+    <ion-button routerLink="/sucursales">
+      <ion-icon name="location-outline" aria-hidden="true"></ion-icon>
+      Sucursales
+    </ion-button>
+
+    <ion-button routerLink="/tienda">
+      <ion-icon name="storefront-outline" aria-hidden="true"></ion-icon>
+      Tienda
+    </ion-button>
+
+    <ion-button routerLink="/cuenta">
+      <ion-icon name="person-circle-outline" aria-hidden="true"></ion-icon>
+      Cuenta
+    </ion-button>
+
+  </ion-grid>
+
+</ion-content>

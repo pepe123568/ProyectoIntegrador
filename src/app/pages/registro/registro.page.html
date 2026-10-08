@@ -1,0 +1,94 @@
+<ion-content>
+  <!-- Barra superior -->
+  <ion-grid class="topbar">
+    <ion-button class="icon-btn" routerLink="/login"><ion-icon name="chevron-back-outline" aria-hidden="true"></ion-icon></ion-button>
+    <ion-text>Registro</ion-text>
+    <ion-text></ion-text>
+  </ion-grid>
+
+  <ion-grid class="mobile-page no-nav">
+    <!-- Indicador de paso -->
+    <ion-note class="eyebrow success-text center">Paso 1 de 2</ion-note>
+
+    <ion-grid class="card">
+      <!-- Nombre -->
+      <ion-grid class="field-wrap">
+        <ion-label>Nombre(s)</ion-label>
+        <ion-input
+          class="field"
+          type="text"
+          inputmode="text"
+          autocomplete="off"
+          autocorrect="off"
+          spellcheck="false"
+          [(ngModel)]="nombres"
+          maxlength="60">
+        </ion-input>
+      </ion-grid>
+
+      <!-- Apellidos -->
+      <ion-grid class="field-wrap">
+        <ion-label>Apellidos</ion-label>
+        <ion-input
+          class="field"
+          type="text"
+          inputmode="text"
+          autocomplete="off"
+          autocorrect="off"
+          spellcheck="false"
+          [(ngModel)]="apellidos"
+          maxlength="80">
+        </ion-input>
+      </ion-grid>
+
+      <!-- Correo electrónico -->
+      <ion-grid class="field-wrap">
+        <ion-label>Correo electrónico</ion-label>
+        <ion-input
+          class="field"
+          type="email"
+          [(ngModel)]="correo"
+          maxlength="120"></ion-input>
+      </ion-grid>
+
+      <!-- Contraseña -->
+      <ion-grid class="field-wrap">
+        <ion-label>Contraseña</ion-label>
+        <ion-input
+          class="field"
+          type="password"
+          [(ngModel)]="contrasena"
+          maxlength="60"></ion-input>
+        <ion-text class="tiny">Mínimo 6 caracteres</ion-text>
+      </ion-grid>
+
+      <!-- Confirmar contraseña -->
+      <ion-grid class="field-wrap">
+        <ion-label>Confirmar contraseña</ion-label>
+        <ion-input
+          class="field"
+          type="password"
+          [(ngModel)]="confirmar"></ion-input>
+      </ion-grid>
+
+      <!-- Teléfono -->
+      <ion-grid class="field-wrap">
+        <ion-label>Teléfono</ion-label>
+        <ion-input
+          class="field"
+          type="tel"
+          [(ngModel)]="telefono"
+          placeholder="271 123 4567"></ion-input>
+      </ion-grid>
+
+      <!-- Mensaje de error -->
+      <ion-note class="error" *ngIf="error">{{ error }}</ion-note>
+
+      <!-- Botones -->
+      <ion-grid class="button-row">
+        <ion-button class="ghost" routerLink="/login">Cancelar</ion-button>
+        <ion-button class="primary" (click)="siguiente()">Siguiente</ion-button>
+      </ion-grid>
+    </ion-grid>
+  </ion-grid>
+</ion-content>

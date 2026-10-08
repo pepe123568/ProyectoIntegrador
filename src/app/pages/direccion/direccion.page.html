@@ -1,0 +1,127 @@
+<ion-content>
+
+  <!-- Barra superior -->
+  <ion-grid class="topbar">
+
+    <ion-button
+      class="icon-btn"
+      routerLink="/registro"><ion-icon name="chevron-back-outline" aria-hidden="true"></ion-icon></ion-button>
+
+    <ion-text>Dirección</ion-text>
+
+    <ion-text></ion-text>
+
+  </ion-grid>
+
+
+  <ion-grid class="mobile-page no-nav">
+
+    <!-- Indicador de paso -->
+    <ion-note class="eyebrow success-text center">
+      Paso 2 de 2
+    </ion-note>
+
+
+    <ion-grid class="card">
+
+      <!-- Código Postal -->
+      <ion-grid class="field-wrap">
+
+        <ion-label>Código Postal (CP)</ion-label>
+
+        <ion-input
+          class="field"
+          inputmode="numeric"
+          maxlength="5"
+          [(ngModel)]="cp"></ion-input>
+
+      </ion-grid>
+
+      <!-- Ciudad -->
+      <ion-grid class="field-wrap">
+
+        <ion-label>Ciudad</ion-label>
+
+        <ion-input
+          class="field"
+          [(ngModel)]="ciudad"></ion-input>
+
+      </ion-grid>
+
+      <!-- Colonia -->
+      <ion-grid class="field-wrap">
+
+        <ion-label>Colonia</ion-label>
+
+        <ion-input
+          class="field"
+          [(ngModel)]="colonia"></ion-input>
+
+      </ion-grid>
+
+      <!-- Calle -->
+      <ion-grid class="field-wrap">
+
+        <ion-label>Calle</ion-label>
+
+        <ion-input
+          class="field"
+          [(ngModel)]="calle"></ion-input>
+
+      </ion-grid>
+
+      <!-- Números exterior e interior -->
+      <ion-grid class="two-col">
+
+        <ion-grid class="field-wrap">
+
+          <ion-label>Número exterior</ion-label>
+
+          <ion-input
+            class="field"
+            [(ngModel)]="exterior"></ion-input>
+
+        </ion-grid>
+
+        <ion-grid class="field-wrap">
+
+          <ion-label>Número interior</ion-label>
+
+          <ion-input
+            class="field"
+            [(ngModel)]="interior"
+            placeholder="Opcional"></ion-input>
+
+        </ion-grid>
+
+      </ion-grid>
+
+      <!-- Mensaje de error -->
+      <ion-note
+        class="error"
+        *ngIf="error">
+        {{ error }}
+      </ion-note>
+
+      <!-- Botones de navegación -->
+      <ion-grid class="button-row">
+
+        <ion-button
+          class="ghost"
+          routerLink="/registro">
+          Atrás
+        </ion-button>
+
+        <ion-button
+          class="primary"
+          (click)="crear()">
+          Crear cuenta
+        </ion-button>
+
+      </ion-grid>
+
+    </ion-grid>
+
+  </ion-grid>
+
+</ion-content>

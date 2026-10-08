@@ -1,0 +1,56 @@
+<ion-content>
+  <ion-grid class="mobile-page no-nav">
+    <!-- Información de la veterinaria -->
+    <ion-grid class="brand">
+      <ion-img src="assets/imagenes/LogoP.png" alt="Kamur"></ion-img>
+      <ion-text>Vet-Kamur</ion-text>
+      <ion-note>Cuidado integral para tus mascotas</ion-note>
+    </ion-grid>
+
+    <!-- Inicio de sesión -->
+    <ion-grid class="card">
+      <ion-text class="center">Iniciar sesión</ion-text>
+      <ion-note class="center muted">Accede a tu cuenta Vet-Kamur</ion-note>
+
+      <!-- Correo electrónico -->
+      <ion-grid class="field-wrap">
+        <ion-label>Correo electrónico</ion-label>
+        <ion-input
+          class="field"
+          type="email"
+          [(ngModel)]="correo"
+          placeholder="nombre@correo.com"
+          autocomplete="email"></ion-input>
+      </ion-grid>
+
+      <!-- Contraseña -->
+      <ion-grid class="field-wrap">
+        <ion-label>Contraseña</ion-label>
+        <ion-input
+          class="field"
+          [type]="mostrar ? 'text' : 'password'"
+          [(ngModel)]="contrasena"
+          placeholder="Ingresa tu contraseña"></ion-input>
+        <ion-button
+          class="link-btn"
+          (click)="mostrar = !mostrar">
+          {{ mostrar ? 'Ocultar' : 'Mostrar' }} contraseña
+        </ion-button>
+      </ion-grid>
+
+      <!-- Mensaje de error -->
+      <ion-note class="error" *ngIf="mensaje">{{ mensaje }}</ion-note>
+
+      <!-- Botones -->
+      <ion-button class="primary" (click)="entrar()">Iniciar sesión</ion-button>
+      <ion-grid class="divider"></ion-grid>
+
+      <!-- Registro -->
+      <ion-note class="center">
+        ¿No tienes cuenta?
+        <ion-button routerLink="/registro" class="success-text"><ion-text>Regístrate</ion-text></ion-button>
+      </ion-note>
+      <ion-note class="center tiny">Prueba: correo@ejemplo.com · 1234</ion-note>
+    </ion-grid>
+  </ion-grid>
+</ion-content>

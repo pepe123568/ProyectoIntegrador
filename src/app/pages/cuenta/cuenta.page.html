@@ -1,0 +1,168 @@
+<ion-content>
+
+  <!-- Barra superior -->
+  <ion-grid class="topbar">
+
+    <ion-button
+      class="icon-btn"
+      routerLink="/home"><ion-icon name="chevron-back-outline" aria-hidden="true"></ion-icon></ion-button>
+
+    <ion-text>Mi cuenta</ion-text>
+
+    <ion-text></ion-text>
+
+  </ion-grid>
+
+
+  <ion-grid class="mobile-page">
+
+    <!-- Información principal del usuario -->
+    <ion-grid class="account-avatar"></ion-grid>
+
+    <ion-text class="center">
+      {{ datos.usuarioActual?.nombres || 'Cliente' }}
+      {{ datos.usuarioActual?.apellidos || 'Kamur' }}
+    </ion-text>
+
+    <ion-note class="center muted">
+      {{ datos.usuarioActual?.correo || 'correo@ejemplo.com' }}
+    </ion-note>
+
+
+    <ion-grid class="card">
+
+      <!-- Información personal -->
+      <ion-text>Información personal</ion-text>
+
+      <ion-grid class="field-wrap">
+        <ion-label>Nombre(s)</ion-label>
+
+        <ion-input
+          class="field"
+          [(ngModel)]="datos.usuarioActual!.nombres"
+          [disabled]="!editando"></ion-input>
+      </ion-grid>
+
+
+      <ion-grid class="field-wrap">
+        <ion-label>Apellidos</ion-label>
+
+        <ion-input
+          class="field"
+          [(ngModel)]="datos.usuarioActual!.apellidos"
+          [disabled]="!editando"></ion-input>
+      </ion-grid>
+
+
+      <ion-grid class="field-wrap">
+        <ion-label>Teléfono</ion-label>
+
+        <ion-input
+          class="field"
+          [(ngModel)]="datos.usuarioActual!.telefono"
+          [disabled]="!editando"></ion-input>
+      </ion-grid>
+
+
+      <ion-grid class="field-wrap">
+        <ion-label>Correo electrónico</ion-label>
+
+        <ion-input
+          class="field"
+          [value]="datos.usuarioActual?.correo"
+          disabled></ion-input>
+      </ion-grid>
+
+
+      <!-- Dirección -->
+      <ion-text>Dirección</ion-text>
+
+      <ion-note class="muted">
+        {{ datos.usuarioActual?.direccion?.calle }}
+        #{{ datos.usuarioActual?.direccion?.numeroExterior }},
+        {{ datos.usuarioActual?.direccion?.colonia }}
+
+        <ion-text> · </ion-text>
+
+        {{ datos.usuarioActual?.direccion?.ciudad }}
+        · C.P. {{ datos.usuarioActual?.direccion?.cp }}
+      </ion-note>
+
+
+      <!-- Mensaje de confirmación -->
+      <ion-note
+        class="success-text"
+        *ngIf="mensaje">
+        {{ mensaje }}
+      </ion-note>
+
+
+      <!-- Editar información -->
+      <ion-button
+        class="primary"
+        *ngIf="!editando"
+        (click)="editando = true">
+        Editar información
+      </ion-button>
+
+
+      <!-- Guardar cambios -->
+      <ion-button
+        class="primary"
+        *ngIf="editando"
+        (click)="guardar()">
+        Guardar cambios
+      </ion-button>
+
+
+      <!-- Soporte -->
+      <ion-button
+        class="secondary"
+        routerLink="/soporte">
+        Soporte y ayuda
+      </ion-button>
+
+
+      <!-- Cerrar sesión -->
+      <ion-button
+        class="danger-btn"
+        (click)="salir()">
+        Cerrar sesión
+      </ion-button>
+
+    </ion-grid>
+
+  </ion-grid>
+
+
+  <!-- Barra de navegación inferior -->
+  <ion-grid class="bottom-nav">
+
+    <ion-button routerLink="/home">
+      <ion-icon name="home-outline" aria-hidden="true"></ion-icon>
+      Inicio
+    </ion-button>
+
+    <ion-button routerLink="/citas">
+      <ion-icon name="calendar-outline" aria-hidden="true"></ion-icon>
+      Citas
+    </ion-button>
+
+    <ion-button routerLink="/sucursales">
+      <ion-icon name="location-outline" aria-hidden="true"></ion-icon>
+      Sucursales
+    </ion-button>
+
+    <ion-button routerLink="/tienda">
+      <ion-icon name="storefront-outline" aria-hidden="true"></ion-icon>
+      Tienda
+    </ion-button>
+
+    <ion-button routerLink="/cuenta">
+      <ion-icon name="person-circle-outline" aria-hidden="true"></ion-icon>
+      Cuenta
+    </ion-button>
+
+  </ion-grid>
+
+</ion-content>

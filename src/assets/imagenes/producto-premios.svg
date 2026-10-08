@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700">
+  <rect width="1000" height="700" fill="#f4f8ef"/>
+  <rect x="55" y="55" width="365" height="590" rx="42" fill="#69863b"/>
+  <path d="M145 320h185l22 238H123z" fill="#fff"/>
+  <path d="M165 315l20-58h105l25 58z" fill="#e2f0d9"/>
+  <circle cx="205" cy="430" r="25" fill="#69863b"/>
+  <circle cx="260" cy="458" r="25" fill="#69863b"/>
+  <circle cx="285" cy="400" r="20" fill="#69863b"/>
+  <text x="480" y="220" font-family="Arial, sans-serif" font-size="56" font-weight="700" fill="#213026">Premios</text>
+  <text x="480" y="285" font-family="Arial, sans-serif" font-size="30" fill="#6d786f">Recompensas para entrenamiento</text>
+  <text x="480" y="350" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#4d6727">Vet-Kamur</text>
+</svg>

@@ -1,0 +1,47 @@
+.bottom-nav {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-around;
+  padding: 5px 0;
+}
+
+.bottom-nav ion-button {
+  flex: 1;
+  min-width: 0;
+  height: 70px;
+  margin: 0;
+
+  --background: transparent;
+  --color: #333333;
+  --box-shadow: none;
+  --border-radius: 0;
+  --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 0;
+  --padding-bottom: 0;
+}
+
+.nav-contenido {
+  display: flex;
+  flex-direction: column !important;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 100%;
+}
+
+.nav-contenido ion-icon {
+  display: block;
+  font-size: 24px;
+  margin: 0;
+}
+
+.nav-contenido span {
+  display: block;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.2;
+  text-align: center;
+  text-transform: none;
+}

@@ -1,0 +1,79 @@
+<ion-content>
+    <ion-grid class="mobile-page">
+        <ion-grid class="hero">
+            <ion-grid class="hero-copy">
+                <ion-text class="eyebrow">Vet-Kamur</ion-text>
+                <ion-text>¡Bienvenido{{datos.usuarioActual ? ', '+datos.usuarioActual.nombres : ''}}!
+
+                </ion-text>
+                <ion-note>Todo para el cuidado de tus mascotas en un solo lugar.</ion-note>
+            </ion-grid>
+        </ion-grid>
+        <ion-grid class="quick-grid">
+            <ion-button class="quick" routerLink="/agendar-cita">
+                <ion-grid class="quick-icon"><ion-icon name="calendar-outline" aria-hidden="true"></ion-icon></ion-grid><ion-text>Agendar cita</ion-text>
+                <ion-text>Reserva tu horario</ion-text>
+            </ion-button>
+            <ion-button class="quick" routerLink="/historial-medico">
+                <ion-grid class="quick-icon"><ion-icon name="document-text-outline" aria-hidden="true"></ion-icon></ion-grid>
+                <ion-text>Historial médico</ion-text><ion-text>Consulta atenciones</ion-text>
+            </ion-button><ion-button class="quick" routerLink="/tienda">
+                <ion-grid class="quick-icon"><ion-icon name="storefront-outline" aria-hidden="true"></ion-icon></ion-grid>
+                <ion-text>Productos</ion-text><ion-text>Tienda veterinaria</ion-text>
+            </ion-button><ion-button class="quick" routerLink="/carrito">
+                <ion-grid class="quick-icon"><ion-icon name="cart-outline" aria-hidden="true"></ion-icon></ion-grid><ion-text>Carrito</ion-text>
+                <ion-text>{{datos.carrito.length}} productos</ion-text></ion-button>
+            </ion-grid><ion-text class="section-title">Servicios Vet-Kamur</ion-text>
+            <ion-grid class="card">
+                <ion-grid class="list-row" style="border:0;padding:4px 0">
+                    <ion-grid class="list-icon"><ion-icon name="medical-outline" aria-hidden="true"></ion-icon></ion-grid><ion-grid class="grow">
+                        <ion-text>Consulta y prevención</ion-text>
+                        <ion-note>Consulta general, vacunación, desparasitación y seguimiento.</ion-note>
+                    </ion-grid></ion-grid><ion-grid class="divider">
+
+                    </ion-grid><ion-grid class="list-row" style="border:0;padding:4px 0">
+                        <ion-grid class="list-icon"><ion-icon name="help-circle-outline" aria-hidden="true"></ion-icon></ion-grid><ion-grid class="grow">
+                            <ion-text>¿Necesitas ayuda?</ion-text><ion-note>Consulta nuestra sección de soporte.</ion-note>
+                        </ion-grid><ion-button routerLink="/soporte" class="chev"><ion-icon name="chevron-forward-outline" aria-hidden="true"></ion-icon></ion-button>
+                    </ion-grid>
+                </ion-grid>
+            </ion-grid>
+            <ion-grid class="bottom-nav">
+
+                <ion-button routerLink="/home">
+                    <div class="nav-contenido">
+                    <ion-icon name="home-outline"></ion-icon>
+                    <span>Inicio</span>
+                    </div>
+                </ion-button>
+
+                <ion-button routerLink="/citas">
+                    <div class="nav-contenido">
+                    <ion-icon name="calendar-outline"></ion-icon>
+                    <span>Citas</span>
+                    </div>
+                </ion-button>
+
+                <ion-button routerLink="/sucursales">
+                    <div class="nav-contenido">
+                    <ion-icon name="location-outline"></ion-icon>
+                    <span>Sucursales</span>
+                    </div>
+                </ion-button>
+
+                <ion-button routerLink="/tienda">
+                    <div class="nav-contenido">
+                    <ion-icon name="storefront-outline"></ion-icon>
+                    <span>Tienda</span>
+                    </div>
+                </ion-button>
+
+                <ion-button routerLink="/cuenta">
+                    <div class="nav-contenido">
+                    <ion-icon name="person-circle-outline"></ion-icon>
+                    <span>Cuenta</span>
+                    </div>
+                </ion-button>
+
+                </ion-grid>
+            </ion-content>

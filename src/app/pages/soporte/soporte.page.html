@@ -1,0 +1,40 @@
+<ion-content>
+  <!-- Barra superior -->
+  <ion-grid class="topbar">
+    <ion-button class="icon-btn" routerLink="/cuenta"><ion-icon name="chevron-back-outline" aria-hidden="true"></ion-icon></ion-button>
+    <ion-text>Soporte</ion-text>
+    <ion-text></ion-text>
+  </ion-grid>
+
+  <ion-grid class="mobile-page no-nav">
+    <ion-grid class="card">
+      <ion-text>¿Cómo podemos ayudarte?</ion-text>
+      <ion-note class="muted">Contacto: soporte@vetkamur.mx · 271 123 4567</ion-note>
+
+      <!-- Asunto -->
+      <ion-grid class="field-wrap">
+        <ion-label>Asunto</ion-label>
+        <ion-input
+          class="field"
+          [(ngModel)]="asunto"></ion-input>
+      </ion-grid>
+
+      <!-- Mensaje -->
+      <ion-grid class="field-wrap">
+        <ion-label>Mensaje</ion-label>
+        <ion-textarea
+          class="textarea"
+          [(ngModel)]="mensaje">
+        </ion-textarea>
+      </ion-grid>
+
+      <!-- Enviar mensaje -->
+      <ion-button class="primary" (click)="enviar()">Enviar mensaje</ion-button>
+
+      <!-- Mensaje de confirmación -->
+      <ion-note class="success-text center" *ngIf="enviado">
+        Mensaje preparado correctamente (simulación).
+      </ion-note>
+    </ion-grid>
+  </ion-grid>
+</ion-content>

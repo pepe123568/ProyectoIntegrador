@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700">
+  <rect width="1000" height="700" fill="#f4f8ef"/>
+  <rect x="55" y="55" width="365" height="590" rx="42" fill="#69863b"/>
+  <rect x="170" y="285" width="145" height="265" rx="30" fill="#fff"/>
+  <rect x="202" y="225" width="80" height="70" rx="12" fill="#e2f0d9"/>
+  <rect x="218" y="195" width="48" height="35" rx="8" fill="#fff"/>
+  <path d="M205 390c22-34 70-34 92 0-20 34-72 34-92 0z" fill="#69863b"/>
+  <text x="480" y="220" font-family="Arial, sans-serif" font-size="56" font-weight="700" fill="#213026">Shampoo</text>
+  <text x="480" y="285" font-family="Arial, sans-serif" font-size="30" fill="#6d786f">Higiene y cuidado del pelaje</text>
+  <text x="480" y="350" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#4d6727">Vet-Kamur</text>
+</svg>

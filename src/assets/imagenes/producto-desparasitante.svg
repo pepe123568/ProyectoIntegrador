@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700">
+  <rect width="1000" height="700" fill="#f4f8ef"/>
+  <rect x="55" y="55" width="365" height="590" rx="42" fill="#69863b"/>
+  <rect x="150" y="285" width="175" height="265" rx="28" fill="#fff"/>
+  <rect x="175" y="230" width="125" height="60" rx="12" fill="#e2f0d9"/>
+  <path d="M237 348v120M177 408h120" stroke="#69863b" stroke-width="28" stroke-linecap="round"/>
+  <text x="480" y="220" font-family="Arial, sans-serif" font-size="52" font-weight="700" fill="#213026">Desparasitante</text>
+  <text x="480" y="285" font-family="Arial, sans-serif" font-size="30" fill="#6d786f">Cuidado preventivo veterinario</text>
+  <text x="480" y="350" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#4d6727">Vet-Kamur</text>
+</svg>

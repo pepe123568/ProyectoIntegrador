@@ -1,0 +1,67 @@
+<ion-content>
+  <!-- Barra superior -->
+  <ion-grid class="topbar">
+    <ion-button class="icon-btn" routerLink="/home"><ion-icon name="chevron-back-outline" aria-hidden="true"></ion-icon></ion-button>
+    <ion-text>Sucursales</ion-text>
+    <ion-text></ion-text>
+  </ion-grid>
+
+  <ion-grid class="mobile-page">
+    <!-- Buscar sucursal -->
+    <ion-input
+      class="search"
+      [(ngModel)]="busqueda"
+      placeholder="Buscar sucursal"></ion-input>
+
+    <!-- Mapa -->
+    <ion-grid class="map">
+      <ion-text class="pin" style="left:22%;top:34%"></ion-text>
+      <ion-text class="pin" style="left:67%;top:24%"></ion-text>
+      <ion-text class="pin" style="left:72%;top:70%"></ion-text>
+    </ion-grid>
+
+    <!-- Lista de sucursales -->
+    <ion-grid class="list-row" *ngFor="let s of lista">
+      <ion-grid class="list-icon"><ion-icon name="location-outline" aria-hidden="true"></ion-icon></ion-grid>
+
+      <ion-grid class="grow">
+        <ion-text>{{ s.nombre }}</ion-text>
+        <ion-note>{{ s.direccion }} · {{ s.distancia }}</ion-note>
+        <ion-note>{{ s.horario }}</ion-note>
+      </ion-grid>
+    </ion-grid>
+
+    <!-- Sin resultados -->
+    <ion-grid class="card center" *ngIf="!lista.length">
+      No se encontraron sucursales.
+    </ion-grid>
+  </ion-grid>
+
+  <!-- Barra de navegación inferior -->
+  <ion-grid class="bottom-nav">
+    <ion-button routerLink="/home">
+      <ion-icon name="home-outline" aria-hidden="true"></ion-icon>
+      Inicio
+    </ion-button>
+
+    <ion-button routerLink="/citas">
+      <ion-icon name="calendar-outline" aria-hidden="true"></ion-icon>
+      Citas
+    </ion-button>
+
+    <ion-button routerLink="/sucursales">
+      <ion-icon name="location-outline" aria-hidden="true"></ion-icon>
+      Sucursales
+    </ion-button>
+
+    <ion-button routerLink="/tienda">
+      <ion-icon name="storefront-outline" aria-hidden="true"></ion-icon>
+      Tienda
+    </ion-button>
+
+    <ion-button routerLink="/cuenta">
+      <ion-icon name="person-circle-outline" aria-hidden="true"></ion-icon>
+      Cuenta
+    </ion-button>
+  </ion-grid>
+</ion-content>

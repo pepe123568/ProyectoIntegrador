@@ -1,37 +1,47 @@
-/*
- * App Global CSS
- * ----------------------------------------------------------------------------
- * Put style rules here that you want to apply globally. These styles are for
- * the entire app and not just one component. Additionally, this file can be
- * used as an entry point to import other CSS/Sass files to be included in the
- * output CSS.
- * For more information on global stylesheets, visit the documentation:
- * https://ionicframework.com/docs/layout/global-stylesheets
- */
-
-/* Core CSS required for Ionic components to work properly */
 @import "@ionic/angular/css/core.css";
-
-/* Basic CSS for apps built with Ionic */
 @import "@ionic/angular/css/normalize.css";
 @import "@ionic/angular/css/structure.css";
 @import "@ionic/angular/css/typography.css";
-@import "@ionic/angular/css/display.css";
-
-/* Optional CSS utils that can be commented out */
 @import "@ionic/angular/css/padding.css";
-@import "@ionic/angular/css/float-elements.css";
-@import "@ionic/angular/css/text-alignment.css";
-@import "@ionic/angular/css/text-transformation.css";
-@import "@ionic/angular/css/flex-utils.css";
+@import "@ionic/angular/css/display.css";
+:root{--green:#777777;--green-dark:#3f3f3f;--green-soft:#e8e8e8;--green-pale:#f3f3f3;--ink:#202020;--muted:#707070;--border:#d6d6d6;--bg:#fafafa}
+*{box-sizing:border-box}body{margin:0;background:#ededed;color:var(--ink);font-family:Inter,system-ui,-apple-system,'Segoe UI',sans-serif}ion-app{max-width:520px;margin:auto;min-height:100vh;background:var(--bg);box-shadow:0 0 28px #0000001a}ion-content{--background:var(--bg)}
+.mobile-page{min-height:100%;padding:18px 18px 92px}.no-nav{padding-bottom:30px}.topbar{height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;background:white;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:10}.topbar ion-text{font-size:19px;margin:0;font-weight:800}.icon-btn{width:40px;height:40px;border:0;background:transparent;border-radius:12px;font-size:22px;color:var(--ink)}
+.brand{text-align:center;margin:24px 0}.brand ion-img{width:84px;height:84px;object-fit:contain}.brand ion-text{margin:5px 0 0;font-size:30px}.brand ion-note{margin:0;color:var(--muted)}.hero{height:210px;border-radius:22px;overflow:hidden;position:relative;margin-bottom:20px;background:#4a4a4a}.hero ion-img{width:100%;height:100%;object-fit:cover;opacity:.66}.hero-copy{position:absolute;inset:0;padding:22px;display:flex;flex-direction:column;justify-content:flex-end;color:white;background:linear-gradient(transparent,#222222dd)}.hero-copy ion-text{font-size:25px;margin:6px 0}.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:800}
+.card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:16px;margin:12px 0;box-shadow:none}.section-title{font-size:19px;font-weight:850;margin:22px 0 10px}.muted{color:var(--muted)}.tiny{font-size:12px;color:var(--muted)}.center{text-align:center}.danger{color:#4a4a4a}.success-text{color:var(--green-dark)}
+.field-wrap{margin:13px 0}.field-wrap ion-label{display:block;font-size:13px;font-weight:750;margin:0 0 6px}.field,.ion-select,.ion-textarea{width:100%;min-height:48px;border:1px solid var(--border);border-radius:13px;background:white;padding:12px 14px;color:var(--ink);font:inherit;outline:none}.ion-textarea{min-height:100px;resize:vertical}.field:focus,.ion-select:focus,.ion-textarea:focus{border-color:var(--green);box-shadow:0 0 0 3px #77777720}.error{font-size:12px;color:#4a4a4a;margin-top:5px}.primary,.secondary,.ghost,.danger-btn{width:100%;min-height:47px;border-radius:13px;font-weight:800;font-size:14px;padding:11px 14px;margin-top:10px}.primary{border:1px solid var(--green);background:var(--green);color:#fff}.secondary{border:1px solid var(--green);background:#fff;color:var(--green-dark)}.ghost{border:1px solid var(--border);background:#fff;color:var(--ink)}.danger-btn{border:1px solid #999;background:#fff;color:#444}.link-btn{border:0;background:none;color:var(--green-dark);font-weight:750;padding:4px}.button-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.quick{min-height:100px;background:#fff;border:1px solid var(--border);border-radius:18px;padding:15px;text-decoration:none;color:var(--ink);display:flex;flex-direction:column;justify-content:center;align-items:flex-start}.quick-icon{width:42px;height:42px;border-radius:13px;background:var(--green-soft);display:grid;place-items:center;font-size:21px;margin-bottom:9px}.quick ion-text{font-size:14px}.quick ion-text{font-size:11px;color:var(--muted);margin-top:3px}
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(520px,100%);height:72px;background:#fff;border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(5,1fr);z-index:30;padding-bottom:env(safe-area-inset-bottom)}.bottom-nav ion-button{text-decoration:none;color:#707070;text-align:center;font-size:10px;padding-top:9px}.bottom-nav ion-button.active{color:var(--green-dark);font-weight:800}.bottom-nav ion-text{display:block;font-size:19px;line-height:23px}
+.search{width:100%;height:46px;border:1px solid var(--border);border-radius:14px;padding:0 14px;background:#fff;outline:none}.chips{display:flex;gap:8px;overflow:auto;padding:4px 0 7px}.chip{appearance:none;-webkit-appearance:none;white-space:nowrap;border:1px solid #cfcfcf;background:#fff;border-radius:999px;padding:8px 12px;font-size:12px;font-weight:700;color:#333 !important;opacity:1}.chip.active{background:#6f6f6f;color:#fff !important;border-color:#6f6f6f}
+.product-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.product-card{background:white;border:1px solid var(--border);border-radius:18px;padding:10px;overflow:hidden}.product-card ion-img{width:100%;height:112px;object-fit:contain;background:var(--green-pale);border-radius:13px}.product-card ion-text{font-size:13px;line-height:1.25;margin:9px 0 4px;min-height:33px}.price{font-size:18px;font-weight:900}.badge{display:inline-block;background:var(--green-soft);color:var(--green-dark);border-radius:999px;padding:4px 8px;font-size:10px;font-weight:800}.qty{display:inline-flex;border:1px solid var(--border);border-radius:10px;overflow:hidden;align-items:center}.qty ion-button{width:38px;height:36px;border:0;background:#fff;font-size:18px}.qty ion-text{min-width:34px;text-align:center;font-weight:800}.cart-row{display:grid;grid-template-columns:74px 1fr auto;gap:12px;align-items:center}.cart-row ion-img{width:74px;height:74px;object-fit:contain;background:var(--green-pale);border-radius:12px}.trash{border:0;background:none;font-size:20px;color:#555}.total{font-size:25px;font-weight:900}
+.list-row{display:flex;align-items:center;gap:12px;background:white;border:1px solid var(--border);border-radius:16px;padding:14px;margin:10px 0;text-decoration:none;color:inherit}.list-icon{width:45px;height:45px;border-radius:13px;background:var(--green-soft);display:grid;place-items:center;font-size:20px;flex:none}.list-row .grow{flex:1}.list-row ion-text{font-size:14px;margin:0 0 3px}.list-row ion-note{font-size:12px;color:var(--muted);margin:0}.chev{font-size:22px;color:var(--muted)}.tabs{display:grid;grid-template-columns:1fr 1fr;background:#eeeeee;border-radius:13px;padding:4px}.tabs ion-button{border:0;background:none;border-radius:10px;padding:10px;font-weight:800;color:var(--muted)}.tabs ion-button.active{background:var(--green);color:white}.detail-grid{display:grid;grid-template-columns:110px 1fr;gap:12px;font-size:14px}.detail-grid ion-text{color:var(--muted)}
+.success-box{text-align:center;padding:42px 18px}.check{width:82px;height:82px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-size:44px;margin:0 auto 18px}.map{height:145px;border-radius:18px;background:linear-gradient(135deg,#ededed,#d7d7d7);position:relative;overflow:hidden;margin:12px 0}.map:before,.map:after{content:'';position:absolute;background:white;height:5px;width:130%;transform:rotate(-18deg);left:-15%;top:48%}.map:after{transform:rotate(25deg);top:38%}.pin{position:absolute;width:16px;height:16px;border-radius:50%;background:var(--green-dark);z-index:2}.radio-card{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--border);border-radius:14px;padding:15px;margin:10px 0}.radio-card ion-input{accent-color:#555;width:18px;height:18px}.qr{width:190px;max-width:70%;display:block;margin:18px auto}.divider{height:1px;background:var(--border);margin:15px 0}.account-avatar{width:86px;height:86px;border-radius:50%;background:var(--green-soft);display:grid;place-items:center;margin:10px auto;font-size:38px}.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:370px){.product-grid{grid-template-columns:1fr}.button-row,.two-col{grid-template-columns:1fr}}
 
-/**
- * Ionic Dark Mode
- * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
- */
+/* Ajuste visual solicitado: escala de grises, cercano ion-button los wireframes. */
+ion-img{filter:grayscale(1)}
+.brand ion-img{filter:grayscale(1)}
+.product-card ion-img,.cart-row ion-img{filter:grayscale(1)}
 
-/* @import "@ionic/angular/css/palettes/dark.always.css"; */
-/* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import '@ionic/angular/css/palettes/dark.system.css';
+/* Componentes Ionic: apariencia monocromática de los wireframes */
+ion-grid{display:block;padding:0}ion-text{display:inline}ion-note{display:block;color:inherit}ion-label{display:block}ion-card{display:block;margin:0;box-shadow:none}ion-button{--box-shadow:none;text-transform:none;letter-spacing:0;cursor:pointer}ion-img{display:block}ion-input,ion-select,ion-textarea{--padding-start:14px;--padding-end:12px;--highlight-color-focused:#777;display:block}ion-input.field,ion-select.select,ion-textarea.textarea{--background:#fff;--color:#202020;--placeholder-color:#888;padding:0}ion-button.primary,ion-button.secondary,ion-button.ghost,ion-button.danger-btn{display:block;--border-radius:9px;--background:#6b6b6b;--color:#fff;--border-width:1px;--border-style:solid;--border-color:#6b6b6b;margin:10px 0 0;height:46px;min-height:46px;padding:0}ion-button.secondary,ion-button.ghost,ion-button.danger-btn{--background:#fff;--color:#444;--border-color:#777}ion-button.icon-btn,ion-button.link-btn{--background:transparent;--color:#222;--box-shadow:none;--padding-start:4px;--padding-end:4px}ion-button.quick{--background:#f6f6f6;--color:#222;--border-color:#e3e3e3;--border-width:1px;--border-style:solid;--border-radius:10px;display:flex;height:auto;margin:0}ion-button.quick::part(native){display:flex;flex-direction:column;align-items:center;justify-content:center;white-space:normal}ion-button.chip{--background:#f4f4f4;--color:#333;--border-radius:10px;margin:0;min-width:max-content}ion-button.chip.active{--background:#777;--color:#fff}ion-button[routerLink]{text-decoration:none}ion-grid.bottom-nav{display:grid}ion-grid.bottom-nav ion-button{--background:transparent;--color:#777;font-size:10px;min-width:0;margin:0;height:65px}ion-grid.bottom-nav ion-button::part(native){display:flex;flex-direction:column;white-space:normal;padding:5px 1px}ion-grid.topbar{display:flex}ion-grid.mobile-page{display:block}ion-grid.card{display:block}ion-grid.field-wrap{display:block}ion-grid.product-grid,ion-grid.quick-grid,ion-grid.button-row,ion-grid.two-col,ion-grid.detail-grid,ion-grid.cart-row,ion-grid.tabs{display:grid}ion-grid.chips{display:flex}ion-grid.list-row,ion-grid.radio-card{display:flex}ion-card.product-card{padding:10px}ion-img::part(image){object-fit:contain}ion-note.center,ion-text.center{text-align:center}ion-grid.brand{margin-top:40px;margin-bottom:30px}ion-grid.hero{height:auto;min-height:95px;background:#fff;border-radius:0;color:#222}ion-grid.hero-copy{position:relative;background:none;color:#222;padding:8px 0}ion-grid.hero-copy ion-text{color:#222}ion-grid.quick-grid{margin-top:12px}ion-grid.quick-grid ion-button{min-height:100px}ion-grid.quick-grid ion-button::part(native){background:#f6f6f6}ion-grid.topbar{background:#fff}ion-grid.mobile-page{background:#fff}ion-content{--background:#fff}ion-grid.card{border-radius:10px}ion-grid.list-row{border-radius:10px}ion-grid.account-avatar{border-radius:50%}ion-grid.map{display:block}ion-grid.check{display:grid}ion-grid.qty{display:inline-flex}ion-grid.tabs ion-button{margin:0}ion-grid.tabs ion-button.active{--background:#888;--color:#fff}
+
+/* Iconos nativos Ionicons en todas las pantallas */
+ion-icon { display: inline-block; vertical-align: middle; font-size: 21px; flex-shrink: 0; }
+.bottom-nav ion-icon { display: block; margin: 0 auto 4px; font-size: 23px; }
+.quick-icon ion-icon { font-size: 30px; }
+.list-icon ion-icon { font-size: 24px; }
+.icon-btn ion-icon { font-size: 24px; }
+
+html,
+body,
+ion-app {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+ion-content {
+  --padding-start: 0px;
+  --padding-end: 0px;
+}

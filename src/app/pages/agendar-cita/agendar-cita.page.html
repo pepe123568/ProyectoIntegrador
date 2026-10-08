@@ -1,0 +1,101 @@
+<ion-content>
+
+  <ion-grid class="topbar">
+    <ion-button
+      class="icon-btn"
+      routerLink="/home"><ion-icon name="chevron-back-outline" aria-hidden="true"></ion-icon></ion-button>
+
+    <ion-text>Agendar cita</ion-text>
+
+    <ion-text></ion-text>
+  </ion-grid>
+
+  <ion-grid class="mobile-page no-nav">
+
+    <ion-grid class="card">
+
+      <!-- Servicio -->
+      <ion-grid class="field-wrap">
+        <ion-label>Servicio</ion-label>
+
+        <ion-select
+          class="select"
+          [(ngModel)]="servicio">
+
+          <ion-select-option value="">
+            Selecciona un servicio
+          </ion-select-option>
+
+          <ion-select-option *ngFor="let s of servicios">
+            {{ s }}
+          </ion-select-option>
+
+        </ion-select>
+      </ion-grid>
+
+      <!-- Fecha -->
+      <ion-grid class="field-wrap">
+        <ion-label>Fecha</ion-label>
+
+        <ion-input
+          class="field"
+          type="date"
+          min="2026-10-01"
+          max="9999-12-31"
+          [(ngModel)]="fecha"></ion-input>
+      </ion-grid>
+
+      <!-- Hora -->
+      <ion-grid class="field-wrap">
+        <ion-label>Hora</ion-label>
+
+        <ion-select
+          class="select"
+          [(ngModel)]="hora">
+
+          <ion-select-option value="">
+            Selecciona un horario
+          </ion-select-option>
+
+          <ion-select-option
+            *ngFor="let h of horarios"
+            [value]="h">
+            {{ h }}
+          </ion-select-option>
+
+        </ion-select>
+      </ion-grid>
+
+      <!-- Notas adicionales -->
+      <ion-grid class="field-wrap">
+        <ion-label>
+          Notas adicionales
+          <ion-text class="muted">(opcional)</ion-text>
+        </ion-label>
+
+        <ion-textarea
+          class="textarea"
+          [(ngModel)]="notas"
+          maxlength="300">
+        </ion-textarea>
+      </ion-grid>
+
+      <!-- Mensaje de error -->
+      <ion-note
+        class="error"
+        *ngIf="error">
+        {{ error }}
+      </ion-note>
+
+      <!-- Botón para agendar -->
+      <ion-button
+        class="primary"
+        (click)="agendar()">
+        Agendar cita
+      </ion-button>
+
+    </ion-grid>
+
+  </ion-grid>
+
+</ion-content>

@@ -1,0 +1,133 @@
+<ion-content>
+
+  <!-- Barra superior -->
+  <ion-grid class="topbar">
+
+    <ion-button
+      class="icon-btn"
+      routerLink="/citas"><ion-icon name="chevron-back-outline" aria-hidden="true"></ion-icon></ion-button>
+
+    <ion-text>Detalle de cita</ion-text>
+
+    <ion-text></ion-text>
+
+  </ion-grid>
+
+  <!-- Información de la cita seleccionada -->
+  <ion-grid
+    class="mobile-page no-nav"
+    *ngIf="datos.citaSeleccionada as c; else vacio">
+
+    <!-- Detalles de la cita -->
+    <ion-grid class="card">
+
+      <ion-text class="badge">
+        {{ c.estado }}
+      </ion-text>
+
+      <ion-text>
+        {{ c.servicio }}
+      </ion-text>
+
+      <ion-grid class="detail-grid">
+
+        <ion-text>Fecha</ion-text>
+        <ion-text>{{ c.fecha }}</ion-text>
+
+        <ion-text>Hora</ion-text>
+        <ion-text>{{ c.hora }}</ion-text>
+
+        <ion-text>Veterinario</ion-text>
+        <ion-text>{{ c.veterinario }}</ion-text>
+
+        <ion-text>Notas</ion-text>
+        <ion-text>{{ c.notas }}</ion-text>
+
+      </ion-grid>
+
+    </ion-grid>
+
+    <!-- Formulario para reprogramar la cita -->
+    <ion-grid
+      class="card"
+      *ngIf="reprogramando">
+
+      <ion-text>Reprogramar</ion-text>
+
+      <ion-grid class="field-wrap">
+
+        <ion-label>Nueva fecha</ion-label>
+
+        <ion-input
+          class="field"
+          type="date"
+          [(ngModel)]="nuevaFecha"></ion-input>
+
+      </ion-grid>
+
+      <ion-grid class="field-wrap">
+
+        <ion-label>Nueva hora</ion-label>
+
+        <ion-input
+          class="field"
+          type="time"
+          [(ngModel)]="nuevaHora"></ion-input>
+
+      </ion-grid>
+
+      <ion-button
+        class="primary"
+        (click)="reprogramar()">
+        Guardar nueva fecha
+      </ion-button>
+
+    </ion-grid>
+
+    <!-- Mensaje de confirmación -->
+    <ion-note class="center success-text">
+      {{ mensaje }}
+    </ion-note>
+
+    <!-- Botón para reprogramar -->
+    <ion-button
+      class="primary"
+      *ngIf="c.estado === 'Próxima'"
+      (click)="reprogramando = !reprogramando">
+      Reprogramar
+    </ion-button>
+
+    <!-- Botón para cancelar la cita -->
+    <ion-button
+      class="danger-btn"
+      *ngIf="c.estado === 'Próxima'"
+      (click)="cancelar()">
+      Cancelar cita
+    </ion-button>
+
+  </ion-grid>
+
+  <!-- Se muestra cuando no hay una cita seleccionada -->
+  <ng-template #vacio>
+
+    <ion-grid class="mobile-page">
+
+      <ion-grid class="card center">
+
+        <ion-note>
+          Selecciona una cita desde Mis citas.
+        </ion-note>
+
+        <ion-button
+          class="primary"
+          routerLink="/citas">
+          Ir a mis citas
+        </ion-button>
+
+      </ion-grid>
+
+    </ion-grid>
+
+  </ng-template>
+
+</ion-content>

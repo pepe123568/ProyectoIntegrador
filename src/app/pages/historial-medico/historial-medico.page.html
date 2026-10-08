@@ -1,0 +1,49 @@
+<ion-content>
+
+  <!-- Barra superior -->
+  <ion-grid class="topbar">
+
+    <ion-button
+      class="icon-btn"
+      routerLink="/home"><ion-icon name="chevron-back-outline" aria-hidden="true"></ion-icon></ion-button>
+
+    <ion-text>Historial médico</ion-text>
+
+    <ion-text></ion-text>
+
+  </ion-grid>
+
+  <ion-grid class="mobile-page no-nav">
+
+    <!-- Descripción -->
+    <ion-note class="muted">
+      Consulta los registros de atención veterinaria.
+    </ion-note>
+
+    <!-- Lista del historial médico -->
+    <ion-grid
+      class="list-row"
+      *ngFor="let h of datos.historiales"
+      (click)="abrir(h)">
+
+      <ion-grid class="list-icon"><ion-icon name="medkit-outline" aria-hidden="true"></ion-icon></ion-grid>
+
+      <ion-grid class="grow">
+
+        <ion-text>
+          {{ h.tipo }}
+        </ion-text>
+
+        <ion-note>
+          {{ h.fecha }} · {{ h.veterinario }}
+        </ion-note>
+
+      </ion-grid>
+
+      <ion-text class="chev"><ion-icon name="chevron-forward-outline" aria-hidden="true"></ion-icon></ion-text>
+
+    </ion-grid>
+
+  </ion-grid>
+
+</ion-content>

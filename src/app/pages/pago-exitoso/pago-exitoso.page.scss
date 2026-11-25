@@ -1,1 +1,115 @@
+:host {
+    color-scheme: light;
+}
 
+ion-header,
+ion-toolbar {
+    --background: #1d4ed8;
+    --color: #ffffff;
+    --border-color: #1e40af;
+}
+
+ion-content {
+    --background: #f4f8ff;
+    --color: #0f172a;
+}
+
+.card-exito,
+.card-detalles {
+    --background: #ffffff;
+    --color: #0f172a;
+    background: #ffffff;
+    margin: 0 0 16px;
+    border: 1px solid #bfdbfe;
+    border-radius: 14px;
+    box-shadow: 0 3px 10px rgba(29, 78, 216, 0.08);
+}
+
+.card-exito {
+    padding: 12px 8px;
+}
+
+.icono-exito {
+    font-size: 4.5rem;
+    color: #16a34a;
+    margin-bottom: 8px;
+}
+
+.subtitulo-estado {
+    color: #16a34a;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+}
+
+.titulo-exito {
+    color: #1e3a8a;
+    font-size: 1.35rem;
+    font-weight: 800;
+    margin: 6px 0;
+}
+
+.nota-exito {
+    display: block;
+    color: #475569;
+    font-size: 0.88rem;
+    line-height: 1.35;
+}
+
+.card-detalles ion-card-subtitle {
+    color: #1d4ed8;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+}
+
+.lista-detalles {
+    --background: transparent;
+    background: transparent;
+    padding: 0;
+}
+
+.item-detalle {
+    --background: transparent;
+    --color: #0f172a;
+    --padding-start: 0;
+    --inner-padding-end: 0;
+    --border-color: #eff6ff;
+}
+
+.item-detalle ion-icon[slot='start'] {
+    font-size: 1.35rem;
+    margin-right: 12px;
+}
+
+.item-detalle ion-note {
+    display: block;
+    color: #64748b;
+    font-size: 0.78rem;
+}
+
+.valor-detalle {
+    display: block;
+    color: #0f172a;
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-top: 2px;
+}
+
+ion-button[expand='block'] {
+    --background: #1d4ed8;
+    --background-hover: #1e40af;
+    --color: #ffffff;
+    --border-radius: 12px;
+    height: 48px;
+    font-weight: 700;
+    text-transform: none;
+}
+
+ion-button[fill='outline'] {
+    --background: #ffffff;
+    --border-color: #1d4ed8;
+    --color: #1d4ed8;
+}

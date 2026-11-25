@@ -1,64 +1,154 @@
-<ion-content>
-  <!-- Barra superior -->
-  <ion-grid class="topbar">
-    <ion-button class="icon-btn" routerLink="/pago"><ion-icon name="chevron-back-outline" aria-hidden="true"></ion-icon></ion-button>
-    <ion-text>Pago con tarjeta</ion-text>
-    <ion-text></ion-text>
-  </ion-grid>
+<!-- eslint-disable @angular-eslint/template/prefer-control-flow -->
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="regresar()" aria-label="Regresar a métodos de pago">
+        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Pago con Tarjeta</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="rellenarDatosPrueba()" aria-label="Rellenar datos de prueba">
+        <ion-icon slot="start" name="flash-outline"></ion-icon>
+        Prueba
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
 
-  <ion-grid class="mobile-page no-nav">
-    <ion-grid class="card">
-      <!-- Número de tarjeta -->
-      <ion-grid class="field-wrap">
-        <ion-label>Número de tarjeta</ion-label>
-        <ion-input
-          class="field"
-          inputmode="numeric"
-          [(ngModel)]="numero"
-          maxlength="16"
-          placeholder="XXXX - XXXX - XXXX - XXXX"></ion-input>
-      </ion-grid>
+<ion-content [fullscreen]="true" class="ion-padding">
+  <!-- Resumen de compra y productos -->
+  <ion-card class="card-mp">
+    <ion-card-header>
+      <ion-card-subtitle>Pasarela segura • Mercado Pago</ion-card-subtitle>
+      <ion-card-title>
+        {{ totalPagar() | currency:'MXN':'symbol':'1.2-2' }}
+      </ion-card-title>
+      <ion-note>
+        Total por {{ totalArticulos() }} {{ totalArticulos() === 1 ? 'artículo' : 'artículos' }}
+      </ion-note>
+    </ion-card-header>
 
-      <!-- Fecha de expiración y CVV -->
-      <ion-grid class="two-col">
-        <ion-grid class="field-wrap">
-          <ion-label>MM/AA</ion-label>
-          <ion-input
-            class="field"
-            [(ngModel)]="exp"
-            (input)="formatearExp()"
-            inputmode="numeric"
-            maxlength="5"
-            placeholder="MM/AA"></ion-input>
+    <ion-card-content *ngIf="items().length > 0">
+      <ion-list lines="full" class="lista-productos">
+        <ion-item *ngFor="let item of items()" class="item-detalle">
+          <ion-label class="ion-text-wrap">
+            <ion-text class="nombre-prod">{{ item.producto.nombre }}</ion-text>
+            <ion-note>
+              {{ item.producto.precio | currency:'MXN':'symbol':'1.2-2' }} c/u × {{ item.cantidad }}
+            </ion-note>
+          </ion-label>
+
+          <ion-badge slot="end" color="primary" class="badge-cantidad">
+            {{ item.cantidad }}
+          </ion-badge>
+
+          <ion-text slot="end" class="subtotal-prod">
+            {{ (item.producto.precio * item.cantidad) | currency:'MXN':'symbol':'1.2-2' }}
+          </ion-text>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Formulario de datos de tarjeta -->
+  <ion-card class="card-formulario">
+    <ion-card-header>
+      <ion-card-subtitle>Datos de la tarjeta</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-list lines="none" class="lista-campos">
+        <ion-item class="campo-ionic">
+          <ion-icon slot="start" name="person-outline" color="primary"></ion-icon>
+          <ion-input label="Nombre del titular" labelPlacement="stacked" placeholder="Como aparece en la tarjeta"
+            [(ngModel)]="datosTarjeta.nombreTitular"></ion-input>
+        </ion-item>
+
+        <ion-item class="campo-ionic">
+          <ion-icon slot="start" name="card-outline" color="primary"></ion-icon>
+          <ion-input label="Número de tarjeta" labelPlacement="stacked" inputmode="numeric" maxlength="19"
+            placeholder="0000 0000 0000 0000" [value]="datosTarjeta.numeroTarjeta"
+            (ionInput)="formatearNumeroTarjeta($event)"></ion-input>
+        </ion-item>
+
+        <ion-grid class="ion-no-padding">
+          <ion-row>
+            <ion-col size="4" class="ion-padding-end">
+              <ion-item class="campo-ionic">
+                <ion-select label="Mes" labelPlacement="stacked" interface="popover"
+                  [(ngModel)]="datosTarjeta.mesExpiracion">
+                  <ion-select-option *ngFor="let m of meses" [value]="m">{{ m }}</ion-select-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+
+            <ion-col size="4" class="ion-padding-end">
+              <ion-item class="campo-ionic">
+                <ion-select label="Año" labelPlacement="stacked" interface="popover"
+                  [(ngModel)]="datosTarjeta.anioExpiracion">
+                  <ion-select-option *ngFor="let a of anios" [value]="a">{{ a }}</ion-select-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+
+            <ion-col size="4">
+              <ion-item class="campo-ionic">
+                <ion-input label="CVV" labelPlacement="stacked" type="password" inputmode="numeric" maxlength="4"
+                  placeholder="123" [(ngModel)]="datosTarjeta.cvv"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
         </ion-grid>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
 
-        <ion-grid class="field-wrap">
-          <ion-label>CVV</ion-label>
-          <ion-input
-            class="field"
-            type="password"
-            inputmode="numeric"
-            [(ngModel)]="cvv"
-            maxlength="3"
-            placeholder="123"></ion-input>
-        </ion-grid>
-      </ion-grid>
+  <!-- Formulario de datos de entrega / contacto -->
+  <ion-card class="card-formulario">
+    <ion-card-header>
+      <ion-card-subtitle>Datos de contacto y entrega</ion-card-subtitle>
+    </ion-card-header>
 
-      <!-- Nombre del titular -->
-      <ion-grid class="field-wrap">
-        <ion-label>Nombre del titular</ion-label>
-        <ion-input
-          class="field"
-          [(ngModel)]="titular"></ion-input>
-      </ion-grid>
+    <ion-card-content>
+      <ion-list lines="none" class="lista-campos">
+        <ion-item class="campo-ionic">
+          <ion-icon slot="start" name="mail-outline" color="primary"></ion-icon>
+          <ion-input label="Correo para comprobante" labelPlacement="stacked" type="email"
+            placeholder="test_user_...@testuser.com" [(ngModel)]="datosTarjeta.correo"></ion-input>
+        </ion-item>
 
-      <!-- Mensaje de error -->
-      <ion-note class="error">{{ error }}</ion-note>
+        <ion-item class="campo-ionic">
+          <ion-icon slot="start" name="call-outline" color="primary"></ion-icon>
+          <ion-input label="Teléfono" labelPlacement="stacked" type="tel" maxlength="10" placeholder="10 dígitos"
+            [(ngModel)]="datosTarjeta.telefono"></ion-input>
+        </ion-item>
 
-      <!-- Botones -->
-      <ion-button class="primary" (click)="pagar()">Pagar ${{ datos.total() }}.00</ion-button>
-      <ion-button class="secondary" routerLink="/pago">Cancelar</ion-button>
-      
-    </ion-grid>
+        <ion-item class="campo-ionic">
+          <ion-icon slot="start" name="location-outline" color="primary"></ion-icon>
+          <ion-textarea label="Dirección de entrega" labelPlacement="stacked" rows="2"
+            placeholder="Calle, número, colonia y referencias" [(ngModel)]="datosTarjeta.direccion"></ion-textarea>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Mensaje de error -->
+  <ion-item lines="none" *ngIf="errorPago" class="item-error">
+    <ion-icon slot="start" name="alert-circle-outline" color="danger"></ion-icon>
+    <ion-label color="danger" class="ion-text-wrap">{{ errorPago }}</ion-label>
+  </ion-item>
+
+  <!-- Botón de pago -->
+  <ion-grid class="ion-no-padding ion-margin-top ion-margin-bottom">
+    <ion-row>
+      <ion-col size="12">
+        <ion-button expand="block" [disabled]="procesando || items().length === 0" (click)="pagarConMercadoPago()">
+          <ion-spinner *ngIf="procesando" name="crescent" slot="start"></ion-spinner>
+          <ion-icon *ngIf="!procesando" slot="start" name="lock-closed-outline"></ion-icon>
+          {{ procesando ? 'Procesando pago...' : 'Pagar ' + (totalPagar() | currency:'MXN':'symbol':'1.2-2') }}
+        </ion-button>
+      </ion-col>
+    </ion-row>
   </ion-grid>
 </ion-content>

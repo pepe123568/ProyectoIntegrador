@@ -1,0 +1,237 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/inicio" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>Mis pedidos</ion-title>
+  </ion-toolbar>
+
+  <ion-toolbar class="filtro-toolbar">
+    <ion-segment [value]="filtroEstado()" (ionChange)="cambiarFiltro($event)" [scrollable]="true">
+      <ion-segment-button value="todos">
+        <ion-label>Todos</ion-label>
+      </ion-segment-button>
+
+      <ion-segment-button value="por_pagar">
+        <ion-label class="label-por-pagar">
+          Por pagar
+          @if (cantidadPorPagar() > 0) {
+          <span class="pill-contador">{{ cantidadPorPagar() }}</span>
+          }
+        </ion-label>
+      </ion-segment-button>
+
+      <ion-segment-button value="activos">
+        <ion-label>Activos</ion-label>
+      </ion-segment-button>
+
+      <ion-segment-button value="completados">
+        <ion-label>Historial</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  @if (cargando()) {
+  <div class="estado-vacio">
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
+    <p>Cargando tus pedidos...</p>
+  </div>
+  } @else if (error()) {
+  <div class="estado-vacio">
+    <ion-icon name="close-circle-outline" color="danger"></ion-icon>
+    <ion-text color="danger">
+      <p>{{ error() }}</p>
+    </ion-text>
+  </div>
+  } @else if (pedidosFiltrados().length === 0) {
+  <div class="estado-vacio">
+    <ion-icon [name]="filtroEstado() === 'por_pagar' ? 'barcode-outline' : 'receipt-outline'"
+      color="primary"></ion-icon>
+    <h2>{{ filtroEstado() === 'por_pagar' ? 'No tienes pagos pendientes' : 'Sin pedidos aquí' }}</h2>
+    <ion-text color="medium">
+      <p>
+        {{
+        filtroEstado() === 'por_pagar'
+        ? 'Todos tus pedidos han sido pagados.'
+        : 'Aún no tienes pedidos en esta categoría.'
+        }}
+      </p>
+    </ion-text>
+    <ion-button routerLink="/tienda" class="ion-margin-top">
+      <ion-icon slot="start" name="storefront-outline"></ion-icon>
+      Ir a la tienda
+    </ion-button>
+  </div>
+  } @else {
+  @for (pedido of pedidosFiltrados(); track pedido.id) {
+  <ion-card button (click)="abrirPedido(pedido)" [class.card-por-pagar]="esPorPagar(pedido)">
+    <ion-card-header>
+      <div class="cabecera-pedido">
+        <div>
+          <ion-card-subtitle>
+            {{ pedido.fecha ? ($any(pedido.fecha).toDate() | date:'dd/MM/yyyy · HH:mm') : 'Fecha reciente' }}
+          </ion-card-subtitle>
+          <ion-card-title>
+            Pedido #{{ obtenerFolio(pedido) }}
+          </ion-card-title>
+        </div>
+        <ion-badge [color]="obtenerColorEstado(pedido.estado)">
+          {{ obtenerTextoEstado(pedido.estado) }}
+        </ion-badge>
+      </div>
+    </ion-card-header>
+
+    <ion-card-content>
+      <div class="resumen-pedido">
+        <ion-text color="medium">
+          <p>
+            {{ obtenerTotalArticulos(pedido) }}
+            {{ obtenerTotalArticulos(pedido) === 1 ? 'producto' : 'productos' }}
+          </p>
+        </ion-text>
+
+        <div class="total-pedido">
+          <strong>{{ pedido.total | currency:'MXN':'symbol-narrow':'1.2-2' }}</strong>
+          <ion-icon name="chevron-forward-outline" color="primary"></ion-icon>
+        </div>
+      </div>
+
+      @if (esPorPagar(pedido)) {
+      <div class="aviso-falta-pago">
+        <ion-icon [name]="esTransferencia(pedido) ? 'swap-horizontal-outline' : 'barcode-outline'"></ion-icon>
+        <span>
+          {{
+          esTransferencia(pedido)
+          ? 'Toca aquí para ver la cuenta SPEI y pagar'
+          : 'Toca aquí para ver tu código de barras y pagar'
+          }}
+        </span>
+      </div>
+      }
+    </ion-card-content>
+  </ion-card>
+  }
+  }
+
+  <!-- MODAL DETALLE DEL PEDIDO (para pedidos ya pagados o entregados) -->
+  <ion-modal [isOpen]="!!pedidoSeleccionado()" (didDismiss)="cerrarDetalle()">
+    <ng-template>
+      @if (pedidoSeleccionado(); as pedido) {
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>
+            Pedido #{{ obtenerFolio(pedido) }}
+          </ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="cerrarDetalle()" aria-label="Cerrar">
+              <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content class="ion-padding">
+        <ion-card>
+          <ion-card-content class="detalle-estado">
+            <div>
+              <ion-note>Estado actual</ion-note>
+              <h2>{{ obtenerTextoEstado(pedido.estado) }}</h2>
+            </div>
+            <ion-badge [color]="obtenerColorEstado(pedido.estado)">
+              {{ obtenerTextoEstado(pedido.estado) }}
+            </ion-badge>
+          </ion-card-content>
+        </ion-card>
+
+        <ion-text>
+          <h3>Productos</h3>
+        </ion-text>
+
+        <ion-card>
+          <ion-list lines="full">
+            @for (item of pedido.productos; track item.id) {
+            <ion-item>
+              <ion-icon slot="start" name="cube-outline" color="primary"></ion-icon>
+              <ion-label class="ion-text-wrap">
+                <h3>{{ item.nombre }}</h3>
+                <p>Cantidad: {{ item.cantidad }} × {{ item.precio | currency:'MXN':'symbol-narrow':'1.2-2' }}</p>
+              </ion-label>
+              <ion-note slot="end" color="dark">
+                <strong>{{ (item.cantidad * item.precio) | currency:'MXN':'symbol-narrow':'1.2-2' }}</strong>
+              </ion-note>
+            </ion-item>
+            }
+          </ion-list>
+        </ion-card>
+
+        <ion-text>
+          <h3>Resumen de pago</h3>
+        </ion-text>
+
+        <ion-card>
+          <ion-list lines="none">
+            @if (pedido.subtotal !== undefined) {
+            <ion-item>
+              <ion-label>Subtotal</ion-label>
+              <ion-note slot="end">{{ pedido.subtotal | currency:'MXN':'symbol-narrow':'1.2-2' }}</ion-note>
+            </ion-item>
+            }
+            @if (pedido.envio !== undefined) {
+            <ion-item>
+              <ion-label>Envío</ion-label>
+              <ion-note slot="end">{{ pedido.envio | currency:'MXN':'symbol-narrow':'1.2-2' }}</ion-note>
+            </ion-item>
+            }
+            <ion-item>
+              <ion-label><strong>Total pagado</strong></ion-label>
+              <ion-note slot="end" color="primary">
+                <strong>{{ pedido.total | currency:'MXN':'symbol-narrow':'1.2-2' }}</strong>
+              </ion-note>
+            </ion-item>
+          </ion-list>
+        </ion-card>
+
+        @if (pedido.direccionEntrega || pedido.sucursal) {
+        <ion-text>
+          <h3>Entrega</h3>
+        </ion-text>
+        <ion-card>
+          <ion-card-content>
+            <p>
+              <strong>{{ pedido.metodoEntrega === 'sucursal' ? 'Recoger en sucursal:' : 'Dirección:' }}</strong>
+              {{ pedido.sucursal || pedido.direccionEntrega }}
+            </p>
+          </ion-card-content>
+        </ion-card>
+        }
+      </ion-content>
+      }
+    </ng-template>
+  </ion-modal>
+</ion-content>
+
+<ion-footer>
+  <ion-tab-bar>
+    <ion-tab-button routerLink="/inicio" routerLinkActive="tab-selected">
+      <ion-icon name="home-outline"></ion-icon>
+      <ion-label>Inicio</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button routerLink="/citas" routerLinkActive="tab-selected">
+      <ion-icon name="calendar-outline"></ion-icon>
+      <ion-label>Citas</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button routerLink="/tienda" routerLinkActive="tab-selected">
+      <ion-icon name="bag-handle-outline"></ion-icon>
+      <ion-label>Tienda</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button routerLink="/cuenta" routerLinkActive="tab-selected">
+      <ion-icon name="person-circle-outline"></ion-icon>
+      <ion-label>Cuenta</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-footer>

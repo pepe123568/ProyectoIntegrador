@@ -1,52 +1,120 @@
-<ion-content>
-  <!-- Barra superior -->
-  <ion-grid class="topbar">
-    <ion-button class="icon-btn" routerLink="/pago"><ion-icon name="chevron-back-outline" aria-hidden="true"></ion-icon></ion-button>
-    <ion-text>Pago en efectivo</ion-text>
-    <ion-text></ion-text>
-  </ion-grid>
+<!-- eslint-disable @angular-eslint/template/prefer-control-flow -->
+<ion-header class="ion-no-border">
+  <ion-toolbar class="toolbar-azul">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/carrito" text="" aria-label="Volver"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Pago en efectivo</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-  <ion-grid class="mobile-page no-nav">
-    <!-- Información del pago -->
-    <ion-grid class="success-box">
-      <ion-grid class="list-icon" style="margin:auto"><ion-icon name="cash-outline" aria-hidden="true"></ion-icon></ion-grid>
-      <ion-text>Genera tu pago en sucursal</ion-text>
-      <ion-note class="muted">Presenta el QR en caja para completar el pago.</ion-note>
-    </ion-grid>
+<ion-content [fullscreen]="true" class="ion-padding contenido-claro">
+  <div class="contenedor-pago">
 
-    <!-- Código QR -->
-    <ion-img
-      class="qr"
-      src="assets/imagenes/qr-pago.png"
-      alt="QR de pago"></ion-img>
+    <!-- AVISO DE VIGENCIA -->
+    <ion-card class="card-aviso">
+      <ion-card-content class="fila-aviso">
+        <ion-icon name="time-outline"></ion-icon>
+        <div>
+          <strong>Ficha de pago generada</strong>
+          <p>Tienes 24 horas para realizar tu pago en cualquiera de las tiendas autorizadas.</p>
+        </div>
+      </ion-card-content>
+    </ion-card>
 
-    <!-- Total -->
-    <ion-grid class="card center">
-      <ion-text>Total: ${{ datos.total() }}.00</ion-text>
-    </ion-grid>
+    <!-- CÓDIGO DE BARRAS PARA ESCANEAR EN TIENDA -->
+    <ion-card class="card-blanca">
+      <ion-card-header class="ion-text-center">
+        <ion-card-subtitle>Muestra este código al cajero</ion-card-subtitle>
+        <ion-card-title class="monto-destacado">
+          {{ total() | currency:'MXN':'symbol-narrow':'1.2-2' }}
+        </ion-card-title>
+      </ion-card-header>
 
-    <!-- Generar pago -->
-    <ion-button
-      class="primary"
-      *ngIf="!generado"
-      (click)="generar()">
-      Generar pago
-    </ion-button>
+      <ion-card-content class="contenedor-barcode">
+        <div class="marco-barcode">
+          <canvas #barcodeCanvas></canvas>
+        </div>
 
-    <!-- Pago generado -->
-    <ion-grid *ngIf="generado">
-      <ion-note class="success-text center">
-        <ion-text>Pago generado con éxito.</ion-text>
-      </ion-note>
-      <ion-button class="primary" routerLink="/home">Regresar al inicio</ion-button>
-    </ion-grid>
+        <p class="numero-referencia">{{ referenciaPago() }}</p>
 
-    <!-- Regresar -->
-    <ion-button
-      class="secondary"
-      *ngIf="!generado"
-      routerLink="/pago">
-      Regresar
-    </ion-button>
-  </ion-grid>
+        <ion-button fill="outline" size="small" class="btn-copiar" (click)="copiarReferencia()">
+          <ion-icon slot="start" [name]="copiado() ? 'checkmark-outline' : 'copy-outline'"></ion-icon>
+          {{ copiado() ? 'Referencia copiada' : 'Copiar número de referencia' }}
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- RESUMEN DE PRODUCTOS COMPRADOS -->
+    <h2 class="titulo-seccion">Productos a pagar</h2>
+
+    <ion-card class="card-blanca">
+      @if (productos().length === 0) {
+      <ion-card-content class="ion-text-center">
+        <ion-text color="medium">
+          <p>No se encontraron productos en esta orden.</p>
+        </ion-text>
+      </ion-card-content>
+      } @else {
+      <ion-list lines="full" class="lista-limpia">
+        @for (item of productos(); track item.id) {
+        <ion-item class="item-producto">
+          <ion-icon slot="start" name="cube-outline" color="primary"></ion-icon>
+          <ion-label class="ion-text-wrap">
+            <h3>{{ item.nombre }}</h3>
+            <p>Cantidad: {{ item.cantidad }} × {{ item.precio | currency:'MXN':'symbol-narrow':'1.2-2' }}</p>
+          </ion-label>
+          <ion-note slot="end" class="precio-item">
+            {{ (item.cantidad * item.precio) | currency:'MXN':'symbol-narrow':'1.2-2' }}
+          </ion-note>
+        </ion-item>
+        }
+      </ion-list>
+
+      <div class="desglose-totales">
+        <div class="fila-total">
+          <span>Subtotal</span>
+          <span>{{ subtotal() | currency:'MXN':'symbol-narrow':'1.2-2' }}</span>
+        </div>
+        <div class="fila-total">
+          <span>Envío</span>
+          <span>{{ envio() | currency:'MXN':'symbol-narrow':'1.2-2' }}</span>
+        </div>
+        <div class="fila-total final">
+          <strong>Total a pagar</strong>
+          <strong>{{ total() | currency:'MXN':'symbol-narrow':'1.2-2' }}</strong>
+        </div>
+      </div>
+      }
+    </ion-card>
+
+    <!-- TIENDAS AUTORIZADAS -->
+    <h2 class="titulo-seccion">Tiendas autorizadas para pagar</h2>
+
+    <ion-card class="card-blanca">
+      <ion-list lines="full" class="lista-limpia">
+        @for (tienda of tiendasAutorizadas; track tienda.nombre) {
+        <ion-item class="item-tienda">
+          <div slot="start" class="badge-tienda" [style.background]="tienda.color">
+            {{ tienda.siglas }}
+          </div>
+          <ion-label class="ion-text-wrap">
+            <h3>{{ tienda.nombre }}</h3>
+            <p>{{ tienda.instruccion }}</p>
+            <ion-note class="nota-comision">{{ tienda.comision }}</ion-note>
+          </ion-label>
+        </ion-item>
+        }
+      </ion-list>
+    </ion-card>
+
+    <!-- BOTÓN FINAL -->
+    <div class="acciones-finales">
+      <ion-button expand="block" class="btn-confirmar" (click)="irAPedidos()" [disabled]="guardando()">
+        <ion-spinner *ngIf="guardando()" name="crescent" slot="start"></ion-spinner>
+        {{ guardando() ? 'Registrando pedido...' : 'Listo, ver mis pedidos' }}
+      </ion-button>
+    </div>
+
+  </div>
 </ion-content>

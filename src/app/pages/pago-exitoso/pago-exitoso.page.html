@@ -1,28 +1,87 @@
-<ion-content>
-  <!-- Confirmación de pago -->
-  <ion-grid class="mobile-page no-nav">
-    <ion-grid class="success-box">
-      <ion-grid class="check"><ion-icon name="checkmark-outline" aria-hidden="true"></ion-icon></ion-grid>
-      <ion-text>¡Pago registrado!</ion-text>
-      <ion-note class="muted">La compra se guardó temporalmente en el arreglo de compras.</ion-note>
-    </ion-grid>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Comprobante de Pago</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-    <!-- Detalles de la compra -->
-    <ion-grid class="card" *ngIf="datos.compras[0] as c">
-      <ion-grid class="detail-grid">
-        <ion-text>Folio</ion-text>
-        <ion-text>#{{ c.id }}</ion-text>
+<ion-content [fullscreen]="true" class="ion-padding">
+  <!-- Tarjeta principal de confirmación -->
+  <ion-card class="card-exito ion-text-center">
+    <ion-card-content>
+      <ion-icon name="checkmark-circle-outline" class="icono-exito"></ion-icon>
+      <ion-card-subtitle class="subtitulo-estado">
+        {{ estado === 'pendiente' ? 'Pago en revisión' : '¡Pago aprobado con éxito!' }}
+      </ion-card-subtitle>
+      <ion-card-title class="titulo-exito">
+        Gracias por tu compra en VetKamur
+      </ion-card-title>
+      <ion-note class="nota-exito">
+        Tu pedido ha sido confirmado y estamos preparando tus productos.
+      </ion-note>
+    </ion-card-content>
+  </ion-card>
 
-        <ion-text>Método</ion-text>
-        <ion-text>{{ c.metodoPago }}</ion-text>
+  <!-- Detalles de la transacción -->
+  <ion-card class="card-detalles">
+    <ion-card-header>
+      <ion-card-subtitle>Detalles de la operación</ion-card-subtitle>
+    </ion-card-header>
 
-        <ion-text>Total</ion-text>
-        <ion-text>${{ c.total }}.00</ion-text>
-      </ion-grid>
-    </ion-grid>
+    <ion-card-content>
+      <ion-list lines="full" class="lista-detalles">
+        <ion-item class="item-detalle">
+          <ion-icon slot="start" name="receipt-outline" color="primary"></ion-icon>
+          <ion-label>
+            <ion-note>Folio de transacción</ion-note>
+            <ion-text class="valor-detalle">{{ transaccion }}</ion-text>
+          </ion-label>
+        </ion-item>
 
-    <!-- Botones -->
-    <ion-button class="primary" routerLink="/home">Regresar al inicio</ion-button>
-    <ion-button class="secondary" routerLink="/tienda">Seguir comprando</ion-button>
+        <ion-item class="item-detalle">
+          <ion-icon slot="start" name="card-outline" color="primary"></ion-icon>
+          <ion-label>
+            <ion-note>Método de pago</ion-note>
+            <ion-text class="valor-detalle">{{ tarjeta }}</ion-text>
+          </ion-label>
+        </ion-item>
+
+        <ion-item class="item-detalle">
+          <ion-icon slot="start" name="calendar-outline" color="primary"></ion-icon>
+          <ion-label>
+            <ion-note>Fecha y hora</ion-note>
+            <ion-text class="valor-detalle">{{ fechaCompra | date:'dd/MM/yyyy HH:mm' }}</ion-text>
+          </ion-label>
+        </ion-item>
+
+        <ion-item lines="none" class="item-detalle">
+          <ion-icon slot="start" name="shield-checkmark-outline" color="success"></ion-icon>
+          <ion-label>
+            <ion-note>Estado</ion-note>
+          </ion-label>
+          <ion-badge slot="end" [color]="estado === 'pendiente' ? 'warning' : 'success'">
+            {{ estado === 'pendiente' ? 'Pendiente' : 'Aprobado' }}
+          </ion-badge>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Botones de navegación -->
+  <ion-grid class="ion-no-padding ion-margin-top">
+    <ion-row>
+      <ion-col size="12">
+        <ion-button expand="block" (click)="irATienda()">
+          <ion-icon slot="start" name="bag-handle-outline"></ion-icon>
+          Seguir comprando en la tienda
+        </ion-button>
+      </ion-col>
+
+      <ion-col size="12" class="ion-margin-top">
+        <ion-button expand="block" fill="outline" (click)="irAInicio()">
+          <ion-icon slot="start" name="home-outline"></ion-icon>
+          Volver al inicio
+        </ion-button>
+      </ion-col>
+    </ion-row>
   </ion-grid>
 </ion-content>

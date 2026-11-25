@@ -1,57 +1,132 @@
-<ion-content>
-  <!-- Barra superior -->
-  <ion-grid class="topbar">
-    <ion-button class="icon-btn" routerLink="/pago"><ion-icon name="chevron-back-outline" aria-hidden="true"></ion-icon></ion-button>
-    <ion-text>Transferencia</ion-text>
-    <ion-text></ion-text>
-  </ion-grid>
+<!-- eslint-disable @angular-eslint/template/prefer-control-flow -->
+<ion-header class="ion-no-border">
+  <ion-toolbar class="toolbar-azul">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/carrito" text="" aria-label="Volver"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Transferencia SPEI</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-  <ion-grid class="mobile-page no-nav">
-    <!-- Información de transferencia -->
-    <ion-grid class="card center">
-      <ion-grid class="list-icon" style="margin:auto"><ion-icon name="swap-horizontal-outline" aria-hidden="true"></ion-icon></ion-grid>
-      <ion-text>Realiza tu transferencia</ion-text>
-    </ion-grid>
+<ion-content [fullscreen]="true" class="ion-padding contenido-claro">
+  <div class="contenedor-pago">
 
-    <!-- Datos bancarios -->
-    <ion-grid class="card">
-      <ion-grid class="detail-grid">
-        <ion-text>CLABE</ion-text>
-        <ion-text>0123 4567 8901 2345 67</ion-text>
+    <!-- AVISO DE VIGENCIA -->
+    <ion-card class="card-aviso">
+      <ion-card-content class="fila-aviso">
+        <ion-icon name="time-outline"></ion-icon>
+        <div>
+          <strong>Orden de transferencia generada</strong>
+          <p>Realiza tu transferencia SPEI desde tu app bancaria en las próximas 24 horas.</p>
+        </div>
+      </ion-card-content>
+    </ion-card>
 
-        <ion-text>Titular</ion-text>
-        <ion-text>Vet-Kamur</ion-text>
+    <!-- DATOS DE CUENTA SPEI -->
+    <ion-card class="card-blanca">
+      <ion-card-header class="ion-text-center">
+        <ion-card-subtitle>Monto exacto a transferir</ion-card-subtitle>
+        <ion-card-title class="monto-destacado">
+          {{ total() | currency:'MXN':'symbol-narrow':'1.2-2' }}
+        </ion-card-title>
+      </ion-card-header>
 
-        <ion-text>Banco</ion-text>
-        <ion-text>Banco Demo</ion-text>
+      <ion-card-content class="datos-spei">
+        <div class="dato-fila">
+          <span class="etiqueta">Banco destino</span>
+          <strong class="valor">{{ bancoDestino }}</strong>
+        </div>
 
-        <ion-text>Total</ion-text>
-        <ion-text>${{ datos.total() }}.00</ion-text>
-      </ion-grid>
+        <div class="dato-fila">
+          <span class="etiqueta">Beneficiario</span>
+          <strong class="valor">{{ beneficiario }}</strong>
+        </div>
 
-      <ion-button class="secondary" (click)="copiar()">Copiar número</ion-button>
+        <div class="caja-clabe">
+          <span class="etiqueta">CLABE Interbancaria (SPEI)</span>
+          <p class="numero-clabe">{{ clabeSpei }}</p>
+          <ion-button
+            fill="outline"
+            size="small"
+            class="btn-copiar"
+            (click)="copiarDato(clabeSpei, 'clabe')"
+          >
+            <ion-icon slot="start" [name]="copiadoClabe() ? 'checkmark-outline' : 'copy-outline'"></ion-icon>
+            {{ copiadoClabe() ? 'CLABE copiada' : 'Copiar CLABE SPEI' }}
+          </ion-button>
+        </div>
 
-      <ion-note class="success-text center" *ngIf="copiado">
-        Número copiado.
-      </ion-note>
-    </ion-grid>
+        <div class="caja-clabe concepto">
+          <span class="etiqueta">Concepto de pago / Referencia</span>
+          <p class="numero-concepto">{{ conceptoPago() }}</p>
+          <ion-button
+            fill="clear"
+            size="small"
+            class="btn-copiar-mini"
+            (click)="copiarDato(conceptoPago(), 'concepto')"
+          >
+            <ion-icon slot="start" [name]="copiadoConcepto() ? 'checkmark-outline' : 'copy-outline'"></ion-icon>
+            {{ copiadoConcepto() ? 'Concepto copiado' : 'Copiar concepto' }}
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
 
-    <!-- Comprobante -->
-    <ion-grid class="field-wrap">
-      <ion-label>Comprobante</ion-label>
-      <input
-        class="field"
-        type="file"
-        accept="image/*,.pdf"
-        (change)="archivoSel($event)">
-      <ion-text class="tiny" *ngIf="archivo">{{ archivo }}</ion-text>
-    </ion-grid>
+    <!-- RESUMEN DE PRODUCTOS COMPRADOS -->
+    <h2 class="titulo-seccion">Productos a pagar</h2>
 
-    <!-- Mensaje de error -->
-    <ion-note class="error">{{ error }}</ion-note>
+    <ion-card class="card-blanca">
+      @if (productos().length === 0) {
+      <ion-card-content class="ion-text-center">
+        <ion-text color="medium">
+          <p>No se encontraron productos en esta orden.</p>
+        </ion-text>
+      </ion-card-content>
+      } @else {
+      <ion-list lines="full" class="lista-limpia">
+        @for (item of productos(); track item.id) {
+        <ion-item class="item-producto">
+          <ion-icon slot="start" name="cube-outline" color="primary"></ion-icon>
+          <ion-label class="ion-text-wrap">
+            <h3>{{ item.nombre }}</h3>
+            <p>Cantidad: {{ item.cantidad }} × {{ item.precio | currency:'MXN':'symbol-narrow':'1.2-2' }}</p>
+          </ion-label>
+          <ion-note slot="end" class="precio-item">
+            {{ (item.cantidad * item.precio) | currency:'MXN':'symbol-narrow':'1.2-2' }}
+          </ion-note>
+        </ion-item>
+        }
+      </ion-list>
 
-    <!-- Botones -->
-    <ion-button class="primary" (click)="confirmar()">Confirmar pago</ion-button>
-    <ion-button class="secondary" routerLink="/pago">Regresar</ion-button>
-  </ion-grid>
+      <div class="desglose-totales">
+        <div class="fila-total">
+          <span>Subtotal</span>
+          <span>{{ subtotal() | currency:'MXN':'symbol-narrow':'1.2-2' }}</span>
+        </div>
+        <div class="fila-total">
+          <span>Envío</span>
+          <span>{{ envio() | currency:'MXN':'symbol-narrow':'1.2-2' }}</span>
+        </div>
+        <div class="fila-total final">
+          <strong>Total a transferir</strong>
+          <strong>{{ total() | currency:'MXN':'symbol-narrow':'1.2-2' }}</strong>
+        </div>
+      </div>
+      }
+    </ion-card>
+
+    <!-- BOTÓN FINAL -->
+    <div class="acciones-finales">
+      <ion-button
+        expand="block"
+        class="btn-confirmar"
+        (click)="irAPedidos()"
+        [disabled]="guardando()"
+      >
+        <ion-spinner *ngIf="guardando()" name="crescent" slot="start"></ion-spinner>
+        {{ guardando() ? 'Registrando pedido...' : 'Listo, ver mis pedidos' }}
+      </ion-button>
+    </div>
+
+  </div>
 </ion-content>

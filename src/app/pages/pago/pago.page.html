@@ -1,32 +1,113 @@
-<ion-content>
-  <!-- Barra superior -->
-  <ion-grid class="topbar">
-    <ion-button class="icon-btn" routerLink="/carrito"><ion-icon name="chevron-back-outline" aria-hidden="true"></ion-icon></ion-button>
-    <ion-text>Pago</ion-text>
-    <ion-text></ion-text>
-  </ion-grid>
+<!-- eslint-disable @angular-eslint/template/prefer-control-flow -->
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button routerLink="/carrito" aria-label="Regresar al carrito">
+        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Método de Pago</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-  <ion-grid class="mobile-page no-nav">
-    <!-- Total a pagar -->
-    <ion-grid class="card center">
-      <ion-note class="muted">Total a pagar</ion-note>
-      <ion-grid class="total">${{ datos.total() }}.00</ion-grid>
-    </ion-grid>
+<ion-content [fullscreen]="true" class="ion-padding">
+  <!-- Resumen detallado de los productos y total a pagar -->
+  <ion-card class="card-resumen">
+    <ion-card-header>
+      <ion-card-subtitle>Resumen de compra</ion-card-subtitle>
+      <ion-card-title>
+        {{ totalPagar() | currency:'MXN':'symbol':'1.2-2' }}
+      </ion-card-title>
+      <ion-note>
+        Total por {{ totalArticulos() }} {{ totalArticulos() === 1 ? 'artículo' : 'artículos' }} en tu carrito
+      </ion-note>
+    </ion-card-header>
 
-    <!-- Métodos de pago -->
-    <ion-text class="section-title">Selecciona un método de pago</ion-text>
+    <ion-card-content *ngIf="items().length > 0">
+      <ion-list lines="full" class="lista-resumen">
+        <ion-item *ngFor="let item of items()" class="item-producto-resumen">
+          <ion-label class="ion-text-wrap">
+            <ion-text class="nombre-producto">{{ item.producto.nombre }}</ion-text>
+            <ion-note>
+              {{ item.producto.precio | currency:'MXN':'symbol':'1.2-2' }} c/u × {{ item.cantidad }}
+            </ion-note>
+          </ion-label>
 
-    <ion-radio-group [(ngModel)]="metodo">
-      <ion-item class="radio-card"><ion-radio value="Tarjeta">▣ &nbsp; Tarjeta de crédito / débito</ion-radio></ion-item>
-      <ion-item class="radio-card"><ion-radio value="Transferencia">⇄ &nbsp; Transferencia bancaria</ion-radio></ion-item>
-      <ion-item class="radio-card"><ion-radio value="Efectivo">▤ &nbsp; Efectivo en sucursal</ion-radio></ion-item>
-    </ion-radio-group>
+          <ion-badge slot="end" color="primary" class="badge-cantidad">
+            {{ item.cantidad }}
+          </ion-badge>
 
-    <!-- Mensaje de error -->
-    <ion-note class="error">{{ error }}</ion-note>
+          <ion-text slot="end" class="subtotal-producto">
+            {{ (item.producto.precio * item.cantidad) | currency:'MXN':'symbol':'1.2-2' }}
+          </ion-text>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
 
-    <!-- Botones -->
-    <ion-button class="primary" (click)="continuar()">Continuar</ion-button>
-    <ion-button class="secondary" routerLink="/carrito">Regresar</ion-button>
+  <!-- Selección de método de pago -->
+  <ion-item lines="none" class="encabezado-seccion">
+    <ion-label>Selecciona cómo deseas pagar</ion-label>
+  </ion-item>
+
+  <ion-radio-group [(ngModel)]="metodoSeleccionado">
+    <ion-list lines="none">
+      <!-- Opción 1: Tarjeta -->
+      <ion-card button class="card-metodo" [class.metodo-activo]="metodoSeleccionado === 'tarjeta'"
+        (click)="metodoSeleccionado = 'tarjeta'">
+        <ion-item lines="none">
+          <ion-icon slot="start" name="card-outline" color="primary"></ion-icon>
+          <ion-label class="ion-text-wrap">
+            <ion-card-title>Tarjeta de crédito o débito</ion-card-title>
+            <ion-note>Pago inmediato con Visa, Mastercard o Amex</ion-note>
+          </ion-label>
+          <ion-radio slot="end" value="tarjeta"></ion-radio>
+        </ion-item>
+      </ion-card>
+
+      <!-- Opción 2: Efectivo -->
+      <ion-card button class="card-metodo" [class.metodo-activo]="metodoSeleccionado === 'efectivo'"
+        (click)="metodoSeleccionado = 'efectivo'">
+        <ion-item lines="none">
+          <ion-icon slot="start" name="cash-outline" color="primary"></ion-icon>
+          <ion-label class="ion-text-wrap">
+            <ion-card-title>Pago en efectivo</ion-card-title>
+            <ion-note>Paga al recoger en sucursal o en tiendas afiliadas</ion-note>
+          </ion-label>
+          <ion-radio slot="end" value="efectivo"></ion-radio>
+        </ion-item>
+      </ion-card>
+
+      <!-- Opción 3: Transferencia -->
+      <ion-card button class="card-metodo" [class.metodo-activo]="metodoSeleccionado === 'transferencia'"
+        (click)="metodoSeleccionado = 'transferencia'">
+        <ion-item lines="none">
+          <ion-icon slot="start" name="swap-horizontal-outline" color="primary"></ion-icon>
+          <ion-label class="ion-text-wrap">
+            <ion-card-title>Transferencia bancaria (SPEI)</ion-card-title>
+            <ion-note>Transferencia directa desde tu app bancaria</ion-note>
+          </ion-label>
+          <ion-radio slot="end" value="transferencia"></ion-radio>
+        </ion-item>
+      </ion-card>
+    </ion-list>
+  </ion-radio-group>
+
+  <!-- Aviso si no hay método o carrito vacío -->
+  <ion-item lines="none" *ngIf="mensajeError" class="item-error">
+    <ion-icon slot="start" name="alert-circle-outline" color="danger"></ion-icon>
+    <ion-label color="danger" class="ion-text-wrap">{{ mensajeError }}</ion-label>
+  </ion-item>
+
+  <!-- Botón continuar -->
+  <ion-grid class="ion-no-padding ion-margin-top">
+    <ion-row>
+      <ion-col size="12">
+        <ion-button expand="block" [disabled]="!metodoSeleccionado" (click)="continuarPago()">
+          <ion-icon slot="start" name="shield-checkmark-outline"></ion-icon>
+          Continuar con el pago
+        </ion-button>
+      </ion-col>
+    </ion-row>
   </ion-grid>
 </ion-content>

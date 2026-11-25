@@ -1,1 +1,139 @@
+:host {
+    color-scheme: light;
+}
 
+ion-header,
+ion-toolbar {
+    --background: #1d4ed8;
+    --color: #ffffff;
+    --border-color: #1e40af;
+}
+
+ion-toolbar ion-button,
+ion-toolbar ion-icon {
+    --color: #ffffff;
+    color: #ffffff;
+}
+
+ion-content {
+    --background: #f4f8ff;
+    --color: #0f172a;
+}
+
+.card-mp,
+.card-formulario {
+    --background: #ffffff;
+    --color: #0f172a;
+    background: #ffffff;
+    margin: 0 0 16px;
+    border: 1px solid #bfdbfe;
+    border-radius: 14px;
+    box-shadow: 0 3px 10px rgba(29, 78, 216, 0.08);
+}
+
+.card-mp ion-card-header,
+.card-formulario ion-card-header {
+    padding-bottom: 8px;
+}
+
+.card-mp ion-card-subtitle,
+.card-formulario ion-card-subtitle {
+    color: #1d4ed8;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+}
+
+.card-mp ion-card-title {
+    color: #1e3a8a;
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin-top: 4px;
+}
+
+.card-mp ion-note {
+    display: block;
+    color: #475569;
+    font-size: 0.85rem;
+}
+
+/* Lista resumen productos */
+.lista-productos,
+.lista-campos {
+    --background: transparent;
+    background: transparent;
+    padding: 0;
+}
+
+.lista-productos {
+    border-top: 1px solid #dbeafe;
+    padding-top: 4px;
+}
+
+.item-detalle {
+    --background: transparent;
+    --color: #0f172a;
+    --padding-start: 0;
+    --inner-padding-end: 0;
+    --border-color: #eff6ff;
+}
+
+.nombre-prod {
+    display: block;
+    color: #0f172a;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.badge-cantidad {
+    --background: #dbeafe;
+    --color: #1d4ed8;
+    font-weight: 700;
+    margin-right: 8px;
+}
+
+.subtotal-prod {
+    color: #1e3a8a;
+    font-size: 0.92rem;
+    font-weight: 700;
+}
+
+/* Campos de formulario Ionic */
+.campo-ionic {
+    --background: #f8fafc;
+    --color: #0f172a;
+    --inner-border-width: 0;
+    border: 1.5px solid #bfdbfe;
+    border-radius: 12px;
+    margin-bottom: 12px;
+}
+
+.campo-ionic ion-input,
+.campo-ionic ion-select,
+.campo-ionic ion-textarea {
+    --color: #0f172a;
+    --placeholder-color: #64748b;
+    color: #0f172a;
+    font-weight: 500;
+}
+
+.campo-ionic ion-icon[slot='start'] {
+    color: #1d4ed8;
+    margin-right: 10px;
+}
+
+.item-error {
+    --background: transparent;
+    --inner-border-width: 0;
+}
+
+ion-button[expand='block'] {
+    --background: #1d4ed8;
+    --background-hover: #1e40af;
+    --color: #ffffff;
+    --border-radius: 12px;
+    height: 48px;
+    font-weight: 700;
+    text-transform: none;
+}

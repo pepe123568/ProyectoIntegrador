@@ -1,1 +1,236 @@
+:host {
+    color-scheme: light;
+}
 
+.toolbar-azul {
+    --background: #1d4ed8;
+    --color: #ffffff;
+
+    ion-title,
+    ion-back-button,
+    ion-icon {
+        --color: #ffffff;
+        color: #ffffff;
+    }
+}
+
+.contenido-claro {
+    --background: #f4f8ff;
+    --color: #0f172a;
+}
+
+.contenedor-pago {
+    max-width: 480px;
+    margin: 0 auto;
+    padding-bottom: calc(28px + env(safe-area-inset-bottom));
+}
+
+.card-aviso {
+    --background: #fffbeb;
+    --color: #92400e;
+    border: 1px solid #fde68a;
+    border-radius: 14px;
+    box-shadow: none;
+    margin: 0 0 14px 0;
+
+    .fila-aviso {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+
+        ion-icon {
+            font-size: 26px;
+            color: #d97706;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        strong {
+            display: block;
+            font-size: 0.95rem;
+            color: #78350f;
+            margin-bottom: 2px;
+        }
+
+        p {
+            margin: 0;
+            font-size: 0.84rem;
+            color: #92400e;
+            line-height: 1.35;
+        }
+    }
+}
+
+.card-blanca {
+    --background: #ffffff;
+    --color: #0f172a;
+    border: 1px solid #bfdbfe;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(29, 78, 216, 0.06);
+    margin: 0 0 16px 0;
+}
+
+.monto-destacado {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #1d4ed8;
+    margin-top: 4px;
+}
+
+.datos-spei {
+    padding-top: 4px;
+}
+
+.dato-fila {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 4px;
+    border-bottom: 1px solid #e2e8f0;
+    gap: 10px;
+
+    .etiqueta {
+        font-size: 0.85rem;
+        color: #64748b;
+    }
+
+    .valor {
+        font-size: 0.92rem;
+        color: #0f172a;
+        text-align: right;
+    }
+}
+
+.caja-clabe {
+    margin-top: 14px;
+    background: #f8fafc;
+    border: 1.5px dashed #93c5fd;
+    border-radius: 12px;
+    padding: 14px 12px;
+    text-align: center;
+
+    .etiqueta {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #475569;
+        margin-bottom: 6px;
+    }
+
+    .numero-clabe {
+        font-family: monospace;
+        font-size: 1.12rem;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+        color: #1e3a8a;
+        margin: 0 0 10px;
+        word-break: break-all;
+    }
+
+    &.concepto {
+        margin-top: 10px;
+        padding: 10px 12px;
+        border-style: solid;
+        border-color: #e2e8f0;
+
+        .numero-concepto {
+            font-family: monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin: 0 0 4px;
+        }
+    }
+}
+
+.btn-copiar {
+    --border-color: #1d4ed8;
+    --color: #1d4ed8;
+    --border-radius: 10px;
+    text-transform: none;
+    font-weight: 600;
+}
+
+.btn-copiar-mini {
+    --color: #1d4ed8;
+    text-transform: none;
+    font-weight: 600;
+    margin: 0;
+}
+
+.titulo-seccion {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #1e3a8a;
+    margin: 18px 0 8px 4px;
+}
+
+.lista-limpia {
+    background: transparent;
+    padding: 0;
+}
+
+.item-producto {
+    --background: transparent;
+    --color: #0f172a;
+    --border-color: #e2e8f0;
+
+    h3 {
+        font-weight: 600;
+        font-size: 0.95rem;
+        color: #0f172a;
+        margin: 0 0 2px;
+    }
+
+    p {
+        font-size: 0.82rem;
+        color: #64748b;
+        margin: 0;
+    }
+
+    .precio-item {
+        font-weight: 700;
+        color: #0f172a;
+        font-size: 0.95rem;
+    }
+}
+
+.desglose-totales {
+    padding: 14px 16px;
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+
+    .fila-total {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.9rem;
+        color: #475569;
+        margin-bottom: 6px;
+
+        &.final {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed #cbd5e1;
+            margin-bottom: 0;
+            font-size: 1.08rem;
+            color: #1d4ed8;
+        }
+    }
+}
+
+.acciones-finales {
+    margin-top: 22px;
+}
+
+.btn-confirmar {
+    --background: #1d4ed8;
+    --background-hover: #1e40af;
+    --background-activated: #1e3a8a;
+    --color: #ffffff;
+    --border-radius: 12px;
+    --box-shadow: 0 4px 12px rgba(29, 78, 216, 0.2);
+    height: 50px;
+    font-size: 15px;
+    font-weight: 600;
+    text-transform: none;
+}

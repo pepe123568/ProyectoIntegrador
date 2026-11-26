@@ -1,101 +1,87 @@
-<ion-content>
-
-  <ion-grid class="topbar">
-    <ion-button
-      class="icon-btn"
-      routerLink="/home"><ion-icon name="chevron-back-outline" aria-hidden="true"></ion-icon></ion-button>
-
-    <ion-text>Agendar cita</ion-text>
-
-    <ion-text></ion-text>
-  </ion-grid>
-
-  <ion-grid class="mobile-page no-nav">
-
-    <ion-grid class="card">
-
-      <!-- Servicio -->
-      <ion-grid class="field-wrap">
-        <ion-label>Servicio</ion-label>
-
-        <ion-select
-          class="select"
-          [(ngModel)]="servicio">
-
-          <ion-select-option value="">
-            Selecciona un servicio
-          </ion-select-option>
-
-          <ion-select-option *ngFor="let s of servicios">
-            {{ s }}
-          </ion-select-option>
-
-        </ion-select>
-      </ion-grid>
-
-      <!-- Fecha -->
-      <ion-grid class="field-wrap">
-        <ion-label>Fecha</ion-label>
-
-        <ion-input
-          class="field"
-          type="date"
-          min="2026-10-01"
-          max="9999-12-31"
-          [(ngModel)]="fecha"></ion-input>
-      </ion-grid>
-
-      <!-- Hora -->
-      <ion-grid class="field-wrap">
-        <ion-label>Hora</ion-label>
-
-        <ion-select
-          class="select"
-          [(ngModel)]="hora">
-
-          <ion-select-option value="">
-            Selecciona un horario
-          </ion-select-option>
-
-          <ion-select-option
-            *ngFor="let h of horarios"
-            [value]="h">
-            {{ h }}
-          </ion-select-option>
-
-        </ion-select>
-      </ion-grid>
-
-      <!-- Notas adicionales -->
-      <ion-grid class="field-wrap">
-        <ion-label>
-          Notas adicionales
-          <ion-text class="muted">(opcional)</ion-text>
-        </ion-label>
-
-        <ion-textarea
-          class="textarea"
-          [(ngModel)]="notas"
-          maxlength="300">
-        </ion-textarea>
-      </ion-grid>
-
-      <!-- Mensaje de error -->
-      <ion-note
-        class="error"
-        *ngIf="error">
-        {{ error }}
-      </ion-note>
-
-      <!-- Botón para agendar -->
-      <ion-button
-        class="primary"
-        (click)="agendar()">
-        Agendar cita
+<!-- eslint-disable @angular-eslint/template/prefer-control-flow -->
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button routerLink="/inicio" aria-label="Volver">
+        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
       </ion-button>
+    </ion-buttons>
+    <ion-title>Agendar Cita</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-    </ion-grid>
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="contenedor-cita">
+    <ion-list lines="none">
 
-  </ion-grid>
+      <!-- SERVICIO -->
+      <div class="campo-grupo">
+        <ion-item class="campo-ionic" [class.invalido]="intentado() && !servicio">
+          <ion-select label="Servicio" labelPlacement="stacked" placeholder="Selecciona un servicio"
+            [(ngModel)]="servicio" required>
+            <ion-select-option value="Consulta general">Consulta general</ion-select-option>
+            <ion-select-option value="Vacunación">Vacunación</ion-select-option>
+            <ion-select-option value="Desparasitación">Desparasitación</ion-select-option>
+            <ion-select-option value="Estética y baño">Estética y baño</ion-select-option>
+            <ion-select-option value="Urgencias">Urgencias</ion-select-option>
+            <ion-select-option value="Cirugía">Cirugía</ion-select-option>
+          </ion-select>
+          <ion-text slot="end" class="obligatorio">*</ion-text>
+        </ion-item>
 
+        <ion-text class="error-campo" *ngIf="intentado() && !servicio">
+          Este campo es obligatorio
+        </ion-text>
+      </div>
+
+      <!-- FECHA -->
+      <div class="campo-grupo">
+        <ion-item class="campo-ionic" [class.invalido]="intentado() && !fecha">
+          <ion-input label="Fecha" labelPlacement="stacked" type="date" [min]="fechaMinima" [(ngModel)]="fecha"
+            required></ion-input>
+          <ion-text slot="end" class="obligatorio">*</ion-text>
+        </ion-item>
+
+        <ion-text class="error-campo" *ngIf="intentado() && !fecha">
+          Este campo es obligatorio
+        </ion-text>
+      </div>
+
+      <!-- HORA (LIMITADA DE 9:00 AM A 7:00 PM) -->
+      <div class="campo-grupo">
+        <ion-item class="campo-ionic" [class.invalido]="(intentado() && !hora) || (hora && !esHorarioValido())">
+          <ion-input label="Hora (9:00 AM - 7:00 PM)" labelPlacement="stacked" type="time" min="09:00" max="19:00"
+            [(ngModel)]="hora" (ionChange)="validarHoraEnVivo()" required></ion-input>
+          <ion-text slot="end" class="obligatorio">*</ion-text>
+        </ion-item>
+
+        <ion-text class="error-campo" *ngIf="intentado() && !hora">
+          Este campo es obligatorio
+        </ion-text>
+
+        <ion-text class="error-campo" *ngIf="hora && !esHorarioValido()">
+          El horario de atención es de 9:00 AM a 7:00 PM
+        </ion-text>
+      </div>
+
+      <!-- NOTAS ADICIONALES (OPCIONAL: SIN ASTERISCO) -->
+      <div class="campo-grupo">
+        <ion-item class="campo-ionic">
+          <ion-textarea label="Notas adicionales (opcional)" labelPlacement="stacked" rows="4"
+            placeholder="Describe síntomas, raza o indicaciones..." [(ngModel)]="notas"></ion-textarea>
+        </ion-item>
+      </div>
+
+    </ion-list>
+
+    <!-- ERROR GENERAL (ej. sin sesión o fallo de Firebase) -->
+    <ion-text color="danger" *ngIf="error()">
+      <p class="error-general">{{ error() }}</p>
+    </ion-text>
+
+    <ion-button expand="block" class="btn-confirmar" [disabled]="cargando()" (click)="agendarCita()">
+      <ion-spinner *ngIf="cargando()" name="crescent" slot="start"></ion-spinner>
+      {{ cargando() ? 'Agendando...' : 'Confirmar Cita' }}
+    </ion-button>
+  </div>
 </ion-content>

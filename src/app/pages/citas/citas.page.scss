@@ -1,1 +1,209 @@
+:host {
+  color-scheme: light;
+  --kamur-green: #69863b;
+  --kamur-green-dark: #4d6727;
+  --kamur-green-soft: #e2f0d9;
+  --kamur-green-pale: #f4f8ef;
+  --kamur-ink: #213026;
+  --kamur-muted: #6d786f;
+  --kamur-border: #dce5d8;
+  --kamur-bg: #f8faf7;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
 
+ion-header {
+  background: var(--kamur-green-soft);
+}
+
+ion-toolbar {
+  --background: rgba(226, 240, 217, 0.97);
+  --color: #213026;
+  --border-color: rgba(77, 103, 39, 0.08);
+  --min-height: 56px;
+  backdrop-filter: blur(10px);
+
+  ion-title {
+    font-weight: 700;
+    color: #213026;
+    font-size: clamp(1.05rem, 2.5vw, 1.25rem);
+    letter-spacing: 0.3px;
+  }
+
+  ion-button,
+  ion-icon {
+    --color: #4d6727;
+    color: #4d6727;
+  }
+}
+
+ion-toolbar ion-button,
+ion-toolbar ion-icon {
+  --color: var(--kamur-green-dark);
+  color: var(--kamur-green-dark);
+}
+
+ion-segment {
+  --background: var(--kamur-green-soft);
+  border-radius: 1rem;
+  margin: 0 12px 8px;
+}
+
+ion-segment-button {
+  --color: var(--kamur-green-dark);
+  --color-checked: #4d6727;
+  --indicator-color: #ffffff;
+  --indicator-box-shadow: none;
+  font-weight: 600;
+}
+
+ion-content {
+  --background: #f8faf7;
+  --color: #213026;
+}
+
+ion-list {
+  background: transparent;
+}
+
+ion-card {
+  --background: #ffffff;
+  --color: #213026;
+  margin: 0 0 12px;
+  border: 1px solid #dce5d8;
+  border-radius: 1.2rem;
+  box-shadow: none;
+}
+
+ion-card-content {
+  padding: 10px;
+}
+
+ion-card-title {
+  color: #213026;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+ion-card-subtitle {
+  color: #6d786f;
+  font-size: 13px;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+ion-note {
+  display: block;
+  margin-top: 4px;
+  color: #6d786f;
+  font-size: 12px;
+}
+
+ion-item {
+  --background: transparent;
+  --color: #213026;
+  --inner-border-width: 0;
+}
+
+ion-badge[slot="start"] {
+  --background: #e2f0d9;
+  --color: #4d6727;
+  padding: 10px 8px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* Modal de edición con el estilo de Inicio */
+ion-modal ion-header,
+ion-modal ion-toolbar {
+  --background: var(--kamur-green-soft);
+  --color: var(--kamur-ink);
+}
+
+ion-modal ion-content {
+  --background: #f8faf7;
+}
+
+ion-modal ion-item {
+  --background: #ffffff;
+  --color: #213026;
+  border: 1.5px solid #dce5d8;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+
+ion-modal ion-select,
+ion-modal ion-input,
+ion-modal ion-textarea {
+  --color: #213026;
+  --placeholder-color: #6d786f;
+  color: #213026;
+}
+
+/* Navegación inferior: mismo estilo de Inicio */
+ion-tab-bar {
+  --background: #ffffff;
+  --color: #6d786f;
+  --color-selected: #4d6727;
+  border-top: 1px solid #dce5d8;
+  padding-bottom: env(safe-area-inset-bottom);
+
+  ion-tab-button {
+    min-width: 0;
+    padding: 0 4px;
+
+    ion-icon {
+      font-size: clamp(20px, 5vw, 24px);
+    }
+
+    ion-label {
+      font-size: clamp(0.68rem, 2vw, 0.78rem);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}
+
+/* Botones y controles coherentes con la identidad de Kamur */
+ion-button:not([color]):not([fill='clear']):not([fill='outline']):not([slot='start']):not([slot='end']) {
+  --background: var(--kamur-green);
+  --background-hover: var(--kamur-green-dark);
+  --background-activated: var(--kamur-green-dark);
+  --color: #ffffff;
+  --border-radius: 1rem;
+  text-transform: none;
+}
+
+ion-button[fill='outline']:not([color]) {
+  --color: var(--kamur-green-dark);
+  --border-color: var(--kamur-green);
+  --border-radius: 1rem;
+  text-transform: none;
+}
+
+ion-button[fill='clear']:not([color]) {
+  --color: var(--kamur-green-dark);
+}
+
+ion-toolbar ion-button:not([color]) {
+  --background: transparent;
+  --background-hover: var(--kamur-green-soft);
+  --color: var(--kamur-green-dark);
+}
+
+ion-card {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+ion-card:hover {
+  border-color: #bfd0b2;
+  box-shadow: 0 0.6rem 1.4rem rgba(37, 59, 38, 0.07);
+}
+
+ion-card-title {
+  font-size: clamp(0.98rem, 2.6vw, 1.15rem);
+  overflow-wrap: anywhere;
+}

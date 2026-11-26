@@ -1,110 +1,213 @@
-<ion-content>
-
-  <!-- Barra superior -->
-  <ion-grid class="topbar">
-
-    <ion-button
-      class="icon-btn"
-      routerLink="/home"><ion-icon name="chevron-back-outline" aria-hidden="true"></ion-icon></ion-button>
-
-    <ion-text>Mis citas</ion-text>
-
-    <ion-button
-      class="icon-btn"
-      routerLink="/agendar-cita">
-      ＋
-    </ion-button>
-
-  </ion-grid>
-
-
-  <ion-grid class="mobile-page">
-
-    <!-- Pestañas de citas -->
-    <ion-grid class="tabs">
-
-      <ion-button
-        [class.active]="tab === 'proximas'"
-        (click)="tab = 'proximas'">
-        Próximas
+<!-- eslint-disable @angular-eslint/template/prefer-control-flow -->
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button routerLink="/inicio" aria-label="Regresar">
+        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
       </ion-button>
+    </ion-buttons>
+    <ion-title>Mis Citas</ion-title>
+  </ion-toolbar>
 
-      <ion-button
-        [class.active]="tab === 'historial'"
-        (click)="tab = 'historial'">
-        Historial
-      </ion-button>
+  <ion-toolbar>
+    <ion-segment [value]="pestanaa" (ionChange)="cambiarPestanaa($event)">
+      <ion-segment-button value="proximas">
+        <ion-label>Próximas</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="historial">
+        <ion-label>Historial</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
 
-    </ion-grid>
-
-
-    <!-- Lista de citas -->
-    <ion-grid
-      class="list-row"
-      *ngFor="let c of lista"
-      (click)="abrir(c)">
-
-      <ion-grid class="list-icon"><ion-icon name="calendar-outline" aria-hidden="true"></ion-icon></ion-grid>
-
-      <ion-grid class="grow">
-
-        <ion-text>
-          {{ c.servicio }}
-        </ion-text>
-
-        <ion-note>
-          {{ c.fecha }} · {{ c.hora }} · {{ c.estado }}
-        </ion-note>
-
-      </ion-grid>
-
-      <ion-text class="chev"><ion-icon name="chevron-forward-outline" aria-hidden="true"></ion-icon></ion-text>
-
-    </ion-grid>
-
-
-    <!-- Mensaje cuando no hay citas -->
-    <ion-grid
-      class="card center"
-      *ngIf="!lista.length">
-
-      <ion-note class="muted">
-        No hay citas en esta sección.
-      </ion-note>
-
-    </ion-grid>
-
+<ion-content [fullscreen]="true" class="ion-padding">
+  <!-- Estado de carga -->
+  <ion-grid *ngIf="cargando">
+    <ion-row class="ion-justify-content-center ion-align-items-center ion-padding-vertical">
+      <ion-col size="auto">
+        <ion-spinner name="crescent"></ion-spinner>
+      </ion-col>
+      <ion-col size="auto">
+        <ion-text color="medium">Cargando citas...</ion-text>
+      </ion-col>
+    </ion-row>
   </ion-grid>
 
+  <!-- Mensaje de error -->
+  <ion-item lines="none" *ngIf="!cargando && error">
+    <ion-icon slot="start" name="alert-circle-outline" color="danger"></ion-icon>
+    <ion-label color="danger" class="ion-text-wrap">{{ error }}</ion-label>
+  </ion-item>
 
-  <!-- Barra de navegación inferior -->
-  <ion-grid class="bottom-nav">
+  <!-- Aviso cuando se intenta modificar una cita vencida -->
+  <ion-item lines="none" *ngIf="avisoBloqueo">
+    <ion-icon slot="start" name="time-outline" color="warning"></ion-icon>
+    <ion-label color="warning" class="ion-text-wrap">{{ avisoBloqueo }}</ion-label>
+  </ion-item>
 
-    <ion-button routerLink="/home">
-      <ion-icon name="home-outline" aria-hidden="true"></ion-icon>
-      Inicio
-    </ion-button>
+  <!-- Pestaña Próximas (editables mientras no hayan vencido) -->
+  <ion-grid *ngIf="!cargando && !error && pestanaa === 'proximas'" class="ion-no-padding">
+    <ion-row *ngIf="citasProximas.length > 0">
+      <ion-col size="12" class="ion-text-center ion-padding-bottom">
+        <ion-note color="medium">Toca una cita vigente para modificarla o eliminarla</ion-note>
+      </ion-col>
+    </ion-row>
 
-    <ion-button routerLink="/citas">
-      <ion-icon name="calendar-outline" aria-hidden="true"></ion-icon>
-      Citas
-    </ion-button>
+    <ion-row *ngIf="citasProximas.length > 0">
+      <ion-col size="12">
+        <ion-list lines="none">
+          <ion-card *ngFor="let cita of citasProximas" button (click)="abrirEditor(cita)">
+            <ion-card-content>
+              <ion-item lines="none">
+                <ion-badge slot="start" color="primary">
+                  {{ formatearFecha(cita.fecha) }}
+                </ion-badge>
 
-    <ion-button routerLink="/sucursales">
-      <ion-icon name="location-outline" aria-hidden="true"></ion-icon>
-      Sucursales
-    </ion-button>
+                <ion-label class="ion-text-wrap">
+                  <ion-text color="primary">
+                    <ion-card-title>{{ cita.servicio }}</ion-card-title>
+                  </ion-text>
+                  <ion-card-subtitle>
+                    <ion-icon name="time-outline"></ion-icon>
+                    {{ formatearHora(cita.hora) }}
+                  </ion-card-subtitle>
+                  <ion-note *ngIf="cita.notas">{{ cita.notas }}</ion-note>
+                </ion-label>
 
-    <ion-button routerLink="/tienda">
-      <ion-icon name="storefront-outline" aria-hidden="true"></ion-icon>
-      Tienda
-    </ion-button>
+                <ion-icon slot="end" name="create-outline" color="primary"></ion-icon>
+              </ion-item>
+            </ion-card-content>
+          </ion-card>
+        </ion-list>
+      </ion-col>
+    </ion-row>
 
-    <ion-button routerLink="/cuenta">
-      <ion-icon name="person-circle-outline" aria-hidden="true"></ion-icon>
-      Cuenta
-    </ion-button>
-
+    <ion-row *ngIf="citasProximas.length === 0">
+      <ion-col size="12" class="ion-text-center ion-padding-vertical">
+        <ion-icon name="calendar-clear-outline" size="large" color="medium"></ion-icon>
+        <ion-item lines="none" class="ion-text-center">
+          <ion-label color="medium">No tienes citas próximas.</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
   </ion-grid>
 
+  <!-- Pestaña Historial (solo lectura, ya pasaron de fecha) -->
+  <ion-grid *ngIf="!cargando && !error && pestanaa === 'historial'" class="ion-no-padding">
+    <ion-row *ngIf="citasHistorial.length > 0">
+      <ion-col size="12">
+        <ion-list lines="none">
+          <ion-card *ngFor="let cita of citasHistorial" (click)="abrirEditor(cita)">
+            <ion-card-content>
+              <ion-item lines="none">
+                <ion-badge slot="start" color="medium">
+                  {{ formatearFecha(cita.fecha) }}
+                </ion-badge>
+
+                <ion-label class="ion-text-wrap">
+                  <ion-card-title>{{ cita.servicio }}</ion-card-title>
+                  <ion-card-subtitle>{{ formatearHora(cita.hora) }}</ion-card-subtitle>
+                </ion-label>
+
+                <ion-badge slot="end" [color]="cita.estado === 'cancelada' ? 'danger' : 'medium'">
+                  {{ esCitaVencida(cita) && cita.estado !== 'cancelada' ? 'Finalizada' : cita.estado }}
+                </ion-badge>
+              </ion-item>
+            </ion-card-content>
+          </ion-card>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="citasHistorial.length === 0">
+      <ion-col size="12" class="ion-text-center ion-padding-vertical">
+        <ion-icon name="calendar-clear-outline" size="large" color="medium"></ion-icon>
+        <ion-item lines="none" class="ion-text-center">
+          <ion-label color="medium">Todavía no tienes citas anteriores.</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- Modal 100% Ionic para modificar o eliminar cita -->
+  <ion-modal #modalEditor [isOpen]="!!citaEditando" (didDismiss)="cerrarEditor()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Modificar cita</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="cerrarEditor()" aria-label="Cerrar">
+              <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content class="ion-padding" *ngIf="citaEditando">
+        <ion-list lines="none">
+          <ion-item>
+            <ion-select label="Servicio" labelPlacement="stacked" interface="popover"
+              [(ngModel)]="citaEditando.servicio">
+              <ion-select-option *ngFor="let s of serviciosDisponibles" [value]="s">
+                {{ s }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-input label="Fecha" labelPlacement="stacked" type="date" [min]="fechaMinima"
+              [(ngModel)]="citaEditando.fecha"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-input label="Hora" labelPlacement="stacked" type="time" [(ngModel)]="citaEditando.hora"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-select label="Estado" labelPlacement="stacked" interface="popover" [(ngModel)]="citaEditando.estado">
+              <ion-select-option value="pendiente">Pendiente</ion-select-option>
+              <ion-select-option value="confirmada">Confirmada</ion-select-option>
+              <ion-select-option value="cancelada">Cancelada</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-textarea label="Notas" labelPlacement="stacked" rows="3" placeholder="Observaciones..."
+              [(ngModel)]="citaEditando.notas"></ion-textarea>
+          </ion-item>
+        </ion-list>
+
+        <ion-item lines="none" *ngIf="errorEdicion">
+          <ion-icon slot="start" name="alert-circle-outline" color="danger"></ion-icon>
+          <ion-label color="danger" class="ion-text-wrap">{{ errorEdicion }}</ion-label>
+        </ion-item>
+
+        <ion-grid class="ion-no-padding ion-margin-top">
+          <ion-row>
+            <ion-col size="12">
+              <ion-button expand="block" [disabled]="guardandoEdicion" (click)="guardarCambiosCita()">
+                <ion-icon slot="start" name="checkmark-outline"></ion-icon>
+                {{ guardandoEdicion ? 'Modificando...' : 'Modificar' }}
+              </ion-button>
+            </ion-col>
+          </ion-row>
+
+          <ion-row class="ion-margin-top">
+            <ion-col size="12">
+              <ion-button expand="block" fill="outline" color="danger" [disabled]="guardandoEdicion"
+                (click)="eliminarCita()">
+                <ion-icon slot="start" name="trash-outline"></ion-icon>
+                {{ guardandoEdicion ? 'Eliminando...' : 'Eliminar' }}
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <!-- Toast nativo de Ionic al regresar a la lista -->
+  <ion-toast [isOpen]="!!mensajeToast" [message]="mensajeToast" duration="2200" position="bottom" color="success"
+    (didDismiss)="mensajeToast = ''"></ion-toast>
 </ion-content>

@@ -1,110 +1,176 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import type { OnInit } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { IonIcon, IonContent, IonGrid, IonCard, IonText, IonNote, IonLabel, IonButton, IonInput, IonSelect, IonSelectOption, IonTextarea, IonImg, IonList, IonItem, IonHeader, IonFooter } from '@ionic/angular';
-import { DatosService } from '../../services/datos.service';
+import {
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonButton,
+  IonIcon,
+  IonTitle,
+  IonContent,
+  IonList,
+  IonItem,
+  IonSelect,
+  IonSelectOption,
+  IonInput,
+  IonTextarea,
+  IonText,
+  IonSpinner
+} from '@ionic/angular';
+import {
+  addDoc,
+  collection,
+  serverTimestamp
+} from 'firebase/firestore';
+import { addIcons } from 'ionicons';
+import { arrowBackOutline } from 'ionicons/icons';
+
+import { firebaseAuth, db } from '../../services/firebase';
 
 @Component({
   selector: 'app-agendar-cita',
   standalone: true,
-  templateUrl: './agendar-cita.page.html',
-  styleUrls: ['./agendar-cita.page.scss'],
   imports: [
-    IonIcon, IonContent,
-    IonGrid, IonCard, IonText, IonNote, IonLabel, IonButton, IonInput, IonSelect, IonSelectOption, IonTextarea, IonImg, IonList, IonItem, IonHeader, IonFooter,
     CommonModule,
     FormsModule,
-    RouterLink
-  ]
+    RouterLink,
+    IonHeader,
+    IonToolbar,
+    IonButtons,
+    IonButton,
+    IonIcon,
+    IonTitle,
+    IonContent,
+    IonList,
+    IonItem,
+    IonSelect,
+    IonSelectOption,
+    IonInput,
+    IonTextarea,
+    IonText,
+    IonSpinner
+  ],
+  templateUrl: './agendar-cita.page.html',
+  styleUrls: ['./agendar-cita.page.scss']
 })
-export class AgendarCitaPage {
+export class AgendarCitaPage implements OnInit {
+  private readonly router = inject(Router);
 
   servicio = '';
   fecha = '';
   hora = '';
   notas = '';
-  error = '';
+  fechaMinima = '';
 
-  servicios = [
-    'Consulta general',
-    'Vacunación',
-    'Desparasitación',
-    'Control de peso'
-  ];
+  intentado = signal(false);
+  cargando = signal(false);
+  error = signal('');
 
-  horarios = [
-    '09:00',
-    '10:00',
-    '11:30',
-    '13:00',
-    '16:00',
-    '17:30'
-  ];
+  constructor() {
+    addIcons({ arrowBackOutline });
+  }
 
-  constructor(
-    public datos: DatosService,
-    private router: Router
-  ) {}
-
-  agendar() {
-
-    this.error = '';
-
-    // Verifica que los campos obligatorios estén completos
-    if (!this.servicio || !this.fecha || !this.hora) {
-      this.error = 'Selecciona servicio, fecha y horario.';
-      return;
-    }
-
-    // Verifica el formato de la fecha
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(this.fecha)) {
-      this.error = 'La fecha debe contener un año de 4 dígitos.';
-      return;
-    }
-
-    // Verifica que el año tenga 4 dígitos válidos
-    const anio = Number(this.fecha.slice(0, 4));
-
-    if (anio < 1000 || anio > 9999) {
-      this.error = 'Ingresa un año válido de 4 dígitos.';
-      return;
-    }
-
-    // Obtiene la fecha actual
+  ngOnInit(): void {
     const hoy = new Date();
-    hoy.setHours(0, 0, 0, 0);
+    const anio = hoy.getFullYear();
+    const mes = String(hoy.getMonth() + 1).padStart(2, '0');
+    const dia = String(hoy.getDate()).padStart(2, '0');
+    this.fechaMinima = `${anio}-${mes}-${dia}`;
+  }
 
-    // Convierte la fecha seleccionada
-    const f = new Date(this.fecha + 'T00:00:00');
+  // Valida que la hora esté estrictamente entre las 09:00 (9 AM) y las 19:00 (7 PM)
+  esHorarioValido(): boolean {
+    if (!this.hora) return true;
+    const [horasStr, minutosStr] = this.hora.split(':');
+    const horas = Number(horasStr);
+    const minutos = Number(minutosStr);
 
-    // Verifica que sea una fecha válida
-    if (Number.isNaN(f.getTime())) {
-      this.error = 'Ingresa una fecha válida.';
+    if (Number.isNaN(horas) || Number.isNaN(minutos)) return false;
+
+    const totalMinutos = horas * 60 + minutos;
+    const inicioMinutos = 9 * 60;  // 09:00 AM
+    const finMinutos = 19 * 60;    // 07:00 PM
+
+    return totalMinutos >= inicioMinutos && totalMinutos <= finMinutos;
+  }
+
+  validarHoraEnVivo(): void {
+    this.error.set('');
+  }
+
+  async agendarCita(): Promise<void> {
+    this.error.set('');
+    this.intentado.set(true);
+
+    // 1. Verifica que los campos obligatorios estén llenos
+    if (!this.servicio || !this.fecha || !this.hora) {
       return;
     }
 
-    // Evita seleccionar fechas anteriores a hoy
-    if (f < hoy) {
-      this.error = 'La fecha no puede estar en el pasado.';
+    // 2. Verifica que la hora esté dentro de 9:00 AM a 7:00 PM
+    if (!this.esHorarioValido()) {
       return;
     }
 
-    // Los domingos no hay servicio
-    if (f.getDay() === 0) {
-      this.error = 'Los domingos no hay servicio.';
-      return;
+    this.cargando.set(true);
+
+    try {
+      // Espera a que Firebase Auth termine de restaurar la sesión en Android/Web
+      await firebaseAuth.authStateReady();
+      const usuario = firebaseAuth.currentUser;
+
+      if (!usuario) {
+        this.error.set('Debes iniciar sesión para agendar una cita.');
+        return;
+      }
+
+      const nuevaCita = {
+        uid: usuario.uid,
+        usuarioId: usuario.uid,
+        correo: usuario.email ?? '',
+        nombreCliente: usuario.displayName ?? '',
+        servicio: this.servicio,
+        fecha: this.fecha,
+        hora: this.hora,
+        notas: this.notas.trim(),
+        estado: 'pendiente',
+        fechaCreacion: serverTimestamp()
+      };
+
+      const docRef = await addDoc(collection(db, 'citas'), nuevaCita);
+
+      const datosCita = {
+        id: docRef.id,
+        servicio: this.servicio,
+        fecha: this.fecha,
+        hora: this.hora,
+        notas: this.notas.trim()
+      };
+
+      this.servicio = '';
+      this.fecha = '';
+      this.hora = '';
+      this.notas = '';
+      this.intentado.set(false);
+
+      // Redirige a la página cita-exitosa enviando los datos de la cita
+      await this.router.navigate(['/cita-exitosa'], {
+        replaceUrl: true,
+        state: { cita: datosCita }
+      });
+
+    } catch (err: any) {
+      console.error('Error al agendar cita en Firestore:', err);
+      if (err?.code === 'permission-denied') {
+        this.error.set('Firestore bloqueó el guardado. Revisa las reglas de la colección "citas".');
+      } else {
+        this.error.set(`No se pudo guardar la cita: ${err?.message || 'Inténtalo nuevamente.'}`);
+      }
+    } finally {
+      this.cargando.set(false);
     }
-
-    // Guarda la cita en el arreglo
-    this.datos.agregarCita({
-      servicio: this.servicio,
-      fecha: this.fecha,
-      hora: this.hora,
-      notas: this.notas.trim() || 'Ninguna'
-    });
-
-    // Redirige a la pantalla de cita exitosa
-    this.router.navigateByUrl('/cita-exitosa');
   }
 }

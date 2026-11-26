@@ -1,65 +1,46 @@
-<ion-content>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Confirmación</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-  <ion-grid class="mobile-page no-nav">
+<ion-content [fullscreen]="true" class="ion-padding ion-text-center">
+  <ion-icon name="checkmark-circle" color="success" style="font-size: 84px; margin-top: 24px;"></ion-icon>
 
-    <!-- Mensaje de confirmación -->
-    <ion-grid class="success-box">
+  <ion-text>
+    <h1>¡Cita agendada con éxito!</h1>
+  </ion-text>
 
-      <ion-grid class="check"><ion-icon name="checkmark-outline" aria-hidden="true"></ion-icon></ion-grid>
+  <ion-card class="ion-text-start ion-margin-top">
+    <ion-card-header>
+      <ion-card-title>Detalles de la cita</ion-card-title>
+    </ion-card-header>
 
-      <ion-text>¡Cita agendada con éxito!</ion-text>
+    <ion-card-content>
+      <ion-list lines="none">
+        <ion-item>
+          <ion-icon slot="start" name="calendar-outline"></ion-icon>
+          <ion-label>{{ fechaFormateada }}</ion-label>
+        </ion-item>
 
-      <ion-note class="muted">
-        Tu cita quedó registrada temporalmente en el arreglo de citas.
-      </ion-note>
+        <ion-item>
+          <ion-icon slot="start" name="time-outline"></ion-icon>
+          <ion-label>{{ horaFormateada }}</ion-label>
+        </ion-item>
 
-    </ion-grid>
+        <ion-item>
+          <ion-icon slot="start" name="medkit-outline"></ion-icon>
+          <ion-label>{{ cita.servicio || 'Servicio no disponible' }}</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
 
+  <ion-button expand="block" routerLink="/citas" class="ion-margin-top">
+    Ver en mis citas
+  </ion-button>
 
-    <!-- Detalles de la cita -->
-    <ion-grid
-      class="card"
-      *ngIf="datos.ultimaCita as c">
-
-      <ion-text>Detalles de la cita</ion-text>
-
-      <ion-grid class="detail-grid">
-
-        <ion-text>Servicio</ion-text>
-        <ion-text>{{ c.servicio }}</ion-text>
-
-        <ion-text>Fecha</ion-text>
-        <ion-text>{{ c.fecha }}</ion-text>
-
-        <ion-text>Hora</ion-text>
-        <ion-text>{{ c.hora }}</ion-text>
-
-        <ion-text>Veterinario</ion-text>
-        <ion-text>{{ c.veterinario }}</ion-text>
-
-        <ion-text>Notas</ion-text>
-        <ion-text>{{ c.notas }}</ion-text>
-
-      </ion-grid>
-
-    </ion-grid>
-
-
-    <!-- Botón para ver las citas -->
-    <ion-button
-      class="primary"
-      routerLink="/citas">
-      Ver mis citas
-    </ion-button>
-
-
-    <!-- Botón para regresar al inicio -->
-    <ion-button
-      class="secondary"
-      routerLink="/home">
-      Regresar al inicio
-    </ion-button>
-
-  </ion-grid>
-
+  <ion-button expand="block" fill="outline" routerLink="/inicio" class="ion-margin-top">
+    Regresar al inicio
+  </ion-button>
 </ion-content>

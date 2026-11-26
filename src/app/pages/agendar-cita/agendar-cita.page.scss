@@ -1,1 +1,217 @@
+:host {
+  color-scheme: light;
+  --kamur-green: #69863b;
+  --kamur-green-dark: #4d6727;
+  --kamur-green-soft: #e2f0d9;
+  --kamur-green-pale: #f4f8ef;
+  --kamur-ink: #213026;
+  --kamur-muted: #6d786f;
+  --kamur-border: #dce5d8;
+  --kamur-bg: #f8faf7;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
 
+ion-header,
+ion-toolbar {
+  --background: rgba(226, 240, 217, 0.97);
+  --color: #213026;
+  --border-color: rgba(77, 103, 39, 0.08);
+  --min-height: 56px;
+  backdrop-filter: blur(10px);
+
+  ion-title {
+    color: #213026;
+    font-size: clamp(1.05rem, 2.8vw, 1.2rem);
+    font-weight: 700;
+  }
+}
+
+ion-toolbar ion-button,
+ion-toolbar ion-back-button,
+ion-toolbar ion-icon {
+  --color: #4d6727;
+  color: #4d6727;
+}
+
+ion-content {
+  --background: #f8faf7;
+  --color: #213026;
+}
+
+.contenedor-cita {
+  width: 100%;
+  max-width: 640px;
+  margin: clamp(8px, 2vw, 18px) auto 0;
+  padding: clamp(14px, 3vw, 24px) clamp(12px, 3vw, 24px) calc(24px + env(safe-area-inset-bottom));
+  background: #ffffff;
+  border: 1px solid #dce5d8;
+  border-radius: 1.3rem;
+}
+
+ion-list {
+  background: transparent;
+  padding: 0;
+}
+
+.campo-grupo {
+  margin-bottom: clamp(12px, 2.5vw, 16px);
+}
+
+.campo-ionic {
+  --background: #ffffff;
+  --color: #213026;
+  --border-color: #dce5d8;
+  --border-radius: 0.85rem;
+  --padding-start: clamp(12px, 3vw, 16px);
+  --padding-end: clamp(12px, 3vw, 16px);
+  --inner-padding-end: 0;
+  --inner-border-width: 0;
+  --highlight-height: 0;
+  min-height: 48px;
+  border: 1px solid #dce5d8;
+  border-radius: 0.85rem;
+  box-shadow: none;
+  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+
+  &.item-has-focus {
+    border-color: #69863b;
+    box-shadow: 0 0 0 0.2rem rgba(105, 134, 59, 0.15);
+  }
+
+  &.invalido {
+    --background: #fef2f2;
+    border-color: #b42318;
+  }
+}
+
+ion-select,
+ion-input,
+ion-textarea {
+  --color: #213026;
+  --placeholder-color: #6d786f;
+  --placeholder-opacity: 1;
+  color: #213026;
+  font-size: clamp(14.5px, 3.8vw, 16px);
+  width: 100%;
+  min-width: 0;
+}
+
+ion-select::part(icon),
+ion-select::part(text),
+ion-select::part(placeholder) {
+  color: #213026;
+}
+
+ion-select::part(placeholder) {
+  color: #6d786f;
+}
+
+.obligatorio {
+  color: #b42318;
+  font-size: clamp(15px, 3.8vw, 17px);
+  font-weight: 700;
+  margin-inline-start: 6px;
+  align-self: center;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.error-campo {
+  display: block;
+  color: #b42318;
+  font-size: 0.86rem;
+  font-weight: 500;
+  margin-top: 0.35rem;
+  margin-left: 4px;
+  line-height: 1.25;
+}
+
+.error-general {
+  color: #b42318;
+  font-size: 0.88rem;
+  font-weight: 500;
+  margin: 6px 4px 0;
+  line-height: 1.35;
+}
+
+.btn-confirmar {
+  --background: #69863b;
+  --background-hover: #4d6727;
+  --background-activated: #4d6727;
+  --color: #ffffff;
+  --border-radius: 0.85rem;
+  width: 100%;
+  height: 48px;
+  margin-top: clamp(16px, 4vw, 24px);
+  font-size: clamp(14.5px, 3.8vw, 16px);
+  font-weight: 700;
+  text-transform: none;
+}
+
+::ng-deep ion-alert,
+::ng-deep ion-popover {
+  color-scheme: light !important;
+  --background: #ffffff !important;
+  --color: #213026 !important;
+}
+
+::ng-deep ion-alert .alert-wrapper {
+  width: min(340px, 90vw) !important;
+  max-width: 92vw !important;
+  max-height: 85vh !important;
+  background: #ffffff !important;
+  border: 1px solid #dce5d8 !important;
+  border-radius: 1.3rem !important;
+  box-shadow: 0 0.8rem 2rem rgba(37, 59, 38, 0.12) !important;
+}
+
+::ng-deep ion-alert .alert-head {
+  border-bottom: 1px solid #dce5d8;
+  padding: 14px 18px !important;
+}
+
+::ng-deep ion-alert .alert-title {
+  color: #213026 !important;
+  font-size: clamp(1rem, 4vw, 1.15rem) !important;
+  font-weight: 700 !important;
+}
+
+::ng-deep ion-alert .alert-radio-group {
+  border-top: none !important;
+  border-bottom: 1px solid #dce5d8 !important;
+  max-height: 55vh !important;
+}
+
+::ng-deep ion-alert .alert-radio-label {
+  color: #213026 !important;
+  font-size: clamp(14px, 3.6vw, 15.5px) !important;
+  font-weight: 500 !important;
+  white-space: normal !important;
+}
+
+::ng-deep ion-alert [aria-checked="true"] .alert-radio-label {
+  color: #4d6727 !important;
+  font-weight: 700 !important;
+}
+
+::ng-deep ion-alert .alert-radio-icon {
+  border-color: #6d786f !important;
+}
+
+::ng-deep ion-alert [aria-checked="true"] .alert-radio-icon {
+  border-color: #69863b !important;
+}
+
+::ng-deep ion-alert .alert-radio-inner {
+  background-color: #69863b !important;
+}
+
+::ng-deep ion-alert .alert-button-group {
+  padding: 6px 8px !important;
+}
+
+::ng-deep ion-alert .alert-button {
+  color: #4d6727 !important;
+  font-size: clamp(13.5px, 3.5vw, 15px) !important;
+  font-weight: 700 !important;
+}

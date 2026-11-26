@@ -1,0 +1,429 @@
+:host {
+  color-scheme: light;
+  --kamur-green: #69863b;
+  --kamur-green-dark: #4d6727;
+  --kamur-green-soft: #e2f0d9;
+  --kamur-green-pale: #f4f8ef;
+  --kamur-ink: #213026;
+  --kamur-muted: #6d786f;
+  --kamur-border: #dce5d8;
+  --kamur-bg: #f8faf7;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.toolbar-principal {
+  --background: rgba(226, 240, 217, 0.97);
+  --color: #213026;
+  --border-color: rgba(77, 103, 39, 0.08);
+  --min-height: 56px;
+  backdrop-filter: blur(10px);
+
+  ion-title {
+    font-weight: 700;
+    color: #213026;
+    font-size: clamp(1.05rem, 2.5vw, 1.25rem);
+    letter-spacing: 0.3px;
+  }
+
+  ion-button,
+  ion-icon {
+    --color: #4d6727;
+    color: #4d6727;
+  }
+}
+
+.btn-notificaciones {
+  position: relative;
+
+  .badge-notif {
+    --background: #69863b;
+    --color: #ffffff;
+    position: absolute;
+    top: 4px;
+    right: 2px;
+    font-size: 10px;
+    padding: 2px 5px;
+    border-radius: 10px;
+  }
+}
+
+.popover-menu {
+  --width: min(260px, 85vw);
+  --max-width: 90vw;
+  --border-radius: 1.2rem;
+  --box-shadow: 0 0.8rem 2rem rgba(37, 59, 38, 0.12);
+  --background: #ffffff;
+}
+
+.contenido-popover {
+  --background: #ffffff;
+  --color: #213026;
+}
+
+.cabecera-popover {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: #f4f8ef;
+  border-bottom: 1px solid #dce5d8;
+
+  .avatar-mini {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #69863b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    ion-icon {
+      font-size: 20px;
+      color: #ffffff;
+    }
+  }
+
+  .datos-mini {
+    min-width: 0;
+    flex: 1;
+
+    h3 {
+      margin: 0;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #213026;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    p {
+      margin: 2px 0 0;
+      font-size: 0.75rem;
+      color: #6d786f;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}
+
+.lista-popover {
+  background: #ffffff;
+  padding: 6px;
+}
+
+.item-popover {
+  --background: transparent;
+  --background-hover: #f4f8ef;
+  --background-activated: #e2f0d9;
+  --color: #213026;
+  --border-radius: 0.7rem;
+  --min-height: 46px;
+  --padding-start: 12px;
+  margin-bottom: 2px;
+
+  ion-icon {
+    color: #4d6727;
+    font-size: 20px;
+    margin-inline-end: 12px;
+  }
+
+  ion-label {
+    font-size: 14.5px;
+    font-weight: 600;
+    color: #213026;
+  }
+
+  &.salir {
+    --background-hover: #fef2f2;
+    --background-activated: #fee2e2;
+
+    ion-icon {
+      color: #b42318;
+    }
+
+    ion-label {
+      color: #b42318;
+    }
+  }
+}
+
+.divisor-menu {
+  height: 1px;
+  background: #dce5d8;
+  margin: 6px 10px;
+}
+
+.contenido-inicio {
+  --background: #f8faf7;
+  --color: #213026;
+}
+
+.contenedor-principal {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: clamp(4px, 1.5vw, 16px) clamp(2px, 1vw, 12px) 24px;
+}
+
+.saludo-box {
+  margin: 4px 0 14px;
+
+  h1 {
+    font-size: clamp(1.2rem, 4vw, 1.65rem);
+    font-weight: 700;
+    color: #213026;
+    margin: 0;
+    line-height: 1.25;
+    word-wrap: break-word;
+  }
+
+  p {
+    font-size: clamp(0.84rem, 2.2vw, 0.95rem);
+    color: #6d786f;
+    margin: 4px 0 0;
+  }
+}
+
+ion-searchbar {
+  --background: #ffffff;
+  --color: #213026;
+  --placeholder-color: #6d786f;
+  --icon-color: #4d6727;
+  --border-radius: 1rem;
+  --box-shadow: none;
+  border: 1px solid #dce5d8;
+  border-radius: 1rem;
+  padding: 0;
+  margin-bottom: 14px;
+}
+
+.subtitulo-seccion {
+  font-size: clamp(1rem, 2.8vw, 1.2rem);
+  font-weight: 700;
+  color: #213026;
+  margin: 20px 0 10px;
+}
+
+.grid-accesos ion-row,
+.grid-servicios ion-row {
+  align-items: stretch;
+}
+
+.grid-accesos ion-col,
+.grid-servicios ion-col {
+  display: flex;
+  padding: 4px;
+}
+
+.card-funcion {
+  width: 100%;
+  margin: 0;
+  --background: #ffffff;
+  --color: #213026;
+  border: 1px solid #dce5d8;
+  border-radius: 1.2rem;
+  box-shadow: none;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    border-color: #bfd0b2;
+    box-shadow: 0 0.8rem 2rem rgba(37, 59, 38, 0.09);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  ion-card-content {
+    padding: clamp(14px, 3vw, 22px) 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 100%;
+  }
+
+  .icono-box {
+    width: clamp(44px, 10vw, 54px);
+    height: clamp(44px, 10vw, 54px);
+    border-radius: 1rem;
+    background: #e2f0d9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    ion-icon {
+      font-size: clamp(22px, 5vw, 26px);
+      color: #4d6727;
+    }
+  }
+
+  h3 {
+    margin: 0;
+    font-size: clamp(0.84rem, 2.4vw, 0.98rem);
+    font-weight: 700;
+    color: #213026;
+    line-height: 1.2;
+  }
+}
+
+.card-servicio {
+  width: 100%;
+  margin: 0;
+  --background: #ffffff;
+  --color: #213026;
+  border: 1px solid #dce5d8;
+  border-radius: 1.1rem;
+  box-shadow: none;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: #bfd0b2;
+    box-shadow: 0 0.6rem 1.4rem rgba(37, 59, 38, 0.07);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  ion-card-content {
+    padding: clamp(10px, 2.5vw, 16px) 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 100%;
+
+    ion-icon {
+      font-size: clamp(20px, 4.5vw, 24px);
+      color: #4d6727;
+    }
+
+    p {
+      margin: 0;
+      font-size: clamp(0.72rem, 2.1vw, 0.85rem);
+      font-weight: 600;
+      color: #213026;
+      line-height: 1.2;
+      word-break: break-word;
+    }
+  }
+}
+
+.card-noticia {
+  width: 100%;
+  --background: #ffffff;
+  --color: #213026;
+  border: 1px solid #dce5d8;
+  border-radius: 1.3rem;
+  box-shadow: 0 0.6rem 1.8rem rgba(37, 59, 38, 0.06);
+  margin: 4px 0 16px;
+  overflow: hidden;
+
+  .imagen-perro {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: min(90%, 350px);
+    max-height: clamp(180px, 45vw, 280px);
+    object-fit: contain;
+    object-position: center;
+    margin: 15px auto;
+  }
+
+  ion-card-title {
+    font-size: clamp(0.98rem, 2.6vw, 1.15rem);
+    font-weight: 700;
+    color: #213026;
+  }
+
+  ion-card-content p {
+    margin: 0;
+    font-size: clamp(0.84rem, 2.2vw, 0.95rem);
+    color: #6d786f;
+    line-height: 1.5;
+  }
+}
+
+.estado-vacio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 55vh;
+  padding: 20px;
+  text-align: center;
+  color: #6d786f;
+  background: #ffffff;
+  border: 1px dashed #c7d5bf;
+  border-radius: 1.2rem;
+  gap: 10px;
+
+  ion-icon {
+    font-size: 42px;
+    color: #69863b;
+  }
+}
+
+.lista-notificaciones {
+  background: transparent;
+}
+
+.item-notif {
+  --background: #ffffff;
+  --color: #213026;
+  --border-radius: 1rem;
+  margin-bottom: 10px;
+  border: 1px solid #dce5d8;
+}
+
+ion-tab-bar {
+  --background: #ffffff;
+  --color: #6d786f;
+  --color-selected: #4d6727;
+  border-top: 1px solid #dce5d8;
+  padding-bottom: env(safe-area-inset-bottom);
+
+  ion-tab-button {
+    min-width: 0;
+    padding: 0 4px;
+
+    ion-icon {
+      font-size: clamp(20px, 5vw, 24px);
+    }
+
+    ion-label {
+      font-size: clamp(0.68rem, 2vw, 0.78rem);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}
+
+@media (max-width: 359px) {
+  .grid-accesos ion-col,
+  .grid-servicios ion-col {
+    padding: 2px;
+  }
+
+  .card-servicio ion-card-content {
+    padding: 10px 2px;
+  }
+}

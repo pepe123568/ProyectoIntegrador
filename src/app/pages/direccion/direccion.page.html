@@ -1,127 +1,189 @@
-<ion-content>
+<!-- eslint-disable @angular-eslint/template/prefer-control-flow -->
+<ion-header class="ion-no-border">
+  <ion-toolbar class="toolbar-direccion">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/registro" text="" aria-label="Volver"></ion-back-button>
+    </ion-buttons>
+    <ion-title>DIRECCIÓN</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-  <!-- Barra superior -->
-  <ion-grid class="topbar">
+<ion-content [fullscreen]="true" class="ion-padding">
+  <form [formGroup]="formulario" (ngSubmit)="siguiente()" class="direccion-form">
 
-    <ion-button
-      class="icon-btn"
-      routerLink="/registro"><ion-icon name="chevron-back-outline" aria-hidden="true"></ion-icon></ion-button>
+    <ion-list lines="none" class="lista-campos">
 
-    <ion-text>Dirección</ion-text>
-
-    <ion-text></ion-text>
-
-  </ion-grid>
-
-
-  <ion-grid class="mobile-page no-nav">
-
-    <!-- Indicador de paso -->
-    <ion-note class="eyebrow success-text center">
-      Paso 2 de 2
-    </ion-note>
-
-
-    <ion-grid class="card">
-
-      <!-- Código Postal -->
-      <ion-grid class="field-wrap">
-
-        <ion-label>Código Postal (CP)</ion-label>
-
-        <ion-input
-          class="field"
-          inputmode="numeric"
-          maxlength="5"
-          [(ngModel)]="cp"></ion-input>
-
-      </ion-grid>
-
-      <!-- Ciudad -->
-      <ion-grid class="field-wrap">
-
-        <ion-label>Ciudad</ion-label>
-
-        <ion-input
-          class="field"
-          [(ngModel)]="ciudad"></ion-input>
-
-      </ion-grid>
-
-      <!-- Colonia -->
-      <ion-grid class="field-wrap">
-
-        <ion-label>Colonia</ion-label>
-
-        <ion-input
-          class="field"
-          [(ngModel)]="colonia"></ion-input>
-
-      </ion-grid>
-
-      <!-- Calle -->
-      <ion-grid class="field-wrap">
-
-        <ion-label>Calle</ion-label>
-
-        <ion-input
-          class="field"
-          [(ngModel)]="calle"></ion-input>
-
-      </ion-grid>
-
-      <!-- Números exterior e interior -->
-      <ion-grid class="two-col">
-
-        <ion-grid class="field-wrap">
-
-          <ion-label>Número exterior</ion-label>
-
+      <!-- CÓDIGO POSTAL -->
+      <div class="campo-grupo">
+        <ion-item
+          class="campo-ionic"
+          [class.invalido]="formulario.get('codigoPostal')?.invalid && formulario.get('codigoPostal')?.touched"
+        >
+          <ion-icon slot="start" name="location-outline"></ion-icon>
           <ion-input
-            class="field"
-            [(ngModel)]="exterior"></ion-input>
+            type="text"
+            inputmode="numeric"
+            maxlength="5"
+            placeholder="Código Postal"
+            formControlName="codigoPostal"
+            required
+          ></ion-input>
+          <ion-text slot="end" class="obligatorio">*</ion-text>
+        </ion-item>
+        <ion-text
+          class="error-campo"
+          *ngIf="formulario.get('codigoPostal')?.hasError('required') && formulario.get('codigoPostal')?.touched"
+        >
+          Este campo es obligatorio
+        </ion-text>
+        <ion-text
+          class="error-campo"
+          *ngIf="formulario.get('codigoPostal')?.hasError('pattern') && formulario.get('codigoPostal')?.touched"
+        >
+          Debe tener 5 dígitos numéricos
+        </ion-text>
+      </div>
 
-        </ion-grid>
-
-        <ion-grid class="field-wrap">
-
-          <ion-label>Número interior</ion-label>
-
+      <!-- CIUDAD -->
+      <div class="campo-grupo">
+        <ion-item
+          class="campo-ionic"
+          [class.invalido]="formulario.get('ciudad')?.invalid && formulario.get('ciudad')?.touched"
+        >
+          <ion-icon slot="start" name="map-outline"></ion-icon>
           <ion-input
-            class="field"
-            [(ngModel)]="interior"
-            placeholder="Opcional"></ion-input>
+            type="text"
+            placeholder="Ciudad o Municipio"
+            formControlName="ciudad"
+            required
+          ></ion-input>
+          <ion-text slot="end" class="obligatorio">*</ion-text>
+        </ion-item>
+        <ion-text
+          class="error-campo"
+          *ngIf="formulario.get('ciudad')?.hasError('required') && formulario.get('ciudad')?.touched"
+        >
+          Este campo es obligatorio
+        </ion-text>
+      </div>
 
-        </ion-grid>
+      <!-- COLONIA -->
+      <div class="campo-grupo">
+        <ion-item
+          class="campo-ionic"
+          [class.invalido]="formulario.get('colonia')?.invalid && formulario.get('colonia')?.touched"
+        >
+          <ion-icon slot="start" name="navigate-outline"></ion-icon>
+          <ion-input
+            type="text"
+            placeholder="Colonia o Fraccionamiento"
+            formControlName="colonia"
+            required
+          ></ion-input>
+          <ion-text slot="end" class="obligatorio">*</ion-text>
+        </ion-item>
+        <ion-text
+          class="error-campo"
+          *ngIf="formulario.get('colonia')?.hasError('required') && formulario.get('colonia')?.touched"
+        >
+          Este campo es obligatorio
+        </ion-text>
+      </div>
 
-      </ion-grid>
+      <!-- CALLE -->
+      <div class="campo-grupo">
+        <ion-item
+          class="campo-ionic"
+          [class.invalido]="formulario.get('calle')?.invalid && formulario.get('calle')?.touched"
+        >
+          <ion-icon slot="start" name="home-outline"></ion-icon>
+          <ion-input
+            type="text"
+            placeholder="Calle o Avenida"
+            formControlName="calle"
+            required
+          ></ion-input>
+          <ion-text slot="end" class="obligatorio">*</ion-text>
+        </ion-item>
+        <ion-text
+          class="error-campo"
+          *ngIf="formulario.get('calle')?.hasError('required') && formulario.get('calle')?.touched"
+        >
+          Este campo es obligatorio
+        </ion-text>
+      </div>
 
-      <!-- Mensaje de error -->
-      <ion-note
-        class="error"
-        *ngIf="error">
-        {{ error }}
-      </ion-note>
+      <!-- NÚMERO EXTERIOR -->
+      <div class="campo-grupo">
+        <ion-item
+          class="campo-ionic"
+          [class.invalido]="formulario.get('numeroExterior')?.invalid && formulario.get('numeroExterior')?.touched"
+        >
+          <ion-icon slot="start" name="business-outline"></ion-icon>
+          <ion-input
+            type="text"
+            placeholder="Número exterior"
+            formControlName="numeroExterior"
+            required
+          ></ion-input>
+          <ion-text slot="end" class="obligatorio">*</ion-text>
+        </ion-item>
+        <ion-text
+          class="error-campo"
+          *ngIf="formulario.get('numeroExterior')?.hasError('required') && formulario.get('numeroExterior')?.touched"
+        >
+          Este campo es obligatorio
+        </ion-text>
+      </div>
 
-      <!-- Botones de navegación -->
-      <ion-grid class="button-row">
+      <!-- NÚMERO INTERIOR (Opcional: sin asterisco) -->
+      <div class="campo-grupo">
+        <ion-item class="campo-ionic">
+          <ion-icon slot="start" name="business-outline"></ion-icon>
+          <ion-input
+            type="text"
+            placeholder="Número interior (opcional)"
+            formControlName="numeroInterior"
+          ></ion-input>
+        </ion-item>
+      </div>
 
-        <ion-button
-          class="ghost"
-          routerLink="/registro">
-          Atrás
-        </ion-button>
+    </ion-list>
 
-        <ion-button
-          class="primary"
-          (click)="crear()">
-          Crear cuenta
-        </ion-button>
+    <!-- MENSAJE DE ERROR GENERAL -->
+    <ion-item lines="none" *ngIf="error()" class="item-error">
+      <ion-icon slot="start" name="alert-circle-outline" color="danger"></ion-icon>
+      <ion-label color="danger" class="ion-text-wrap">{{ error() }}</ion-label>
+    </ion-item>
 
-      </ion-grid>
+    <!-- BOTONES -->
+    <ion-grid class="ion-no-padding botones-grid">
+      <ion-row>
+        <ion-col size="6" class="col-izquierda">
+          <ion-button
+            type="button"
+            expand="block"
+            fill="outline"
+            class="btn-atras"
+            routerLink="/registro"
+          >
+            Atrás
+          </ion-button>
+        </ion-col>
 
+        <ion-col size="6" class="col-derecha">
+          <ion-button
+            type="submit"
+            expand="block"
+            class="btn-siguiente"
+            [disabled]="cargando()"
+          >
+            <ion-spinner *ngIf="cargando()" name="crescent" slot="start"></ion-spinner>
+            {{ cargando() ? 'Guardando...' : 'Siguiente' }}
+          </ion-button>
+        </ion-col>
+      </ion-row>
     </ion-grid>
 
-  </ion-grid>
-
+  </form>
 </ion-content>

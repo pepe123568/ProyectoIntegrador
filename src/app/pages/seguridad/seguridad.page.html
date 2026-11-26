@@ -1,0 +1,103 @@
+<!-- eslint-disable @angular-eslint/template/prefer-control-flow -->
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/inicio" text="" aria-label="Volver"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Seguridad</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="seguridad-wrapper">
+    <!-- ESTADO DE SEGURIDAD DE LA CUENTA -->
+    <ion-card class="card-seguridad">
+      <ion-card-header>
+        <div class="header-top">
+          <ion-card-subtitle>Protección de cuenta</ion-card-subtitle>
+          <ion-badge color="success">Protegida</ion-badge>
+        </div>
+        <ion-card-title>Estado de tu sesión</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-list lines="none" class="lista-info">
+          <ion-item>
+            <ion-icon slot="start" name="mail-outline"></ion-icon>
+            <ion-label class="ion-text-wrap">{{ correoUsuario() }}</ion-label>
+          </ion-item>
+
+          <ion-item>
+            <ion-icon slot="start" name="shield-checkmark-outline"></ion-icon>
+            <ion-label class="ion-text-wrap">
+              Pagos cifrados mediante Mercado Pago (sin almacenamiento de tarjeta)
+            </ion-label>
+          </ion-item>
+
+          <ion-item *ngIf="uidUsuario()">
+            <ion-icon slot="start" name="key-outline"></ion-icon>
+            <ion-label class="ion-text-wrap">ID de cuenta: {{ uidUsuario() }}</ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- CAMBIAR CONTRASEÑA -->
+    <ion-card class="card-seguridad">
+      <ion-card-header>
+        <ion-card-subtitle>Credenciales</ion-card-subtitle>
+        <ion-card-title>Cambiar contraseña</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <form [formGroup]="formulario" (ngSubmit)="actualizarContrasena()">
+          <ion-item class="campo-ionic" lines="none">
+            <ion-input label="Contraseña actual" labelPlacement="stacked" type="password"
+              placeholder="Ingresa tu contraseña actual" formControlName="contrasenaActual"></ion-input>
+          </ion-item>
+
+          <ion-item class="campo-ionic" lines="none">
+            <ion-input label="Nueva contraseña" labelPlacement="stacked" type="password"
+              placeholder="Mínimo 6 caracteres" formControlName="nuevaContrasena"></ion-input>
+          </ion-item>
+
+          <ion-item class="campo-ionic" lines="none">
+            <ion-input label="Confirmar nueva contraseña" labelPlacement="stacked" type="password"
+              placeholder="Repite la nueva contraseña" formControlName="confirmarContrasena"></ion-input>
+          </ion-item>
+
+          <ion-item lines="none" *ngIf="error()" class="item-alerta">
+            <ion-icon slot="start" name="alert-circle-outline" color="danger"></ion-icon>
+            <ion-label color="danger" class="ion-text-wrap">{{ error() }}</ion-label>
+          </ion-item>
+
+          <ion-item lines="none" *ngIf="exito()" class="item-alerta">
+            <ion-icon slot="start" name="checkmark-circle-outline" color="success"></ion-icon>
+            <ion-label color="success" class="ion-text-wrap">{{ exito() }}</ion-label>
+          </ion-item>
+
+          <ion-button type="submit" expand="block" class="btn-guardar ion-margin-top" [disabled]="cargando()">
+            <ion-spinner *ngIf="cargando()" name="crescent" slot="start"></ion-spinner>
+            <ion-icon *ngIf="!cargando()" slot="start" name="lock-closed-outline"></ion-icon>
+            {{ cargando() ? 'Actualizando...' : 'Actualizar contraseña' }}
+          </ion-button>
+        </form>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- CERRAR SESIÓN -->
+    <ion-card class="card-seguridad">
+      <ion-card-header>
+        <ion-card-subtitle>Acceso</ion-card-subtitle>
+        <ion-card-title>Cerrar sesión en este dispositivo</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-button expand="block" fill="outline" color="danger" class="btn-salir" (click)="cerrarSesion()">
+          <ion-icon slot="start" name="log-out-outline"></ion-icon>
+          Cerrar sesión
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

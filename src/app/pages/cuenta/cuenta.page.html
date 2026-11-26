@@ -1,168 +1,157 @@
-<ion-content>
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button routerLink="/inicio" aria-label="Volver">
+        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>MI CUENTA</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-  <!-- Barra superior -->
-  <ion-grid class="topbar">
+<ion-content [fullscreen]="true" class="ion-padding">
+  @if (cargando()) {
+    <ion-text class="ion-text-center">
+      <ion-spinner name="crescent"></ion-spinner>
+    </ion-text>
+  }
+
+  @if (error()) {
+    <ion-text color="danger" class="ion-text-center">
+      {{ error() }}
+    </ion-text>
+  }
+
+  @if (mensaje()) {
+    <ion-text color="success"><p class="ion-text-center">{{ mensaje() }}</p></ion-text>
+  }
+  @if (!cargando() && usuario()) {
+    <!-- PERFIL -->
+    <ion-card class="ion-text-center">
+      <ion-card-content>
+        <ion-avatar class="avatar-perfil">
+          <ion-icon name="person-outline" color="primary"></ion-icon>
+        </ion-avatar>
+        <ion-label>
+          <h2>{{ nombreCompleto() }}</h2>
+          <ion-note>{{ usuario()?.correo }}</ion-note>
+        </ion-label>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- INFORMACIÓN PERSONAL -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Información personal</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        @if (editando()) {
+        <ion-list lines="full" class="campos-edicion">
+          <ion-item><ion-input label="Nombre" labelPlacement="stacked" type="text" [(ngModel)]="borrador.nombre" [disabled]="guardando()"></ion-input></ion-item>
+          <ion-item><ion-input label="Apellidos" labelPlacement="stacked" type="text" [(ngModel)]="borrador.apellidos" [disabled]="guardando()"></ion-input></ion-item>
+          <ion-item><ion-input label="Teléfono" labelPlacement="stacked" type="tel" [(ngModel)]="borrador.telefono" [disabled]="guardando()"></ion-input></ion-item>
+          <ion-item><ion-input label="Correo electrónico" labelPlacement="stacked" type="email" [(ngModel)]="borrador.correo" [disabled]="guardando()"></ion-input></ion-item>
+        </ion-list>
+        } @else {
+        <ion-list lines="full">
+          <ion-item>
+            <ion-label class="ion-text-wrap">
+              <ion-note>NOMBRE COMPLETO</ion-note>
+              <h3>{{ nombreCompleto() }}</h3>
+            </ion-label>
+          </ion-item>
+
+          <ion-item>
+            <ion-label class="ion-text-wrap">
+              <ion-note>TELÉFONO</ion-note>
+              <h3>{{ usuario()?.telefono || 'Sin registrar' }}</h3>
+            </ion-label>
+          </ion-item>
+
+          <ion-item>
+            <ion-label class="ion-text-wrap">
+              <ion-note>CORREO ELECTRÓNICO</ion-note>
+              <h3>{{ usuario()?.correo }}</h3>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+        }
+      </ion-card-content>
+    </ion-card>
+
+    <!-- DIRECCIÓN -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Dirección</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        @if (editando()) {
+        <ion-list lines="full" class="campos-edicion">
+          <ion-item><ion-input label="Calle" labelPlacement="stacked" type="text" [(ngModel)]="borrador.direccion.calle" [disabled]="guardando()"></ion-input></ion-item>
+          <ion-item><ion-input label="Número exterior" labelPlacement="stacked" type="text" [(ngModel)]="borrador.direccion.numeroExterior" [disabled]="guardando()"></ion-input></ion-item>
+          <ion-item><ion-input label="Número interior (opcional)" labelPlacement="stacked" type="text" [(ngModel)]="borrador.direccion.numeroInterior" [disabled]="guardando()"></ion-input></ion-item>
+          <ion-item><ion-input label="Colonia" labelPlacement="stacked" type="text" [(ngModel)]="borrador.direccion.colonia" [disabled]="guardando()"></ion-input></ion-item>
+          <ion-item><ion-input label="Ciudad" labelPlacement="stacked" type="text" [(ngModel)]="borrador.direccion.ciudad" [disabled]="guardando()"></ion-input></ion-item>
+          <ion-item><ion-input label="Código postal" labelPlacement="stacked" type="text" [(ngModel)]="borrador.direccion.codigoPostal" [disabled]="guardando()"></ion-input></ion-item>
+        </ion-list>
+        } @else {
+        <ion-item lines="none">
+          <ion-label class="ion-text-wrap">
+            <ion-note>DOMICILIO</ion-note>
+            <h3>{{ direccionCompleta() }}</h3>
+          </ion-label>
+        </ion-item>
+        }
+      </ion-card-content>
+    </ion-card>
+
+    <!-- ACCIONES -->
+    @if (editando()) {
+      <ion-button expand="block" class="ion-margin-top" [disabled]="guardando()" (click)="guardarCambios()">
+        {{ guardando() ? 'Guardando...' : 'Guardar cambios' }}
+      </ion-button>
+      <ion-button expand="block" fill="outline" [disabled]="guardando()" (click)="cancelarEdicion()">Cancelar</ion-button>
+    } @else {
+    <ion-button expand="block" class="ion-margin-top" (click)="editarInformacion()">
+      Editar información
+    </ion-button>
+    }
 
     <ion-button
-      class="icon-btn"
-      routerLink="/home"><ion-icon name="chevron-back-outline" aria-hidden="true"></ion-icon></ion-button>
-
-    <ion-text>Mi cuenta</ion-text>
-
-    <ion-text></ion-text>
-
-  </ion-grid>
-
-
-  <ion-grid class="mobile-page">
-
-    <!-- Información principal del usuario -->
-    <ion-grid class="account-avatar"></ion-grid>
-
-    <ion-text class="center">
-      {{ datos.usuarioActual?.nombres || 'Cliente' }}
-      {{ datos.usuarioActual?.apellidos || 'Kamur' }}
-    </ion-text>
-
-    <ion-note class="center muted">
-      {{ datos.usuarioActual?.correo || 'correo@ejemplo.com' }}
-    </ion-note>
-
-
-    <ion-grid class="card">
-
-      <!-- Información personal -->
-      <ion-text>Información personal</ion-text>
-
-      <ion-grid class="field-wrap">
-        <ion-label>Nombre(s)</ion-label>
-
-        <ion-input
-          class="field"
-          [(ngModel)]="datos.usuarioActual!.nombres"
-          [disabled]="!editando"></ion-input>
-      </ion-grid>
-
-
-      <ion-grid class="field-wrap">
-        <ion-label>Apellidos</ion-label>
-
-        <ion-input
-          class="field"
-          [(ngModel)]="datos.usuarioActual!.apellidos"
-          [disabled]="!editando"></ion-input>
-      </ion-grid>
-
-
-      <ion-grid class="field-wrap">
-        <ion-label>Teléfono</ion-label>
-
-        <ion-input
-          class="field"
-          [(ngModel)]="datos.usuarioActual!.telefono"
-          [disabled]="!editando"></ion-input>
-      </ion-grid>
-
-
-      <ion-grid class="field-wrap">
-        <ion-label>Correo electrónico</ion-label>
-
-        <ion-input
-          class="field"
-          [value]="datos.usuarioActual?.correo"
-          disabled></ion-input>
-      </ion-grid>
-
-
-      <!-- Dirección -->
-      <ion-text>Dirección</ion-text>
-
-      <ion-note class="muted">
-        {{ datos.usuarioActual?.direccion?.calle }}
-        #{{ datos.usuarioActual?.direccion?.numeroExterior }},
-        {{ datos.usuarioActual?.direccion?.colonia }}
-
-        <ion-text> · </ion-text>
-
-        {{ datos.usuarioActual?.direccion?.ciudad }}
-        · C.P. {{ datos.usuarioActual?.direccion?.cp }}
-      </ion-note>
-
-
-      <!-- Mensaje de confirmación -->
-      <ion-note
-        class="success-text"
-        *ngIf="mensaje">
-        {{ mensaje }}
-      </ion-note>
-
-
-      <!-- Editar información -->
-      <ion-button
-        class="primary"
-        *ngIf="!editando"
-        (click)="editando = true">
-        Editar información
-      </ion-button>
-
-
-      <!-- Guardar cambios -->
-      <ion-button
-        class="primary"
-        *ngIf="editando"
-        (click)="guardar()">
-        Guardar cambios
-      </ion-button>
-
-
-      <!-- Soporte -->
-      <ion-button
-        class="secondary"
-        routerLink="/soporte">
-        Soporte y ayuda
-      </ion-button>
-
-
-      <!-- Cerrar sesión -->
-      <ion-button
-        class="danger-btn"
-        (click)="salir()">
-        Cerrar sesión
-      </ion-button>
-
-    </ion-grid>
-
-  </ion-grid>
-
-
-  <!-- Barra de navegación inferior -->
-  <ion-grid class="bottom-nav">
-
-    <ion-button routerLink="/home">
-      <ion-icon name="home-outline" aria-hidden="true"></ion-icon>
-      Inicio
+      expand="block"
+      fill="outline"
+      color="danger"
+      class="ion-margin-top"
+      [disabled]="cerrandoSesion() || guardando()"
+      (click)="cerrarSesion()"
+    >
+      {{ cerrandoSesion() ? 'Cerrando sesión...' : 'Cerrar sesión' }}
     </ion-button>
-
-    <ion-button routerLink="/citas">
-      <ion-icon name="calendar-outline" aria-hidden="true"></ion-icon>
-      Citas
-    </ion-button>
-
-    <ion-button routerLink="/sucursales">
-      <ion-icon name="location-outline" aria-hidden="true"></ion-icon>
-      Sucursales
-    </ion-button>
-
-    <ion-button routerLink="/tienda">
-      <ion-icon name="storefront-outline" aria-hidden="true"></ion-icon>
-      Tienda
-    </ion-button>
-
-    <ion-button routerLink="/cuenta">
-      <ion-icon name="person-circle-outline" aria-hidden="true"></ion-icon>
-      Cuenta
-    </ion-button>
-
-  </ion-grid>
-
+  }
 </ion-content>
+
+<ion-footer>
+  <ion-tab-bar>
+    <ion-tab-button routerLink="/inicio" routerLinkActive="tab-selected">
+      <ion-icon name="home-outline"></ion-icon>
+      <ion-label>Inicio</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button routerLink="/citas" routerLinkActive="tab-selected">
+      <ion-icon name="calendar-outline"></ion-icon>
+      <ion-label>Citas</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button routerLink="/tienda" routerLinkActive="tab-selected">
+      <ion-icon name="bag-handle-outline"></ion-icon>
+      <ion-label>Tienda</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button routerLink="/cuenta" routerLinkActive="tab-selected">
+      <ion-icon name="person-circle-outline"></ion-icon>
+      <ion-label>Cuenta</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-footer>

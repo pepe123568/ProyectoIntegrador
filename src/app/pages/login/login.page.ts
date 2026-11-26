@@ -1,60 +1,163 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { Component, inject, signal } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { IonContent, IonGrid, IonCard, IonText, IonNote, IonLabel, IonButton, IonInput, IonSelect, IonSelectOption, IonTextarea, IonImg, IonList, IonItem, IonHeader, IonFooter } from '@ionic/angular';
-import { DatosService } from '../../services/datos.service';
+import {
+  IonButton,
+  IonCard,
+  IonCardContent,
+  IonContent,
+  IonIcon,
+  IonInput,
+  IonItem,
+  IonList,
+  IonSpinner,
+  IonText
+} from '@ionic/angular';
+import { addIcons } from 'ionicons';
+import {
+  eyeOffOutline,
+  eyeOutline,
+  lockClosedOutline,
+  logoApple,
+  logoGoogle,
+  mailOutline,
+  pawOutline
+} from 'ionicons/icons';
+import { finalize } from 'rxjs';
+
+import { Auth } from '../../services/auth';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  templateUrl: './login.page.html',
-  styleUrls: ['./login.page.scss'],
   imports: [
+    ReactiveFormsModule,
+    RouterLink,
     IonContent,
-    IonGrid, IonCard, IonText, IonNote, IonLabel, IonButton, IonInput, IonSelect, IonSelectOption, IonTextarea, IonImg, IonList, IonItem, IonHeader, IonFooter,
-    CommonModule,
-    FormsModule,
-    RouterLink
-  ]
+    IonCard,
+    IonCardContent,
+    IonText,
+    IonIcon,
+    IonList,
+    IonItem,
+    IonInput,
+    IonButton,
+    IonSpinner
+  ],
+  templateUrl: './login.page.html',
+  styleUrl: './login.page.scss'
 })
 export class LoginPage {
-  correo = '';
-  contrasena = '';
-  mensaje = '';
-  mostrar = false;
+  private readonly auth = inject(Auth);
+  private readonly router = inject(Router);
 
-  constructor(
-    public datos: DatosService,
-    private router: Router
-  ) {}
+  mostrarPassword = signal(false);
+  loading = signal(false);
+  error = signal('');
+  mensaje = signal('');
 
-  // Inicia sesión
-  entrar() {
-    this.mensaje = '';
+  formulario = new FormGroup({
+    correo: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.email]
+    }),
+    password: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required]
+    })
+  });
 
-    // Verifica que los campos estén completos
-    if (!this.correo.trim() || !this.contrasena) {
-      this.mensaje = 'Completa correo y contraseña.';
-      return;
-    }
-
-    // Verifica que el correo sea válido
-    if (!/^\S+@\S+\.\S+$/.test(this.correo)) {
-      this.mensaje = 'Ingresa un correo válido.';
-      return;
-    }
-
-    // Verifica las credenciales
-    this.datos.login(this.correo, this.contrasena)
-      ? this.router.navigateByUrl('/home')
-      : this.mensaje = 'Correo o contraseña incorrectos.';
+  constructor() {
+    addIcons({
+      pawOutline,
+      mailOutline,
+      lockClosedOutline,
+      eyeOutline,
+      eyeOffOutline,
+      logoGoogle,
+      logoApple
+    });
   }
 
-  // Ingresa con la cuenta de prueba
-  demo() {
-    this.correo = 'correo@ejemplo.com';
-    this.contrasena = '1234';
-    this.entrar();
+  cambiarVisibilidad(): void {
+    this.mostrarPassword.update(valor => !valor);
+  }
+
+  iniciarSesion(): void {
+    this.error.set('');
+    this.mensaje.set('');
+
+    if (this.loading()) return;
+
+    if (this.formulario.invalid) {
+      this.formulario.markAllAsTouched();
+      this.error.set('Introduce un correo electrónico válido y una contraseña.');
+      return;
+    }
+
+    const { correo, password } = this.formulario.getRawValue();
+    this.loading.set(true);
+
+    this.auth.login(correo, password)
+      .pipe(finalize(() => this.loading.set(false)))
+      .subscribe({
+        next: () => {
+          void this.router.navigateByUrl('/inicio', { replaceUrl: true });
+        },
+        error: (err: unknown) => {
+          const codigo = (err as { code?: string }).code;
+          switch (codigo) {
+            case 'auth/invalid-credential':
+            case 'auth/wrong-password':
+            case 'auth/user-not-found':
+              this.error.set('Correo electrónico o contraseña incorrectos.');
+              break;
+            case 'auth/invalid-email':
+              this.error.set('El correo electrónico no es válido.');
+              break;
+            case 'auth/too-many-requests':
+              this.error.set('Demasiados intentos. Inténtalo más tarde.');
+              break;
+            case 'auth/network-request-failed':
+              this.error.set('Comprueba tu conexión a Internet.');
+              break;
+            default:
+              this.error.set('No se pudo iniciar sesión. Inténtalo nuevamente.');
+          }
+        }
+      });
+  }
+
+  recuperarPassword(): void {
+    this.error.set('');
+    this.mensaje.set('');
+
+    const correo = this.formulario.controls.correo.value;
+    if (!correo || this.formulario.controls.correo.invalid) {
+      this.error.set('Introduce un correo electrónico válido para recuperar tu contraseña.');
+      return;
+    }
+
+    if (this.loading()) return;
+    this.loading.set(true);
+
+    this.auth.recuperarPassword(correo)
+      .pipe(finalize(() => this.loading.set(false)))
+      .subscribe({
+        next: () => {
+          this.mensaje.set('Si existe una cuenta con ese correo, recibirás instrucciones para restablecer tu contraseña.');
+        },
+        error: () => {
+          this.error.set('No se pudo enviar el correo de recuperación.');
+        }
+      });
+  }
+
+  loginGoogle(): void {
+    this.error.set('El acceso con Google aún no está configurado.');
+  }
+
+  loginApple(): void {
+    this.error.set('El acceso con Apple aún no está configurado.');
   }
 }

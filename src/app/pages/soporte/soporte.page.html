@@ -1,40 +1,116 @@
-<ion-content>
-  <!-- Barra superior -->
-  <ion-grid class="topbar">
-    <ion-button class="icon-btn" routerLink="/cuenta"><ion-icon name="chevron-back-outline" aria-hidden="true"></ion-icon></ion-button>
-    <ion-text>Soporte</ion-text>
-    <ion-text></ion-text>
-  </ion-grid>
+<!-- eslint-disable @angular-eslint/template/prefer-control-flow -->
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/inicio" text="" aria-label="Volver"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Soporte y Ayuda</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-  <ion-grid class="mobile-page no-nav">
-    <ion-grid class="card">
-      <ion-text>¿Cómo podemos ayudarte?</ion-text>
-      <ion-note class="muted">Contacto: soporte@vetkamur.mx · 271 123 4567</ion-note>
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="soporte-wrapper">
+    <!-- CONTACTO DIRECTO -->
+    <ion-card class="card-soporte">
+      <ion-card-header>
+        <ion-card-subtitle>Atención inmediata</ion-card-subtitle>
+        <ion-card-title>¿Necesitas ayuda con tu pedido?</ion-card-title>
+      </ion-card-header>
 
-      <!-- Asunto -->
-      <ion-grid class="field-wrap">
-        <ion-label>Asunto</ion-label>
-        <ion-input
-          class="field"
-          [(ngModel)]="asunto"></ion-input>
-      </ion-grid>
+      <ion-card-content>
+        <p class="texto-intro">
+          Comunícate directamente con el equipo de VetKamur en horario de atención de lunes a sábado de 9:00 AM a 8:00
+          PM.
+        </p>
 
-      <!-- Mensaje -->
-      <ion-grid class="field-wrap">
-        <ion-label>Mensaje</ion-label>
-        <ion-textarea
-          class="textarea"
-          [(ngModel)]="mensaje">
-        </ion-textarea>
-      </ion-grid>
+        <ion-grid class="ion-no-padding ion-margin-top">
+          <ion-row>
+            <ion-col size="6" class="ion-padding-end">
+              <ion-button expand="block" class="btn-whatsapp" [href]="whatsappUrl" target="_blank"
+                rel="noopener noreferrer">
+                <ion-icon slot="start" name="logo-whatsapp"></ion-icon>
+                WhatsApp
+              </ion-button>
+            </ion-col>
 
-      <!-- Enviar mensaje -->
-      <ion-button class="primary" (click)="enviar()">Enviar mensaje</ion-button>
+            <ion-col size="6">
+              <ion-button expand="block" fill="outline" class="btn-llamar" [href]="'tel:' + telefonoSoporte">
+                <ion-icon slot="start" name="call-outline"></ion-icon>
+                Llamar
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
 
-      <!-- Mensaje de confirmación -->
-      <ion-note class="success-text center" *ngIf="enviado">
-        Mensaje preparado correctamente (simulación).
-      </ion-note>
-    </ion-grid>
-  </ion-grid>
+    <!-- PREGUNTAS FRECUENTES -->
+    <ion-card class="card-soporte">
+      <ion-card-header>
+        <ion-card-subtitle>Centro de ayuda</ion-card-subtitle>
+        <ion-card-title>Preguntas frecuentes</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content class="ion-no-padding">
+        <ion-accordion-group>
+          <ion-accordion *ngFor="let faq of preguntasFrecuentes" [value]="faq.valor">
+            <ion-item slot="header" class="faq-header">
+              <ion-icon slot="start" name="help-circle-outline"></ion-icon>
+              <ion-label class="ion-text-wrap">{{ faq.pregunta }}</ion-label>
+            </ion-item>
+            <div class="faq-body" slot="content">
+              {{ faq.respuesta }}
+            </div>
+          </ion-accordion>
+        </ion-accordion-group>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- FORMULARIO DE MENSAJE -->
+    <ion-card class="card-soporte">
+      <ion-card-header>
+        <ion-card-subtitle>Formulario de contacto</ion-card-subtitle>
+        <ion-card-title>Envíanos un mensaje</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <form [formGroup]="formulario" (ngSubmit)="enviarConsulta()">
+          <ion-item class="campo-ionic" lines="none">
+            <ion-select label="Motivo" labelPlacement="stacked" formControlName="motivo" interface="popover">
+              <ion-select-option value="pedido">Problema con un pedido</ion-select-option>
+              <ion-select-option value="pago">Duda sobre mi pago</ion-select-option>
+              <ion-select-option value="producto">Información de productos</ion-select-option>
+              <ion-select-option value="cuenta">Mi cuenta o dirección</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item class="campo-ionic" lines="none">
+            <ion-input label="Asunto" labelPlacement="stacked" type="text"
+              placeholder="ej. Seguimiento de pedido #KMR-..." formControlName="asunto"></ion-input>
+          </ion-item>
+
+          <ion-item class="campo-ionic" lines="none">
+            <ion-textarea label="Mensaje" labelPlacement="stacked" rows="4"
+              placeholder="Describe detalladamente cómo podemos ayudarte..." formControlName="mensaje"></ion-textarea>
+          </ion-item>
+
+          <ion-item lines="none" *ngIf="error()" class="item-alerta">
+            <ion-icon slot="start" name="alert-circle-outline" color="danger"></ion-icon>
+            <ion-label color="danger" class="ion-text-wrap">{{ error() }}</ion-label>
+          </ion-item>
+
+          <ion-item lines="none" *ngIf="exito()" class="item-alerta">
+            <ion-icon slot="start" name="checkmark-circle-outline" color="success"></ion-icon>
+            <ion-label color="success" class="ion-text-wrap">{{ exito() }}</ion-label>
+          </ion-item>
+
+          <ion-button type="submit" expand="block" class="btn-enviar ion-margin-top" [disabled]="enviando()">
+            <ion-spinner *ngIf="enviando()" name="crescent" slot="start"></ion-spinner>
+            <ion-icon *ngIf="!enviando()" slot="start" name="send-outline"></ion-icon>
+            {{ enviando() ? 'Enviando...' : 'Enviar consulta' }}
+          </ion-button>
+        </form>
+      </ion-card-content>
+    </ion-card>
+  </div>
 </ion-content>

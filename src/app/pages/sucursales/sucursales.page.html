@@ -1,67 +1,75 @@
-<ion-content>
-  <!-- Barra superior -->
-  <ion-grid class="topbar">
-    <ion-button class="icon-btn" routerLink="/home"><ion-icon name="chevron-back-outline" aria-hidden="true"></ion-icon></ion-button>
-    <ion-text>Sucursales</ion-text>
-    <ion-text></ion-text>
-  </ion-grid>
+<!-- eslint-disable @angular-eslint/template/prefer-control-flow -->
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/inicio" text="" aria-label="Volver"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Nuestras Sucursales</ion-title>
+  </ion-toolbar>
 
-  <ion-grid class="mobile-page">
-    <!-- Buscar sucursal -->
-    <ion-input
-      class="search"
-      [(ngModel)]="busqueda"
-      placeholder="Buscar sucursal"></ion-input>
+  <ion-toolbar class="toolbar-busqueda">
+    <ion-searchbar placeholder="Buscar por colonia o ciudad..." (ionInput)="alBuscar($event)"
+      [debounce]="200"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
 
-    <!-- Mapa -->
-    <ion-grid class="map">
-      <ion-text class="pin" style="left:22%;top:34%"></ion-text>
-      <ion-text class="pin" style="left:67%;top:24%"></ion-text>
-      <ion-text class="pin" style="left:72%;top:70%"></ion-text>
-    </ion-grid>
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="sucursales-wrapper">
+    <ion-card *ngFor="let sucursal of sucursalesFiltradas()" class="card-sucursal">
+      <ion-card-header>
+        <div class="header-top">
+          <ion-card-subtitle>{{ sucursal.zona }}</ion-card-subtitle>
+          <ion-badge [color]="sucursal.abierta ? 'success' : 'medium'">
+            {{ sucursal.abierta ? 'Abierta' : 'Cerrada' }}
+          </ion-badge>
+        </div>
+        <ion-card-title>{{ sucursal.nombre }}</ion-card-title>
+      </ion-card-header>
 
-    <!-- Lista de sucursales -->
-    <ion-grid class="list-row" *ngFor="let s of lista">
-      <ion-grid class="list-icon"><ion-icon name="location-outline" aria-hidden="true"></ion-icon></ion-grid>
+      <ion-card-content>
+        <ion-list lines="none" class="lista-info">
+          <ion-item>
+            <ion-icon slot="start" name="location-outline"></ion-icon>
+            <ion-label class="ion-text-wrap">{{ sucursal.direccion }}</ion-label>
+          </ion-item>
 
-      <ion-grid class="grow">
-        <ion-text>{{ s.nombre }}</ion-text>
-        <ion-note>{{ s.direccion }} · {{ s.distancia }}</ion-note>
-        <ion-note>{{ s.horario }}</ion-note>
-      </ion-grid>
-    </ion-grid>
+          <ion-item>
+            <ion-icon slot="start" name="time-outline"></ion-icon>
+            <ion-label class="ion-text-wrap">{{ sucursal.horario }}</ion-label>
+          </ion-item>
 
-    <!-- Sin resultados -->
-    <ion-grid class="card center" *ngIf="!lista.length">
-      No se encontraron sucursales.
-    </ion-grid>
-  </ion-grid>
+          <ion-item>
+            <ion-icon slot="start" name="call-outline"></ion-icon>
+            <ion-label>{{ sucursal.telefono }}</ion-label>
+          </ion-item>
+        </ion-list>
 
-  <!-- Barra de navegación inferior -->
-  <ion-grid class="bottom-nav">
-    <ion-button routerLink="/home">
-      <ion-icon name="home-outline" aria-hidden="true"></ion-icon>
-      Inicio
-    </ion-button>
+        <ion-grid class="ion-no-padding ion-margin-top">
+          <ion-row>
+            <ion-col size="6" class="ion-padding-end">
+              <ion-button expand="block" fill="outline" class="btn-llamar" [href]="'tel:' + sucursal.telefono">
+                <ion-icon slot="start" name="call-outline"></ion-icon>
+                Llamar
+              </ion-button>
+            </ion-col>
 
-    <ion-button routerLink="/citas">
-      <ion-icon name="calendar-outline" aria-hidden="true"></ion-icon>
-      Citas
-    </ion-button>
+            <ion-col size="6">
+              <ion-button expand="block" class="btn-mapa" [href]="sucursal.mapsUrl" target="_blank"
+                rel="noopener noreferrer">
+                <ion-icon slot="start" name="navigate-outline"></ion-icon>
+                Cómo llegar
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
 
-    <ion-button routerLink="/sucursales">
-      <ion-icon name="location-outline" aria-hidden="true"></ion-icon>
-      Sucursales
-    </ion-button>
-
-    <ion-button routerLink="/tienda">
-      <ion-icon name="storefront-outline" aria-hidden="true"></ion-icon>
-      Tienda
-    </ion-button>
-
-    <ion-button routerLink="/cuenta">
-      <ion-icon name="person-circle-outline" aria-hidden="true"></ion-icon>
-      Cuenta
-    </ion-button>
-  </ion-grid>
+    <ion-card *ngIf="sucursalesFiltradas().length === 0" class="card-sucursal ion-text-center">
+      <ion-card-content>
+        <ion-icon name="storefront-outline" class="icono-vacio"></ion-icon>
+        <p>No se encontraron sucursales con "{{ terminoBusqueda() }}".</p>
+      </ion-card-content>
+    </ion-card>
+  </div>
 </ion-content>

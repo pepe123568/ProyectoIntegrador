@@ -1,0 +1,75 @@
+
+:host {
+  display: block;
+  width: 100%;
+  min-height: 100dvh;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.pantalla-carga {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 100dvh;
+  background: #ffffff;
+  font-family: Arial, sans-serif;
+}
+
+.marca {
+  text-align: center;
+  transform: translateY(-12px);
+}
+
+.marca h1 {
+  margin: 0;
+  color: #444444;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.marca p {
+  margin: 5px 0 0;
+  color: #888888;
+  font-size: 14px;
+}
+
+.barra {
+  position: absolute;
+  top: 70%;
+  width: 130px;
+  height: 8px;
+  overflow: hidden;
+  background: #e0e0e0;
+  border-radius: 20px;
+}
+
+.progreso {
+  width: 0;
+  height: 100%;
+  background: #929292;
+  border-radius: inherit;
+  animation: cargar 2.5s linear forwards;
+}
+
+@keyframes cargar {
+  from {
+    width: 0%;
+  }
+
+  to {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progreso {
+    animation: none;
+    width: 100%;
+  }
+}

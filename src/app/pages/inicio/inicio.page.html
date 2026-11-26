@@ -1,0 +1,275 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="toolbar-principal">
+    <ion-buttons slot="start">
+      <ion-button id="btn-menu-desplegable" aria-label="Abrir menú">
+        <ion-icon slot="icon-only" name="menu-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title>Kamur</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="alternarNotificaciones()" aria-label="Notificaciones" class="btn-notificaciones">
+        <ion-icon slot="icon-only" name="notifications-outline"></ion-icon>
+        @if (cantidadNoLeidas() > 0) {
+        <ion-badge color="danger" class="badge-notif">
+          {{ cantidadNoLeidas() > 99 ? '99+' : cantidadNoLeidas() }}
+        </ion-badge>
+        }
+      </ion-button>
+
+      <ion-button (click)="navegar('/carrito')" aria-label="Abrir carrito">
+        <ion-icon slot="icon-only" name="cart-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<!-- MENÚ DESPLEGABLE NATIVO (ION-POPOVER) -->
+<ion-popover #popoverMenu trigger="btn-menu-desplegable" triggerAction="click" dismissOnSelect="true" side="bottom"
+  alignment="start" class="popover-menu">
+  <ng-template>
+    <ion-content class="contenido-popover">
+      <div class="cabecera-popover">
+        <div class="avatar-mini">
+          <ion-icon name="paw-outline"></ion-icon>
+        </div>
+        <div class="datos-mini">
+          <h3>{{ nombreUsuario() || 'Cliente Kamur' }}</h3>
+          <p>{{ correoUsuario() || 'VetKamur' }}</p>
+        </div>
+      </div>
+
+      <ion-list lines="none" class="lista-popover">
+        <ion-item button detail="false" (click)="navegarDesdeMenu('/cuenta', popoverMenu)" class="item-popover">
+          <ion-icon slot="start" name="person-circle-outline"></ion-icon>
+          <ion-label>Cuenta</ion-label>
+        </ion-item>
+
+        <ion-item button detail="false" (click)="navegarDesdeMenu('/ajustes', popoverMenu)" class="item-popover">
+          <ion-icon slot="start" name="settings-outline"></ion-icon>
+          <ion-label>Ajustes</ion-label>
+        </ion-item>
+
+        @if (esAdministrador()) {
+        <ion-item button detail="false" (click)="navegarDesdeMenu('/admin', popoverMenu)" class="item-popover">
+          <ion-icon slot="start" name="grid-outline"></ion-icon>
+          <ion-label>Administración</ion-label>
+        </ion-item>
+        }
+
+        <div class="divisor-menu"></div>
+
+        <ion-item button detail="false" (click)="cerrarSesion(popoverMenu)" [disabled]="cerrandoSesion()"
+          class="item-popover salir">
+          <ion-icon slot="start" name="log-out-outline"></ion-icon>
+          <ion-label>
+            {{ cerrandoSesion() ? 'Cerrando sesión...' : 'Cerrar sesión' }}
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ng-template>
+</ion-popover>
+
+<!-- CONTENIDO PRINCIPAL -->
+<ion-content [fullscreen]="true" class="ion-padding contenido-inicio">
+  <div class="contenedor-principal">
+
+    <div class="saludo-box">
+      <h1>¡Bienvenido{{ nombreUsuario() ? ', ' + nombreUsuario() : '' }}!</h1>
+      <p>¿Qué necesita tu mascota hoy?</p>
+    </div>
+
+    <ion-searchbar placeholder="Buscar productos o servicios..." [value]="busqueda()" (ionInput)="buscar($event)"
+      (keyup.enter)="buscarProductos()"></ion-searchbar>
+
+    <!-- FUNCIONES PRINCIPALES -->
+    <ion-grid class="ion-no-padding grid-accesos">
+      <ion-row>
+        <ion-col size="6" size-md="3">
+          <ion-card button (click)="navegar('/agendar-cita')" class="card-funcion">
+            <ion-card-content>
+              <div class="icono-box">
+                <ion-icon name="calendar-outline"></ion-icon>
+              </div>
+              <h3>Agendar cita</h3>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+        <ion-col size="6" size-md="3">
+          <ion-card button (click)="navegar('/pedidos')" class="card-funcion">
+            <ion-card-content>
+              <div class="icono-box">
+                <ion-icon name="receipt-outline"></ion-icon>
+              </div>
+              <h3>Mis pedidos</h3>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+        <ion-col size="6" size-md="3">
+          <ion-card button (click)="navegar('/tienda')" class="card-funcion">
+            <ion-card-content>
+              <div class="icono-box">
+                <ion-icon name="bag-handle-outline"></ion-icon>
+              </div>
+              <h3>Productos</h3>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+        <ion-col size="6" size-md="3">
+          <ion-card button (click)="navegar('/carrito')" class="card-funcion">
+            <ion-card-content>
+              <div class="icono-box">
+                <ion-icon name="cart-outline"></ion-icon>
+              </div>
+              <h3>Carrito</h3>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <!-- MÁS SERVICIOS -->
+    <h2 class="subtitulo-seccion">Más servicios</h2>
+
+    <ion-grid class="ion-no-padding grid-servicios">
+      <ion-row>
+        <ion-col size="4">
+          <ion-card button (click)="navegar('/sucursales')" class="card-servicio">
+            <ion-card-content>
+              <ion-icon name="location-outline"></ion-icon>
+              <p>Sucursales</p>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+        <ion-col size="4">
+          <ion-card button (click)="navegar('/soporte')" class="card-servicio">
+            <ion-card-content>
+              <ion-icon name="headset-outline"></ion-icon>
+              <p>Soporte</p>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+        <ion-col size="4">
+          <ion-card button (click)="navegar('/seguridad')" class="card-servicio">
+            <ion-card-content>
+              <ion-icon name="shield-checkmark-outline"></ion-icon>
+              <p>Seguridad</p>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+        @if (esAdministrador()) {
+        <ion-col size="4">
+          <ion-card button (click)="navegar('/admin')" class="card-servicio">
+            <ion-card-content>
+              <ion-icon name="grid-outline"></ion-icon>
+              <p>Administración</p>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+        }
+      </ion-row>
+    </ion-grid>
+
+    <!-- NOTICIAS Y CONSEJOS -->
+    <h2 class="subtitulo-seccion">Noticias y consejos</h2>
+
+    <ion-card class="card-noticia">
+      <img class="imagen-perro" src="assets/imagenes/perro-golden.png" alt="Perro saludable" />
+      <ion-card-header>
+        <ion-card-title>Cuida la salud de tu mascota</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>Las revisiones veterinarias periódicas ayudan a mantener saludables a tus mascotas.</p>
+      </ion-card-content>
+    </ion-card>
+
+  </div>
+
+  <!-- MODAL NOTIFICACIONES -->
+  <ion-modal [isOpen]="notificacionesAbiertas()" (didDismiss)="cerrarNotificaciones()">
+    <ng-template>
+      <ion-header class="ion-no-border">
+        <ion-toolbar class="toolbar-principal">
+          <ion-title>Notificaciones</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="cerrarNotificaciones()" aria-label="Cerrar">
+              <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content class="ion-padding contenido-inicio">
+        @if (cargandoNotificaciones()) {
+        <div class="estado-vacio">
+          <ion-spinner name="crescent" color="primary"></ion-spinner>
+          <p>Cargando notificaciones...</p>
+        </div>
+        } @else if (errorNotificaciones()) {
+        <div class="estado-vacio">
+          <ion-text color="danger">
+            <p>{{ errorNotificaciones() }}</p>
+          </ion-text>
+        </div>
+        } @else if (notificaciones().length === 0) {
+        <div class="estado-vacio">
+          <ion-icon name="notifications-off-outline"></ion-icon>
+          <p>No tienes notificaciones por el momento.</p>
+        </div>
+        } @else {
+        <ion-list lines="none" class="lista-notificaciones">
+          @for (notificacion of notificaciones(); track notificacion.id) {
+          <ion-item button (click)="marcarNotificacionLeida(notificacion)" class="item-notif">
+            <ion-icon slot="start" name="notifications-outline" color="primary"></ion-icon>
+            <ion-label class="ion-text-wrap">
+              <h3>{{ notificacion.titulo }}</h3>
+              <p>{{ notificacion.mensaje }}</p>
+              @if (notificacion.fecha) {
+              <ion-note>
+                {{ $any(notificacion.fecha).toDate() | date:'dd/MM/yyyy, HH:mm' }}
+              </ion-note>
+              }
+            </ion-label>
+            @if (!notificacion.leida) {
+            <ion-badge slot="end" color="primary">Nueva</ion-badge>
+            }
+          </ion-item>
+          }
+        </ion-list>
+        }
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>
+
+<ion-footer class="ion-no-border">
+  <ion-tab-bar>
+    <ion-tab-button routerLink="/inicio" routerLinkActive="tab-selected">
+      <ion-icon name="home-outline"></ion-icon>
+      <ion-label>Inicio</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button routerLink="/citas" routerLinkActive="tab-selected">
+      <ion-icon name="calendar-outline"></ion-icon>
+      <ion-label>Citas</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button routerLink="/tienda" routerLinkActive="tab-selected">
+      <ion-icon name="bag-handle-outline"></ion-icon>
+      <ion-label>Tienda</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button routerLink="/cuenta" routerLinkActive="tab-selected">
+      <ion-icon name="person-circle-outline"></ion-icon>
+      <ion-label>Cuenta</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-footer>
